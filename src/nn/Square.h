@@ -9,13 +9,13 @@ namespace nn
     {
     public:
         virtual const std::string name() const override { return "nn.Square"; }
-        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) override;
+        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
     };
 }
 
 
 template<class TTensor>
-nn::Tensor<TTensor> nn::Square<TTensor>::forward(const nn::Tensor<TTensor> &input)
+nn::Tensor<TTensor> nn::Square<TTensor>::forward(const nn::Tensor<TTensor> &input) const
 {
     nn::Tensor<TTensor> output(true);
     THWrapper::NN<TTensor>::Square_updateOutput(nullptr, input, output);

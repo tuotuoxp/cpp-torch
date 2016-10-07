@@ -26,6 +26,7 @@
 #include "nn/SpatialCrossMapLRN.h"
 #include "nn/SpatialLPPooling.h"
 #include "nn/SpatialMaxPooling.h"
+#include "nn/SpatialReflectionPadding.h"
 #include "nn/Sqrt.h"
 #include "nn/Square.h"
 #include "nn/Threshold.h"

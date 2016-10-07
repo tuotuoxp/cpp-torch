@@ -9,7 +9,7 @@ namespace nn
     {
     public:
         virtual const std::string name() const override { return "nn.View"; }
-        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) override;
+        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
 
     protected:
         int num_elements_, num_input_dims_;
@@ -19,7 +19,7 @@ namespace nn
 
 
 template<class TTensor>
-nn::Tensor<TTensor> nn::View<TTensor>::forward(const nn::Tensor<TTensor> &input)
+nn::Tensor<TTensor> nn::View<TTensor>::forward(const nn::Tensor<TTensor> &input) const
 {
     int ind = input.dim();
     std::vector<long> isz = input.size();

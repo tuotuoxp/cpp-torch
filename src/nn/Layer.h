@@ -13,7 +13,7 @@ namespace nn
 
         virtual const std::string name() const = 0;
         virtual void print(std::ostream &o, int level = 0) const { o << name(); }
-        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) = 0;
+        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const = 0;
 
         friend std::ostream& operator << (std::ostream &o, const Layer &m)
         {

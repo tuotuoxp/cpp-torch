@@ -9,7 +9,7 @@ namespace nn
     {
     public:
         virtual const std::string name() const override { return "nn.SpatialConvolution"; }
-        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) override;
+        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
 
     protected:
         Tensor<TTensor> weight_, bias_;
@@ -19,7 +19,7 @@ namespace nn
 
 
 template<class TTensor>
-nn::Tensor<TTensor> nn::SpatialConvolution<TTensor>::forward(const nn::Tensor<TTensor> &input)
+nn::Tensor<TTensor> nn::SpatialConvolution<TTensor>::forward(const nn::Tensor<TTensor> &input) const
 {
     nn::Tensor<TTensor> finput(true), fgradinput(true);
     nn::Tensor<TTensor> input_new;

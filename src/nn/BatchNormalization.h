@@ -12,7 +12,7 @@ namespace nn
         BatchNormalization() : train_(false), ndim(2) {}
 
         virtual const std::string name() const override { return "nn.BatchNormalization"; }
-        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) override;
+        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
 
     protected:
         Tensor<TTensor> weight_, bias_, running_mean_, running_var_;
@@ -26,7 +26,7 @@ namespace nn
 
 
 template<class TTensor>
-nn::Tensor<TTensor> nn::BatchNormalization<TTensor>::forward(const nn::Tensor<TTensor> &input)
+nn::Tensor<TTensor> nn::BatchNormalization<TTensor>::forward(const nn::Tensor<TTensor> &input) const
 {
     int idim = input.dim();
 

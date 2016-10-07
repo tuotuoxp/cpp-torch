@@ -11,7 +11,7 @@ namespace nn
     {
     public:
         virtual const std::string name() const override { return "nn.Normalize"; }
-        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) override;
+        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
 
     protected:
         typename TTensor::Storage::StorageBase p_, eps_;
@@ -20,7 +20,7 @@ namespace nn
 
 
 template<class TTensor>
-nn::Tensor<TTensor> nn::Normalize<TTensor>::forward(const nn::Tensor<TTensor> &input)
+nn::Tensor<TTensor> nn::Normalize<TTensor>::forward(const nn::Tensor<TTensor> &input) const
 {
     assert(input.dim() <= 2 && "only 1d layer supported");
     std::vector<long> input_size = input.size();

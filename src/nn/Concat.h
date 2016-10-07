@@ -11,7 +11,7 @@ namespace nn
     {
     public:
         virtual const std::string name() const override { return "nn.Concat"; }
-        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) override;
+        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
 
     protected:
         int dimension_;
@@ -20,7 +20,7 @@ namespace nn
 
 
 template<class TTensor>
-nn::Tensor<TTensor> nn::Concat<TTensor>::forward(const nn::Tensor<TTensor> &input)
+nn::Tensor<TTensor> nn::Concat<TTensor>::forward(const nn::Tensor<TTensor> &input) const
 {
     bool first = true;
     std::vector<long> outputSize;

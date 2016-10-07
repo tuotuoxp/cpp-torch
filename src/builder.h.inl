@@ -34,13 +34,14 @@ TSerializerBase* Cast(TSerializer *c)
 #include "serializer/SpatialCrossMapLRN.h"
 #include "serializer/SpatialLPPooling.h"
 #include "serializer/SpatialMaxPooling.h"
+#include "serializer/SpatialReflectionPadding.h"
 #include "serializer/Sqrt.h"
 #include "serializer/Square.h"
 #include "serializer/Threshold.h"
 #include "serializer/View.h"
 
 
-#define CREATE_BUILDER(name, T)        factory_.insert(std::make_pair(name, std::shared_ptr<class_factory_base>(new class_factory_impl<T>())))
+#define CREATE_BUILDER(name, T)     this->factory_.insert(std::make_pair(name, std::shared_ptr<class_factory_base>(new class_factory_impl<T>())))
 
 
 template<class TTensor>
@@ -64,6 +65,7 @@ model_builder<TTensor>::model_builder()
     CREATE_BUILDER("nn.SpatialCrossMapLRN", serializer::SpatialCrossMapLRN<TTensor>);
     CREATE_BUILDER("nn.SpatialLPPooling", serializer::SpatialLPPooling<TTensor>);
     CREATE_BUILDER("nn.SpatialMaxPooling", serializer::SpatialMaxPooling<TTensor>);
+    CREATE_BUILDER("nn.SpatialReflectionPadding", serializer::SpatialReflectionPadding<TTensor>);
     CREATE_BUILDER("nn.Sqrt", serializer::Sqrt<TTensor>);
     CREATE_BUILDER("nn.Square", serializer::Square<TTensor>);
     CREATE_BUILDER("nn.Threshold", serializer::Threshold<TTensor>);

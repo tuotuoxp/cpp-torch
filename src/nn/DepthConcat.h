@@ -9,16 +9,16 @@ namespace nn
     {
     public:
         virtual const std::string name() const override { return "nn.DepthConcat"; }
-        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) override;
+        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
 
     protected:
-        Tensor<TTensor> windowNarrow(Tensor<TTensor> &output, Tensor<TTensor> &currentOutput, std::vector<long> &outputSize, int offset);
+        Tensor<TTensor> windowNarrow(Tensor<TTensor> &output, Tensor<TTensor> &currentOutput, std::vector<long> &outputSize, int offset) const;
     };
 }
 
 
 template<class TTensor>
-nn::Tensor<TTensor> nn::DepthConcat<TTensor>::forward(const nn::Tensor<TTensor> &input)
+nn::Tensor<TTensor> nn::DepthConcat<TTensor>::forward(const nn::Tensor<TTensor> &input) const
 {
     bool first = true;
     std::vector<long> outputSize;
@@ -64,7 +64,7 @@ nn::Tensor<TTensor> nn::DepthConcat<TTensor>::forward(const nn::Tensor<TTensor> 
 
 template<class TTensor>
 nn::Tensor<TTensor> nn::DepthConcat<TTensor>::windowNarrow(nn::Tensor<TTensor> &output, nn::Tensor<TTensor> &currentOutput,
-    std::vector<long> &outputSize, int offset)
+    std::vector<long> &outputSize, int offset) const
 {
     nn::Tensor<TTensor> outputWindow = output.narrow(this->dimension_, offset, currentOutput.size(this->dimension_));
     for (int dim = 0; dim < (int)outputSize.size(); dim++)

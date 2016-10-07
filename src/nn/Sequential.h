@@ -9,13 +9,13 @@ namespace nn
     {
     public:
         virtual const std::string name() const override { return "nn.Sequential"; }
-        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) override;
+        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
     };
 }
 
 
 template<class TTensor>
-nn::Tensor<TTensor> nn::Sequential<TTensor>::forward(const Tensor<TTensor> &input)
+nn::Tensor<TTensor> nn::Sequential<TTensor>::forward(const nn::Tensor<TTensor> &input) const
 {
     bool first = true;
     Tensor<TTensor> out;

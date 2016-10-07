@@ -9,7 +9,7 @@ namespace nn
     {
     public:
         virtual const std::string name() const override { return "nn.SpatialCrossMapLRN"; }
-        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) override;
+        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
 
     protected:
         int size_;
@@ -19,7 +19,7 @@ namespace nn
 
 
 template<class TTensor>
-nn::Tensor<TTensor> nn::SpatialCrossMapLRN<TTensor>::forward(const nn::Tensor<TTensor> &input)
+nn::Tensor<TTensor> nn::SpatialCrossMapLRN<TTensor>::forward(const nn::Tensor<TTensor> &input) const
 {
     int idim = input.dim();
     asserter(idim == 3 || idim == 4) << "Input must be 3D or 4D";

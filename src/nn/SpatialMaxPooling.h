@@ -9,7 +9,7 @@ namespace nn
     {
     public:
         virtual const std::string name() const override { return "nn.SpatialMaxPooling"; }
-        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) override;
+        virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
 
     protected:
         int kW_, kH_, dW_, dH_, padW_, padH_;
@@ -19,7 +19,7 @@ namespace nn
 
 
 template<class TTensor>
-nn::Tensor<TTensor> nn::SpatialMaxPooling<TTensor>::forward(const nn::Tensor<TTensor> &input)
+nn::Tensor<TTensor> nn::SpatialMaxPooling<TTensor>::forward(const nn::Tensor<TTensor> &input) const
 {
     nn::Tensor<TTensor> output(true), indices(true);
     THWrapper::NN<TTensor>::SpatialMaxPooling_updateOutput(nullptr, input, output, indices, kW_, kH_, dW_, dH_, padW_, padH_, ceil_mode_);

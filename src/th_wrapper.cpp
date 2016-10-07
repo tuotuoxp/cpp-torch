@@ -296,16 +296,6 @@ void THWrapper::Tensor<TensorFloat>::abs(THFloatTensor *r, THFloatTensor *t)
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
-
-template<>
-void THWrapper::NN<TensorFloat>::SpatialConvolutionMM_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output,
-    THFloatTensor *weight, THFloatTensor *bias, THFloatTensor *finput, THFloatTensor *fgradInput,
-    int kW, int kH, int dW, int dH, int padW, int padH)
-{
-    THNN_FloatSpatialConvolutionMM_updateOutput(state, input, output, weight, bias, finput, fgradInput,
-        kW, kH, dW, dH, padW, padH);
-}
-    
 template<>
 void THWrapper::NN<TensorFloat>::BatchNormalization_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output,
     THFloatTensor *weight, THFloatTensor *bias, THFloatTensor *running_mean, THFloatTensor *running_var,
@@ -317,10 +307,19 @@ void THWrapper::NN<TensorFloat>::BatchNormalization_updateOutput(THNNState *stat
 }
 
 template<>
-void THWrapper::NN<TensorFloat>::Threshold_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output,
-    float threshold, float val, bool inplace)
+void THWrapper::NN<TensorFloat>::SpatialAveragePooling_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output,
+    int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode, bool count_include_pad)
 {
-    THNN_FloatThreshold_updateOutput(state, input, output, threshold, val, inplace);
+    THNN_FloatSpatialAveragePooling_updateOutput(state, input, output, kW, kH, dW, dH, padW, padH, ceil_mode, count_include_pad);
+}
+
+template<>
+void THWrapper::NN<TensorFloat>::SpatialConvolutionMM_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output,
+    THFloatTensor *weight, THFloatTensor *bias, THFloatTensor *finput, THFloatTensor *fgradInput,
+    int kW, int kH, int dW, int dH, int padW, int padH)
+{
+    THNN_FloatSpatialConvolutionMM_updateOutput(state, input, output, weight, bias, finput, fgradInput,
+        kW, kH, dW, dH, padW, padH);
 }
 
 template<>
@@ -332,20 +331,28 @@ void THWrapper::NN<TensorFloat>::SpatialMaxPooling_updateOutput(THNNState *state
 }
 
 template<>
+void THWrapper::NN<TensorFloat>::SpatialReflectionPadding_updateOutput(THNNState *state,
+    THFloatTensor *input, THFloatTensor *output,
+    int pad_l, int pad_r, int pad_t, int pad_b)
+{
+    THNN_FloatSpatialReflectionPadding_updateOutput(state, input, output, pad_l, pad_r, pad_t, pad_b);
+}
+
+template<>
 void THWrapper::NN<TensorFloat>::Square_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output)
 {
     THNN_FloatSquare_updateOutput(state, input, output);
 }
 
 template<>
-void THWrapper::NN<TensorFloat>::SpatialAveragePooling_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output,
-    int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode, bool count_include_pad)
-{
-    THNN_FloatSpatialAveragePooling_updateOutput(state, input, output, kW, kH, dW, dH, padW, padH, ceil_mode, count_include_pad);
-}
-
-template<>
 void THWrapper::NN<TensorFloat>::Sqrt_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output, float eps)
 {
     THNN_FloatSqrt_updateOutput(state, input, output, eps);
+}
+
+template<>
+void THWrapper::NN<TensorFloat>::Threshold_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output,
+    float threshold, float val, bool inplace)
+{
+    THNN_FloatThreshold_updateOutput(state, input, output, threshold, val, inplace);
 }

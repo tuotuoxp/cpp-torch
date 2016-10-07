@@ -100,12 +100,6 @@ public:
     class NN
     {
     public:
-        static void SpatialConvolutionMM_updateOutput(THNNState *state,
-            typename TTensor::THTensor *input, typename TTensor::THTensor *output,
-            typename TTensor::THTensor *weight, typename TTensor::THTensor *bias,
-            typename TTensor::THTensor *finput, typename TTensor::THTensor *fgradInput,
-            int kW, int kH, int dW, int dH, int padW, int padH);
-
         static void BatchNormalization_updateOutput(THNNState *state,
             typename TTensor::THTensor *input, typename TTensor::THTensor *output,
             typename TTensor::THTensor *weight, typename TTensor::THTensor *bias,
@@ -113,29 +107,35 @@ public:
             typename TTensor::THTensor *save_mean, typename TTensor::THTensor *save_std,
             bool train, double momentum, double eps);
 
-        static void Threshold_updateOutput(THNNState *state,
+        static void SpatialAveragePooling_updateOutput(THNNState *state,
             typename TTensor::THTensor *input, typename TTensor::THTensor *output,
-            typename TTensor::Storage::StorageBase threshold, typename TTensor::Storage::StorageBase val,
-            bool inplace);
+            int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode, bool count_include_pad);
+
+        static void SpatialConvolutionMM_updateOutput(THNNState *state,
+            typename TTensor::THTensor *input, typename TTensor::THTensor *output,
+            typename TTensor::THTensor *weight, typename TTensor::THTensor *bias,
+            typename TTensor::THTensor *finput, typename TTensor::THTensor *fgradInput,
+            int kW, int kH, int dW, int dH, int padW, int padH);
 
         static void SpatialMaxPooling_updateOutput(THNNState *state,
             typename TTensor::THTensor *input, typename TTensor::THTensor *output,
             typename TTensor::THTensor *indices,
             int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode);
 
-        static void Square_updateOutput(THNNState *state,
-            typename TTensor::THTensor *input, typename TTensor::THTensor *output);
-
-        static void SpatialAveragePooling_updateOutput(THNNState *state,
-            typename TTensor::THTensor *input, typename TTensor::THTensor *output
-        );
-
-        static void SpatialAveragePooling_updateOutput(THNNState *state,
+        static void SpatialReflectionPadding_updateOutput(THNNState *state,
             typename TTensor::THTensor *input, typename TTensor::THTensor *output,
-            int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode, bool count_include_pad);
+            int pad_l, int pad_r, int pad_t, int pad_b);
 
         static void Sqrt_updateOutput(THNNState *state,
             typename TTensor::THTensor *input, typename TTensor::THTensor *output,
             typename TTensor::Storage::StorageBase eps);
+
+        static void Square_updateOutput(THNNState *state,
+            typename TTensor::THTensor *input, typename TTensor::THTensor *output);
+
+        static void Threshold_updateOutput(THNNState *state,
+            typename TTensor::THTensor *input, typename TTensor::THTensor *output,
+            typename TTensor::Storage::StorageBase threshold, typename TTensor::Storage::StorageBase val,
+            bool inplace);
     };
 };
