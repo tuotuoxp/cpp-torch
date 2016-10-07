@@ -1,5 +1,6 @@
 #pragma once
 #include "builder.h"
+#include "extractor.h"
 
 
 template<class TSerializer, class TSerializerBase, class TNN, class TNNBase>

@@ -1,0 +1,16 @@
+# Find the cpp-torch includes and library
+
+
+set(CPPTORCH_FOUND 1)
+set(CPPTORCH_INCLUDE_DIR "@CPPTORCH_INCLUDE_DIR@")
+set(CPPTORCH_LIB_DIR "@CPPTORCH_LIB_DIR@")
+set(CPPTORCH_LIBRARIES cpptorch TH THNN)
+
+
+if(UNIX)
+  # add support for c++11
+  add_definitions("-std=c++11")
+endif()
+
+include_directories(${CPPTORCH_INCLUDE_DIR} ${CPPTORCH_INCLUDE_DIR}/TH ${CPPTORCH_INCLUDE_DIR}/THNN)
+link_directories(${CPPTORCH_LIB_DIR})

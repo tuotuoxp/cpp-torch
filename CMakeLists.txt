@@ -60,6 +60,14 @@ foreach(file ${cpptorch_headers})
 endforeach()
 
 
+# create cmake file for find_package
+set(CPPTORCH_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+set(CPPTORCH_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include")
+configure_file(cpptorch.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/cmake-exports/cpptorch-config.cmake")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/cmake-exports/cpptorch-config.cmake"
+  DESTINATION "share/cmake/cpptorch")
+
+
 #############################################################
 
 

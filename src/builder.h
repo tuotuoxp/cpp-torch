@@ -52,3 +52,6 @@ private:
     // class name to builder
     std::map<std::string, std::shared_ptr<class_factory_base>> factory_;
 };
+
+
+#include "builder.h.inl"
