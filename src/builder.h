@@ -4,6 +4,9 @@
 #include <map>
 
 
+#define CREATE_BUILDER(name, T)     this->factory_.insert(std::make_pair(name, std::shared_ptr<class_factory_base>(new class_factory_impl<T>())))
+
+
 class object;
 class object_torch;
 
@@ -19,18 +22,8 @@ public:
     nn::Tensor<TTensor> build_tensor(const object *obj);
     std::shared_ptr<nn::Layer<TTensor>> build_layer(const object *obj);
 
-private:
 
-    // objects can be referenced more than once, when one object is refereneced the second time,
-    // we cannot create a new nn class, we should copy the first one,
-    // so here we keep a map for each nn object we created
-
-    // Layer cannot be copied, only referenced by pointer allowed
-    std::map<int, std::shared_ptr<nn::Layer<TTensor>>> layer_map_;
-
-    // Storage can be copied, because THStorage is self-counted
-    std::map<int, nn::Storage<typename TTensor::Storage>> storage_map_;
-
+protected:
 
     class class_factory_base
     {
@@ -51,6 +44,19 @@ private:
     };
     // class name to builder
     std::map<std::string, std::shared_ptr<class_factory_base>> factory_;
+
+
+private:
+
+    // objects can be referenced more than once, when one object is refereneced the second time,
+    // we cannot create a new nn class, we should copy the first one,
+    // so here we keep a map for each nn object we created
+
+    // Layer cannot be copied, only referenced by pointer allowed
+    std::map<int, std::shared_ptr<nn::Layer<TTensor>>> layer_map_;
+
+    // Storage can be copied, because THStorage is self-counted
+    std::map<int, nn::Storage<typename TTensor::Storage>> storage_map_;
 };
 
 

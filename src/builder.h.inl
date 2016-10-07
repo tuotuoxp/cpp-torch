@@ -41,9 +41,6 @@ TSerializerBase* Cast(TSerializer *c)
 #include "serializer/View.h"
 
 
-#define CREATE_BUILDER(name, T)     this->factory_.insert(std::make_pair(name, std::shared_ptr<class_factory_base>(new class_factory_impl<T>())))
-
-
 template<class TTensor>
 model_builder<TTensor>::model_builder()
 {
