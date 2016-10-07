@@ -32,8 +32,8 @@ nn::Tensor<TTensor> nn::Linear<TTensor>::forward(const nn::Tensor<TTensor> &inpu
         else
         {
             output.fill(0);
-            output.addmv(1, weight_, input);
         }
+        output.addmv(1, weight_, input);
     }
     else if (idim == 2)
     {
