@@ -84,6 +84,8 @@ target_link_libraries(cpptorch_test cpptorch)
 
 
 set_target_properties(cpptorch_test PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+set_target_properties(cpptorch_test PROPERTIES MACOSX_RPATH TRUE)
 
 
 install(TARGETS cpptorch_test RUNTIME DESTINATION "bin")
+
