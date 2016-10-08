@@ -211,6 +211,8 @@ void TensorPrint<TTensor>::printSubTensor(int offset, std::vector<int> &dims)
 template <class TTensor>
 void TensorPrint<TTensor>::printTensor()
 {
+    std::ios state_init(nullptr);
+    state_init.copyfmt(out_);
     if (size_cache_.size() == 1)
     {
         double scale;
@@ -238,7 +240,7 @@ void TensorPrint<TTensor>::printTensor()
         std::vector<int> dims;
         printSubTensor(offset_, dims);
     }
-
+    out_.copyfmt(state_init);
     // get tensor name
     out_ << "[" << tensor_.name() << " of size " << join(size_cache_, "x") << "]" << std::endl;
 }
