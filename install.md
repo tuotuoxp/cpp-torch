@@ -98,7 +98,7 @@ D:\cpp-torch\ (you can change it to your own place)
 ├─ nn
 └─ cpp-torch
 ```
-All the commads are run using `VS2015 x64 Native Tools Command Prompt`.
+All the commands are run using `VS2015 x64 Native Tools Command Prompt`.
 
 ### Install TH
 The following commands install a modified version of torch's TH library.
@@ -176,7 +176,7 @@ Same as Linux
 Use the following commands to create a simple XCode solution to test your installation.
 ```
 cd cpp-torch/example/basic
-cmake -G "XCode" -DCMAKE_PREFIX_PATH=../../../install .
+cmake -G "Xcode" -DCMAKE_PREFIX_PATH=../../../install .
 ```
 
 Copy TH.dll and THNN.dll from `cpp-torch/install/bin/` to project's binary folder `cpp-torch/example/basic/Debug/` and `cpp-torch/example/basic/Release/`.
