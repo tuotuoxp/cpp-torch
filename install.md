@@ -98,7 +98,7 @@ D:\cpp-torch\ (you can change it to your own place)
 ├─ nn
 └─ cpp-torch
 ```
-All the commads are run using `VS2015 x64 Native Tools Command Prompt`.
+All the commands are run using `VS2015 x64 Native Tools Command Prompt`.
 
 ### Install TH
 The following commands install a modified version of torch's TH library.
@@ -167,7 +167,7 @@ nn.Linear
 #MacOS
 
 ##Prerequisite
-- [XCode](http://developer.apple.com/xcode/)
+- [Xcode](http://developer.apple.com/xcode/)
 
 ##Install
 Same as Linux
