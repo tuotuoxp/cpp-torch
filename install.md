@@ -1,3 +1,8 @@
+We support the following platforms:
+- [Linux](#Linux)
+- [Windows](#Windows)
+- [MacOS](#MacOS)
+
 #Linux
 
 ##Prerequisite
@@ -44,7 +49,7 @@ cd ../../
 Same as previous, we only modify the dependency of the library.
 
 ###Install cpp-torch
-The following command install our wrapper.
+The following commands install our wrapper.
 ```
 git clone https://github.com/tuotuoxp/cpp-torch
 cd cpp-torch
@@ -124,7 +129,7 @@ cd ..\..\
 Same as previous, we only modify the dependency of the library.
 
 ###Install cpp-torch
-The following command install our wrapper.
+The following commands install our wrapper.
 ```
 git clone https://github.com/tuotuoxp/cpp-torch
 cd cpp-torch
@@ -146,6 +151,37 @@ cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_PREFIX_PATH=../../../install .
 Copy TH.dll and THNN.dll from `cpp-torch/install/bin/` to project's binary folder `cpp-torch/example/basic/Debug/` and `cpp-torch/example/basic/Release/`.
 
 Open solution with Visual Studio 2015, run cpptorch_demo project. It should yield the following output:
+```
+nn.Linear
+
+ 12
+ 13
+[torch.FloatTensor of size 2]
+
+
+ 12
+ 13
+[torch.FloatTensor of size 2]
+```
+
+#MacOS
+
+##Prerequisite
+- [XCode](http://developer.apple.com/xcode/)
+
+##Install
+Same as Linux
+
+##Test it!
+Use the following commands to create a simple XCode solution to test your installation.
+```
+cd cpp-torch/example/basic
+cmake -G "XCode" -DCMAKE_PREFIX_PATH=../../../install .
+```
+
+Copy TH.dll and THNN.dll from `cpp-torch/install/bin/` to project's binary folder `cpp-torch/example/basic/Debug/` and `cpp-torch/example/basic/Release/`.
+
+Open solution with XCode, run cpptorch_demo project. It should yield the following output:
 ```
 nn.Linear
 

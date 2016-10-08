@@ -10,10 +10,10 @@ Using this library, you can:
 
 **All in C++, without touching lua.**
 
-Pretty handy when you want to distribute an off-the-shelf Torch model.
+Pretty handy when you want to deploy an off-the-shelf torch model.
 
 # Install
-Check our [install script](install.md) in Linux, windows and MacOS.
+Check our [install script](install.md) in Linux, Windows and MacOS.
 
 # Get started
 A simple load-and-fire routine looks like this in C++:
@@ -39,7 +39,7 @@ std::cout << output << std::endl;
 We also provides an [example script]() to test the famous [CMU OpenFace](https://github.com/cmusatyalab/openface) model. This network transfers a 3 * 96 * 96 face image into a 128 * 1 feature vector, representing the identity of the person.
 
 # Performance
-This wrapper is **about 2x faster** than Torch's lua implementation in CPU mode.
+This wrapper is **about 2x faster** than torch's lua implementation in CPU mode.
 
 |model|torch|cpp-torch|
 |----|----|----|
@@ -60,5 +60,5 @@ Check [this list](progress.md) to see supported modules.
 - Wrapper for GPU mode
 
 # FAQ
--- how to print/directly set model parameter?
--- no way
+-- How can I train my own model with this wrapper?
+-- We don't support backward functions, so training is impossible. Use the original torch.
