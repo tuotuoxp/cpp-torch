@@ -167,7 +167,7 @@ nn.Linear
 #MacOS
 
 ##Prerequisite
-- [XCode](http://developer.apple.com/xcode/)
+- [Xcode](http://developer.apple.com/xcode/)
 
 ##Install
 Same as Linux
