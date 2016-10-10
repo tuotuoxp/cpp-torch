@@ -3,15 +3,13 @@
 
 struct THLongStorage;
 struct THFloatStorage;
+struct THDoubleStorage;
 struct THLongTensor;
 struct THFloatTensor;
+struct THDoubleTensor;
 
 
-/**
- * TensorBase:  TensorBaseFloat
- */
-
-namespace nn
+namespace cpptorch
 {
     template <class TTHStorage, typename TStorageBase>
     class StorageTrait
@@ -31,10 +29,12 @@ namespace nn
     };
 }
 
-typedef nn::StorageTrait<THLongStorage, long> StorageLong;
-typedef nn::StorageTrait<THFloatStorage, float> StorageFloat;
-typedef nn::TensorTrait<THLongTensor, StorageLong, StorageLong> TensorLong;
-typedef nn::TensorTrait<THFloatTensor, StorageFloat, StorageLong> TensorFloat;
+typedef cpptorch::StorageTrait<THLongStorage, long> StorageLong;
+typedef cpptorch::StorageTrait<THFloatStorage, float> StorageFloat;
+typedef cpptorch::StorageTrait<THDoubleStorage, double> StorageDouble;
+typedef cpptorch::TensorTrait<THLongTensor, StorageLong, StorageLong> TensorLong;
+typedef cpptorch::TensorTrait<THFloatTensor, StorageFloat, StorageLong> TensorFloat;
+typedef cpptorch::TensorTrait<THDoubleTensor, StorageDouble, StorageLong> TensorDouble;
 
 
 #ifdef _WIN64

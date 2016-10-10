@@ -63,6 +63,8 @@ install(TARGETS cpptorch
   RUNTIME DESTINATION "bin"
   ARCHIVE DESTINATION "lib"
 )
+set_target_properties(cpptorch PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+set_target_properties(cpptorch PROPERTIES MACOSX_RPATH TRUE)
 
 
 # install headers
@@ -73,8 +75,8 @@ foreach(file ${cpptorch_headers})
   install(FILES ${file} DESTINATION "include/cpptorch/${dir}")
 endforeach()
 
-
 # create cmake file for find_package
+set(CPPTORCH_LIBRARIES "${CMAKE_INSTALL_PREFIX}/lib/${CMAKE_IMPORT_LIBRARY_PREFX}cpptorch${CMAKE_IMPORT_LIBRARY_SUFFIX}")
 set(CPPTORCH_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 set(CPPTORCH_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include")
 configure_file(cpptorch.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/cmake-exports/cpptorch-config.cmake")

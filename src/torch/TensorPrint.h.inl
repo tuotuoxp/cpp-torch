@@ -1,4 +1,5 @@
 #pragma once
+#include "../util.h"
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -58,8 +59,8 @@ void TensorPrint<TTensor>::getPrintFormat(int offset, double &scale, int &len)
             {
                 is_int = false;
             }
-            minval = std::min(minval, std::fabs(data_[ox]));
-            maxval = std::max(maxval, std::fabs(data_[ox]));
+            minval = std::min(minval, template_abs(data_[ox]));
+            maxval = std::max(maxval, template_abs(data_[ox]));
             ox += stride_cache_[dim_x];
         }
         if (dim_x > 0)
@@ -240,4 +241,14 @@ void TensorPrint<TTensor>::printTensor()
     out_.copyfmt(state_init);
     // get tensor name
     out_ << "[" << tensor_.name() << " of size " << join(size_cache_, "x") << "]" << std::endl;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+template<class TTensor>
+std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<TTensor> &m)
+{
+	TensorPrint<TTensor>(o, m).printTensor();
+	o << std::endl;
+	return o;
 }

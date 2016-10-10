@@ -55,6 +55,7 @@ void test_layer(const char *data_path, const char *subdir)
         std::cout << "----------------------- FAILED!!!!!!!!";
     }
     std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << std::endl;
+	std::cout << sub;
     std::cout << "================================================" << std::endl;
 }
 
@@ -81,7 +82,8 @@ int main(int argc, char *argv[])
 //    test_layer(argv[1], "SpatialReflectionPadding");
 //    test_layer(argv[1], "Sqrt");
 //    test_layer(argv[1], "Square");
-    test_layer(argv[1], "View");
+//    test_layer(argv[1], "View");
+    test_layer(argv[1], "_face");
 
     //test_fast_neural_style(argv[1], "candy");
 

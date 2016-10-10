@@ -113,3 +113,6 @@ namespace cpptorch
     template<class TTensor>
     API cpptorch::Tensor<TTensor> abs(const cpptorch::Tensor<TTensor> &t);
 }
+
+template<class TTensor>
+API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<TTensor> &m);

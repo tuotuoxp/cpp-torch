@@ -11,7 +11,7 @@ namespace cpptorch
     namespace th
     {
         template<class TStorage>
-        class Storage
+        class API Storage
         {
         public:
             // creation methods

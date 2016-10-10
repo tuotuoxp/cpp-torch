@@ -86,10 +86,12 @@ public:
 
 object_loader::object_loader()
 {
-    CREATE_BUILDER("torch.FloatTensor", object_torch_tensor_reader);
     CREATE_BUILDER("torch.LongTensor", object_torch_tensor_reader);
-    CREATE_BUILDER("torch.FloatStorage", object_torch_storage_reader<float>);
+    CREATE_BUILDER("torch.FloatTensor", object_torch_tensor_reader);
+    CREATE_BUILDER("torch.DoubleTensor", object_torch_tensor_reader);
     CREATE_BUILDER("torch.LongStorage", object_torch_storage_reader<long>);
+    CREATE_BUILDER("torch.FloatStorage", object_torch_storage_reader<float>);
+    CREATE_BUILDER("torch.DoubleStorage", object_torch_storage_reader<double>);
 }
 
 std::shared_ptr<cpptorch::object> object_loader::read_object(std::istream &is)
@@ -157,6 +159,7 @@ std::shared_ptr<cpptorch::object> object_loader::read_object(std::istream &is)
             else
             {
                 obj_th = std::make_shared<cpptorch::object_torch>();
+                ((object_torch_reader*)(obj_th.get()))->read(*this, is);
             }
             obj_th->version_ = version_number;
             obj_th->index_ = index;

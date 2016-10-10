@@ -67,3 +67,10 @@ public:
 protected:
     bool expr_;
 };
+
+
+//////////////////////////////////////////////////////////////////////////
+
+
+template <typename T> inline
+T template_abs(const T& v) { return v < 0 ? -v : v; }
