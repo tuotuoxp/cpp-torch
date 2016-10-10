@@ -69,10 +69,10 @@ class object_torch_storage_reader : public cpptorch::object_torch_storage<T>
 public:
     void read(object_loader &extractor, std::istream &is)
     {
-        size_ = object_loader::read_long(is);
-        if (size_ > 0)
+        this->size_ = object_loader::read_long(is);
+        if (this->size_ > 0)
         {
-            storage_ = object_loader::read_array<T>(is, size_);
+            this->storage_ = object_loader::read_array<T>(is, this->size_);
         }
     }
 };

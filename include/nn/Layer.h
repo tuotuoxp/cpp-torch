@@ -2,6 +2,8 @@
 #include "../General.h"
 #include "../torch/Tensor.h"
 
+#include <iostream>
+
 
 namespace cpptorch
 {

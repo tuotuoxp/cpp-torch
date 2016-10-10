@@ -7,6 +7,7 @@
 #include <vector>
 #include <memory>
 #include <assert.h>
+#include <math.h>
 
 
 namespace cpptorch

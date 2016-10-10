@@ -55,7 +55,6 @@ void test_layer(const char *data_path, const char *subdir)
         std::cout << "----------------------- FAILED!!!!!!!!";
     }
     std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << std::endl;
-	std::cout << sub;
     std::cout << "================================================" << std::endl;
 }
 

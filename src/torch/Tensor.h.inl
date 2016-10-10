@@ -451,7 +451,7 @@ template<class TTensor>
 cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::operator -(const Tensor<TTensor> &other) const
 {
     cpptorch::Tensor<TTensor> out(true);
-    cpptorch::th::Tensor<TTensor>::cadd(out, th_, (TTensor::Storage::Base)-1.0, other);
+    cpptorch::th::Tensor<TTensor>::cadd(out, th_, (typename TTensor::Storage::Base)-1.0, other);
     return out;
 }
 
