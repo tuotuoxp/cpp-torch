@@ -76,7 +76,7 @@ foreach(file ${cpptorch_headers})
   install(FILES ${file} DESTINATION "include/cpptorch/${dir}")
 endforeach()
 
-message(${CMAKE_LINK_LIBRARY_SUFFIX})
+
 # create cmake file for find_package
 set(CPPTORCH_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 set(CPPTORCH_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include")
