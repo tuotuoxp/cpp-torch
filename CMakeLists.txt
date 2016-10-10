@@ -12,9 +12,6 @@ if(NOT TH_FOUND)
 endif()
 
 
-link_directories(${TH_LIB_DIR})
-
-
 # create target
 file(GLOB_RECURSE cpptorch_SRC
     "src/*.h"
@@ -50,12 +47,15 @@ if(MSVC)
   target_compile_definitions(cpptorch PRIVATE API_CPPTORCH_DEF=1)
 endif()
 
+
 # include dirs
 target_include_directories(cpptorch PRIVATE "${TH_INCLUDE_DIR}" "${TH_INCLUDE_DIR}/../THNN" "${TH_INCLUDE_DIR}/..")
 
 
 # link
-target_link_libraries(cpptorch TH THNN)
+find_library(TH_LIBRARY NAMES TH PATHS ${TH_LIB_DIR})
+find_library(THNN_LIBRARY NAMES THNN PATHS ${TH_LIB_DIR})
+target_link_libraries(cpptorch ${TH_LIBRARY} ${THNN_LIBRARY})
 
 
 # install target
@@ -75,8 +75,8 @@ foreach(file ${cpptorch_headers})
   install(FILES ${file} DESTINATION "include/cpptorch/${dir}")
 endforeach()
 
+message(${CMAKE_LINK_LIBRARY_SUFFIX})
 # create cmake file for find_package
-set(CPPTORCH_LIBRARIES "${CMAKE_INSTALL_PREFIX}/lib/${CMAKE_IMPORT_LIBRARY_PREFX}cpptorch${CMAKE_IMPORT_LIBRARY_SUFFIX}")
 set(CPPTORCH_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 set(CPPTORCH_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include")
 configure_file(cpptorch.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/cmake-exports/cpptorch-config.cmake")
