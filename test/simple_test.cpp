@@ -1,5 +1,4 @@
-#include "../src/nn.h"
-#include "../src/builder.h"
+#include <cpptorch.h>
 
 #include <fstream>
 #include <algorithm>
@@ -7,34 +6,31 @@
 #include <chrono>
 
 
-template<class TTensor, template<typename> class T>
-std::shared_ptr<T<TTensor>> read_layer(const std::string &path)
+template<class TTensor>
+std::shared_ptr<cpptorch::nn::Layer<TTensor>> read_layer(const std::string &path)
 {
     std::ifstream fs(path, std::ios::binary);
     assert(fs.good());
-    auto obj = model_extractor().read_object(fs);
-    model_builder<TTensor> mb;
-    
-    return std::static_pointer_cast<T<TTensor>>(mb.build_layer(obj.get()));
+    auto obj = cpptorch::load(fs);
+    return cpptorch::read_net<TTensor>(obj.get());
 }
 
 template<class TTensor>
-nn::Tensor<TTensor> read_tensor(const std::string &path)
+cpptorch::Tensor<TTensor> read_tensor(const std::string &path)
 {
     std::ifstream fs(path, std::ios::binary);
     assert(fs.good());
-    auto obj = model_extractor().read_object(fs);
-    model_builder<TTensor> mb;
-    return mb.build_tensor(obj.get());
+    auto obj = cpptorch::load(fs);
+    return cpptorch::read_tensor<TTensor>(obj.get());
 }
 
 void test_index(const char *data_path)
 {
-    nn::Tensor<TensorFloat> x = read_tensor<TensorFloat>(std::string(data_path) + "/_index/x.t7");
-    nn::Tensor<TensorFloat> y1 = read_tensor<TensorFloat>(std::string(data_path) + "/_index/y1.t7");
-    nn::Tensor<TensorFloat> y2 = read_tensor<TensorFloat>(std::string(data_path) + "/_index/y2.t7");
+    cpptorch::Tensor<TensorFloat> x = read_tensor<TensorFloat>(std::string(data_path) + "/_index/x.t7");
+    cpptorch::Tensor<TensorFloat> y1 = read_tensor<TensorFloat>(std::string(data_path) + "/_index/y1.t7");
+    cpptorch::Tensor<TensorFloat> y2 = read_tensor<TensorFloat>(std::string(data_path) + "/_index/y2.t7");
     std::ifstream fs(std::string(data_path) + "/_index/y3.t7", std::ios::binary);
-    float y3 = *model_extractor().read_object(fs);
+    float y3 = *cpptorch::load(fs);
 
     std::cout << x[1] - y1 << std::endl;
     std::cout << x[0][1][3] - y2 << std::endl;
@@ -45,15 +41,15 @@ void test_index(const char *data_path)
 
 void test_layer(const char *data_path, const char *subdir)
 {
-    auto net = read_layer<TensorFloat, nn::Layer>(std::string(data_path) + "/" + subdir + "/net.t7");
-    nn::Tensor<TensorFloat> x = read_tensor<TensorFloat>(std::string(data_path) + "/" + subdir + "/x.t7");
-    nn::Tensor<TensorFloat> y = read_tensor<TensorFloat>(std::string(data_path) + "/" + subdir + "/y.t7");
+    auto net = read_layer<TensorFloat>(std::string(data_path) + "/" + subdir + "/net.t7");
+    cpptorch::Tensor<TensorFloat> x = read_tensor<TensorFloat>(std::string(data_path) + "/" + subdir + "/x.t7");
+    cpptorch::Tensor<TensorFloat> y = read_tensor<TensorFloat>(std::string(data_path) + "/" + subdir + "/y.t7");
     std::cout << *net;
 
     auto begin = std::chrono::high_resolution_clock::now();
     auto yy = net->forward(x);
     auto end = std::chrono::high_resolution_clock::now();
-    auto sub = nn::abs(y - yy);
+    auto sub = cpptorch::abs(y - yy);
     if (sub.minall() > 1e-05 || sub.maxall() > 1e-05)
     {
         std::cout << "----------------------- FAILED!!!!!!!!";
@@ -85,7 +81,9 @@ int main(int argc, char *argv[])
 //    test_layer(argv[1], "SpatialReflectionPadding");
 //    test_layer(argv[1], "Sqrt");
 //    test_layer(argv[1], "Square");
-//    test_layer(argv[1], "View");
+    test_layer(argv[1], "View");
+
+    //test_fast_neural_style(argv[1], "candy");
 
 #ifdef _WIN64
     _CrtDumpMemoryLeaks();

@@ -1,18 +1,21 @@
 #pragma once
-#include "../nn/Linear.h"
+#include "../../include/nn/Linear.h"
 
 
-namespace serializer
+namespace cpptorch
 {
-    template<class TTensor>
-    class Linear : public nn::Linear<TTensor>
+    namespace serializer
     {
-    public:
-        void unserialize(const object_torch *obj, model_builder<TTensor> *mb)
+        template<class TTensor>
+        class Linear : public nn::Linear<TTensor>
         {
-            const object_table *obj_tbl = obj->data_->to_table();
-            this->weight_ = mb->build_tensor(obj_tbl->get("weight"));
-            this->bias_ = mb->build_tensor(obj_tbl->get("bias"));
-        }
-    };
+        public:
+            void unserialize(const object_torch *obj, object_reader<TTensor> *mb)
+            {
+                const object_table *obj_tbl = obj->data_->to_table();
+                this->weight_ = mb->build_tensor(obj_tbl->get("weight"));
+                this->bias_ = mb->build_tensor(obj_tbl->get("bias"));
+            }
+        };
+    }
 }

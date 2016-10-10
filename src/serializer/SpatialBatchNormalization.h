@@ -1,17 +1,20 @@
 #pragma once
-#include "../nn/SpatialBatchNormalization.h"
+#include "../../include/nn/SpatialBatchNormalization.h"
 #include "BatchNormalization.h"
 
 
-namespace serializer
+namespace cpptorch
 {
-    template<class TTensor>
-    class SpatialBatchNormalization : public nn::SpatialBatchNormalization<TTensor>
+    namespace serializer
     {
-    public:
-        void unserialize(const object_torch *obj, model_builder<TTensor> *mb)
+        template<class TTensor>
+        class SpatialBatchNormalization : public nn::SpatialBatchNormalization<TTensor>
         {
-            CHECK_AND_CAST(SpatialBatchNormalization, BatchNormalization, TTensor)->unserialize(obj, mb);
-        }
-    };
+        public:
+            void unserialize(const object_torch *obj, object_reader<TTensor> *mb)
+            {
+                CHECK_AND_CAST(SpatialBatchNormalization, BatchNormalization, TTensor)->unserialize(obj, mb);
+            }
+        };
+    }
 }

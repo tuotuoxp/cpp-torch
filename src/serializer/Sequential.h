@@ -1,17 +1,20 @@
 #pragma once
-#include "../nn/Sequential.h"
+#include "../../include/nn/Sequential.h"
 #include "Container.h"
 
 
-namespace serializer
+namespace cpptorch
 {
-    template<class TTensor>
-    class Sequential : public nn::Sequential<TTensor>
+    namespace serializer
     {
-    public:
-        void unserialize(const object_torch *obj, model_builder<TTensor> *mb)
+        template<class TTensor>
+        class Sequential : public nn::Sequential<TTensor>
         {
-            CHECK_AND_CAST(Sequential, Container, TTensor)->unserialize(obj, mb);
-        }
-    };
+        public:
+            void unserialize(const object_torch *obj, object_reader<TTensor> *mb)
+            {
+                CHECK_AND_CAST(Sequential, Container, TTensor)->unserialize(obj, mb);
+            }
+        };
+    }
 }

@@ -1,13 +1,16 @@
 #pragma once
-#include "../nn/Square.h"
+#include "../../include/nn/Square.h"
 
 
-namespace serializer
+namespace cpptorch
 {
-    template<class TTensor>
-    class Square : public nn::Square<TTensor>
+    namespace serializer
     {
-    public:
-        void unserialize(const object_torch *obj, model_builder<TTensor> *mb) {}
-    };
+        template<class TTensor>
+        class Square : public nn::Square<TTensor>
+        {
+        public:
+            void unserialize(const object_torch *obj, object_reader<TTensor> *mb) {}
+        };
+    }
 }

@@ -11,17 +11,18 @@ if(NOT TH_FOUND)
   find_package(TH REQUIRED)
 endif()
 
+
 link_directories(${TH_LIB_DIR})
-include_directories(${TH_INCLUDE_DIR} ${TH_INCLUDE_DIR}/../THNN ${TH_INCLUDE_DIR}/..)
 
 
+# create target
 file(GLOB_RECURSE cpptorch_SRC
     "src/*.h"
     "src/*.h.inl"
     "src/*.cpp"
     "src/*.cc"
+    "include/*.h"
 )
-
 
 foreach(each_file ${cpptorch_SRC})
   get_filename_component(file_dir "${each_file}" PATH)
@@ -29,7 +30,7 @@ foreach(each_file ${cpptorch_SRC})
   string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" file_relative_dir "${file_dir}")
 
   # skip src or include directory
-  string(REGEX REPLACE "(\\./)?(src|include)/?" "" group_name "${file_relative_dir}")
+  string(REGEX REPLACE "(\\./)?(src)/?" "" group_name "${file_relative_dir}")
   # changes / to \\
   string(REPLACE "/" "\\" group_name "${group_name}")
 
@@ -43,19 +44,32 @@ foreach(each_file ${cpptorch_SRC})
   source_group("${group_name}" FILES "${each_file}")
 endforeach()
 
+add_library(cpptorch SHARED "${cpptorch_SRC}")
 
-file(GLOB_RECURSE cpptorch_headers
-    "src/*.h"
-    "src/*.h.inl"
-)
+if(MSVC)
+  target_compile_definitions(cpptorch PRIVATE API_CPPTORCH_DEF=1)
+endif()
 
-add_library(cpptorch STATIC ${cpptorch_SRC})
+# include dirs
+target_include_directories(cpptorch PRIVATE "${TH_INCLUDE_DIR}" "${TH_INCLUDE_DIR}/../THNN" "${TH_INCLUDE_DIR}/..")
+
+
+# link
 target_link_libraries(cpptorch TH THNN)
 
-install(TARGETS cpptorch ARCHIVE DESTINATION "lib")
+
+# install target
+install(TARGETS cpptorch
+  RUNTIME DESTINATION "bin"
+  ARCHIVE DESTINATION "lib"
+)
+
+
+# install headers
+file(GLOB_RECURSE cpptorch_headers "include/*.h")
 foreach(file ${cpptorch_headers})
   get_filename_component(dir ${file} PATH)
-  string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/src" "" dir "${dir}")
+  string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/include" "" dir "${dir}")
   install(FILES ${file} DESTINATION "include/cpptorch/${dir}")
 endforeach()
 
@@ -80,6 +94,8 @@ file(GLOB_RECURSE cpptorch_TEST
 
 
 add_executable(cpptorch_test ${cpptorch_TEST})
+
+target_include_directories(cpptorch_test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(cpptorch_test cpptorch)
 
 

@@ -1,17 +1,20 @@
 #pragma once
-#include "../nn/ReLU.h"
+#include "../../include/nn/ReLU.h"
 #include "Threshold.h"
 
 
-namespace serializer
+namespace cpptorch
 {
-    template<class TTensor>
-    class ReLU : public nn::ReLU<TTensor>
+    namespace serializer
     {
-    public:
-        void unserialize(const object_torch *obj, model_builder<TTensor> *mb)
+        template<class TTensor>
+        class ReLU : public nn::ReLU<TTensor>
         {
-            CHECK_AND_CAST(ReLU, Threshold, TTensor)->unserialize(obj, mb);
-        }
-    };
+        public:
+            void unserialize(const object_torch *obj, object_reader<TTensor> *mb)
+            {
+                CHECK_AND_CAST(ReLU, Threshold, TTensor)->unserialize(obj, mb);
+            }
+        };
+    }
 }

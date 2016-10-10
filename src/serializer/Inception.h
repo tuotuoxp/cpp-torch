@@ -1,17 +1,20 @@
 #pragma once
-#include "../nn/Inception.h"
+#include "../../include/nn/Inception.h"
 #include "Decorator.h"
 
 
-namespace serializer
+namespace cpptorch
 {
-    template<class TTensor>
-    class Inception : public nn::Inception<TTensor>
+    namespace serializer
     {
-    public:
-        void unserialize(const object_torch *obj, model_builder<TTensor> *mb)
+        template<class TTensor>
+        class Inception : public nn::Inception<TTensor>
         {
-            CHECK_AND_CAST(Inception, Decorator, TTensor)->unserialize(obj, mb);
-        }
-    };
+        public:
+            void unserialize(const object_torch *obj, object_reader<TTensor> *mb)
+            {
+                CHECK_AND_CAST(Inception, Decorator, TTensor)->unserialize(obj, mb);
+            }
+        };
+    }
 }

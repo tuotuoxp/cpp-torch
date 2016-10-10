@@ -1,17 +1,20 @@
 #pragma once
-#include "../nn/DepthConcat.h"
+#include "../../include/nn/DepthConcat.h"
 #include "Concat.h"
 
 
-namespace serializer
+namespace cpptorch
 {
-    template<class TTensor>
-    class DepthConcat : public nn::DepthConcat<TTensor>
+    namespace serializer
     {
-    public:
-        void unserialize(const object_torch *obj, model_builder<TTensor> *mb)
+        template<class TTensor>
+        class DepthConcat : public nn::DepthConcat<TTensor>
         {
-            CHECK_AND_CAST(DepthConcat, Concat, TTensor)->unserialize(obj, mb);
-        }
-    };
+        public:
+            void unserialize(const object_torch *obj, object_reader<TTensor> *mb)
+            {
+                CHECK_AND_CAST(DepthConcat, Concat, TTensor)->unserialize(obj, mb);
+            }
+        };
+    }
 }

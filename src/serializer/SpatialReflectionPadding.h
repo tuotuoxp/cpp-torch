@@ -1,20 +1,23 @@
 #pragma once
-#include "../nn/SpatialReflectionPadding.h"
+#include "../../include/nn/SpatialReflectionPadding.h"
 
 
-namespace serializer
+namespace cpptorch
 {
-    template<class TTensor>
-    class SpatialReflectionPadding : public nn::SpatialReflectionPadding<TTensor>
+    namespace serializer
     {
-    public:
-        void unserialize(const object_torch *obj, model_builder<TTensor> *mb)
+        template<class TTensor>
+        class SpatialReflectionPadding : public nn::SpatialReflectionPadding<TTensor>
         {
-            const object_table *obj_tbl = obj->data_->to_table();
-            this->pad_l_ = *obj_tbl->get("pad_l");
-            this->pad_r_ = *obj_tbl->get("pad_r");
-            this->pad_t_ = *obj_tbl->get("pad_t");
-            this->pad_b_ = *obj_tbl->get("pad_b");
-        }
-    };
+        public:
+            void unserialize(const object_torch *obj, object_reader<TTensor> *mb)
+            {
+                const object_table *obj_tbl = obj->data_->to_table();
+                this->pad_l_ = *obj_tbl->get("pad_l");
+                this->pad_r_ = *obj_tbl->get("pad_r");
+                this->pad_t_ = *obj_tbl->get("pad_t");
+                this->pad_b_ = *obj_tbl->get("pad_b");
+            }
+        };
+    }
 }
