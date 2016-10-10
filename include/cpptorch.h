@@ -6,9 +6,6 @@
 
 #include "nn/Layer.h"
 #include "nn/Container.h"
-
-#include "th_wrapper.h"
-
 #include "nn/BatchNormalization.h"
 #include "nn/Concat.h"
 #include "nn/Decorator.h"
@@ -33,4 +30,5 @@
 #include "nn/Threshold.h"
 #include "nn/View.h"
 
+#include "th_wrapper.h"
 #include "builder.h"
