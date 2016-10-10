@@ -62,6 +62,7 @@ target_link_libraries(cpptorch ${TH_LIBRARY} ${THNN_LIBRARY})
 install(TARGETS cpptorch
   RUNTIME DESTINATION "bin"
   ARCHIVE DESTINATION "lib"
+  LIBRARY DESTINATION "lib"
 )
 set_target_properties(cpptorch PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 set_target_properties(cpptorch PROPERTIES MACOSX_RPATH TRUE)

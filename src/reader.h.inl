@@ -134,20 +134,3 @@ std::shared_ptr<cpptorch::nn::Layer<TTensor>> object_reader<TTensor>::build_laye
     }
 }
 
-
-//////////////////////////////////////////////////////////////////////////
-
-
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::read(const cpptorch::object *obj)
-{
-    model_builder<TTensor> mb;
-    return mb.build_tensor(obj.get());
-}
-
-template<class TTensor>
-std::shared_ptr<cpptorch::nn::Layer<TTensor>> cpptorch::read(const cpptorch::object *obj)
-{
-    model_builder<TTensor> mb;
-    return std::static_pointer_cast<cpptorch::nn::Layer<TTensor>>(mb.build_layer(obj.get()));
-}
