@@ -41,7 +41,7 @@ foreach(each_file ${cpptorch_SRC})
   source_group("${group_name}" FILES "${each_file}")
 endforeach()
 
-add_library(cpptorch SHARED "${cpptorch_SRC}")
+add_library(cpptorch SHARED ${cpptorch_SRC})
 
 if(MSVC)
   target_compile_definitions(cpptorch PRIVATE API_CPPTORCH_DEF=1)
