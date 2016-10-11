@@ -148,7 +148,7 @@ cd cpp-torch/example/basic
 cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_PREFIX_PATH=../../../install .
 ```
 
-Copy TH.dll and THNN.dll from `cpp-torch/install/bin/` to project's binary folder `cpp-torch/example/basic/Debug/` and `cpp-torch/example/basic/Release/`.
+Copy TH.dll, THNN.dll and cpptorch.dll from `cpp-torch/install/bin/` to project's binary folder `cpp-torch/example/basic/Debug/` and `cpp-torch/example/basic/Release/`.
 
 Open solution with Visual Studio 2015, run cpptorch_demo project. It should yield the following output:
 ```
@@ -167,7 +167,7 @@ nn.Linear
 #MacOS
 
 ##Prerequisite
-- [Xcode](http://developer.apple.com/xcode/)
+- [XCode](http://developer.apple.com/xcode/)
 
 ##Install
 Same as Linux
@@ -179,9 +179,7 @@ cd cpp-torch/example/basic
 cmake -G "Xcode" -DCMAKE_PREFIX_PATH=../../../install .
 ```
 
-Copy TH.dll and THNN.dll from `cpp-torch/install/bin/` to project's binary folder `cpp-torch/example/basic/Debug/` and `cpp-torch/example/basic/Release/`.
-
-Open solution with XCode, run cpptorch_demo project. It should yield the following output:
+Open solution with XCode, build and run cpptorch_demo project. It should yield the following output:
 ```
 nn.Linear
 
