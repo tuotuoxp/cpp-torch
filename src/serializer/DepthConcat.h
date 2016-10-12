@@ -7,13 +7,13 @@ namespace cpptorch
 {
     namespace serializer
     {
-        template<class TTensor>
-        class DepthConcat : public nn::DepthConcat<TTensor>
+        template<typename T>
+        class DepthConcat : public nn::DepthConcat<T>
         {
         public:
-            void unserialize(const object_torch *obj, object_reader<TTensor> *mb)
+            void unserialize(const object_torch *obj, object_reader<T> *mb)
             {
-                CHECK_AND_CAST(DepthConcat, Concat, TTensor)->unserialize(obj, mb);
+                CHECK_AND_CAST(DepthConcat, Concat, T)->unserialize(obj, mb);
             }
         };
     }

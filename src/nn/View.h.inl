@@ -2,8 +2,8 @@
 #include "../../include/nn/View.h"
 
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::nn::View<TTensor>::forward(const cpptorch::Tensor<TTensor> &input) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::nn::View<T>::forward(const cpptorch::Tensor<T> &input) const
 {
     int ind = input.dim();
     std::vector<long> isz = input.size();
@@ -35,7 +35,7 @@ cpptorch::Tensor<TTensor> cpptorch::nn::View<TTensor>::forward(const cpptorch::T
     }
 
     // special card
-    cpptorch::Tensor<TTensor> output;
+    cpptorch::Tensor<T> output;
     if (bsz == 1 && (num_elements_ <= 0 || ind <= num_elements_))
     {
         output = input.view(size_);

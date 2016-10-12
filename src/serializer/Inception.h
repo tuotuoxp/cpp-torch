@@ -7,13 +7,13 @@ namespace cpptorch
 {
     namespace serializer
     {
-        template<class TTensor>
-        class Inception : public nn::Inception<TTensor>
+        template<typename T>
+        class Inception : public nn::Inception<T>
         {
         public:
-            void unserialize(const object_torch *obj, object_reader<TTensor> *mb)
+            void unserialize(const object_torch *obj, object_reader<T> *mb)
             {
-                CHECK_AND_CAST(Inception, Decorator, TTensor)->unserialize(obj, mb);
+                CHECK_AND_CAST(Inception, Decorator, T)->unserialize(obj, mb);
             }
         };
     }

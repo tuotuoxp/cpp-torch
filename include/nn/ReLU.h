@@ -6,8 +6,8 @@ namespace cpptorch
 {
     namespace nn
     {
-        template<class TTensor>
-        class ReLU : public Threshold<TTensor>
+        template<typename T>
+        class ReLU : public Threshold<T>
         {
         public:
             virtual const std::string name() const override { return "nn.ReLU"; }

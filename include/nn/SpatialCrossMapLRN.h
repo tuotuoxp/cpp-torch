@@ -6,16 +6,16 @@ namespace cpptorch
 {
     namespace nn
     {
-        template<class TTensor>
-        class SpatialCrossMapLRN : public Layer<TTensor>
+        template<typename T>
+        class SpatialCrossMapLRN : public Layer<T>
         {
         public:
             virtual const std::string name() const override { return "nn.SpatialCrossMapLRN"; }
-            virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
+            virtual Tensor<T> forward(const Tensor<T> &input) const override;
 
         protected:
             int size_;
-            typename TTensor::Storage::Base alpha_, beta_, k_;
+            T alpha_, beta_, k_;
         };
     }
 }

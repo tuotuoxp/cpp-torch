@@ -2,15 +2,15 @@
 #include "../../include/nn/Inception.h"
 
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::nn::Inception<TTensor>::forward(const cpptorch::Tensor<TTensor> &input) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::nn::Inception<T>::forward(const cpptorch::Tensor<T> &input) const
 {
     if (input.dim() == 3)
     {
-        return fromBatch(Decorator<TTensor>::forward(toBatch(input)));
+        return fromBatch(Decorator<T>::forward(toBatch(input)));
     }
     else
     {
-        return Decorator<TTensor>::forward(input);
+        return Decorator<T>::forward(input);
     }
 }

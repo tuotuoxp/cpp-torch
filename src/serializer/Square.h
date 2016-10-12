@@ -6,11 +6,11 @@ namespace cpptorch
 {
     namespace serializer
     {
-        template<class TTensor>
-        class Square : public nn::Square<TTensor>
+        template<typename T>
+        class Square : public nn::Square<T>
         {
         public:
-            void unserialize(const object_torch *obj, object_reader<TTensor> *mb) {}
+            void unserialize(const object_torch *obj, object_reader<T> *mb) {}
         };
     }
 }

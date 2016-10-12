@@ -6,29 +6,29 @@
 #include <chrono>
 
 
-template<class TTensor>
-std::shared_ptr<cpptorch::nn::Layer<TTensor>> read_layer(const std::string &path)
+template<typename T>
+std::shared_ptr<cpptorch::nn::Layer<T>> read_layer(const std::string &path)
 {
     std::ifstream fs(path, std::ios::binary);
     assert(fs.good());
     auto obj = cpptorch::load(fs);
-    return cpptorch::read_net<TTensor>(obj.get());
+    return cpptorch::read_net<T>(obj.get());
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> read_tensor(const std::string &path)
+template<typename T>
+cpptorch::Tensor<T> read_tensor(const std::string &path)
 {
     std::ifstream fs(path, std::ios::binary);
     assert(fs.good());
     auto obj = cpptorch::load(fs);
-    return cpptorch::read_tensor<TTensor>(obj.get());
+    return cpptorch::read_tensor<T>(obj.get());
 }
 
 void test_index(const char *data_path)
 {
-    cpptorch::Tensor<TensorFloat> x = read_tensor<TensorFloat>(std::string(data_path) + "/_index/x.t7");
-    cpptorch::Tensor<TensorFloat> y1 = read_tensor<TensorFloat>(std::string(data_path) + "/_index/y1.t7");
-    cpptorch::Tensor<TensorFloat> y2 = read_tensor<TensorFloat>(std::string(data_path) + "/_index/y2.t7");
+    cpptorch::Tensor<float> x = read_tensor<float>(std::string(data_path) + "/_index/x.t7");
+    cpptorch::Tensor<float> y1 = read_tensor<float>(std::string(data_path) + "/_index/y1.t7");
+    cpptorch::Tensor<float> y2 = read_tensor<float>(std::string(data_path) + "/_index/y2.t7");
     std::ifstream fs(std::string(data_path) + "/_index/y3.t7", std::ios::binary);
     float y3 = *cpptorch::load(fs);
 
@@ -41,9 +41,9 @@ void test_index(const char *data_path)
 
 void test_layer(const char *data_path, const char *subdir)
 {
-    auto net = read_layer<TensorFloat>(std::string(data_path) + "/" + subdir + "/net.t7");
-    cpptorch::Tensor<TensorFloat> x = read_tensor<TensorFloat>(std::string(data_path) + "/" + subdir + "/x.t7");
-    cpptorch::Tensor<TensorFloat> y = read_tensor<TensorFloat>(std::string(data_path) + "/" + subdir + "/y.t7");
+    auto net = read_layer<float>(std::string(data_path) + "/" + subdir + "/net.t7");
+    cpptorch::Tensor<float> x = read_tensor<float>(std::string(data_path) + "/" + subdir + "/x.t7");
+    cpptorch::Tensor<float> y = read_tensor<float>(std::string(data_path) + "/" + subdir + "/y.t7");
     std::cout << *net;
 
     auto begin = std::chrono::high_resolution_clock::now();

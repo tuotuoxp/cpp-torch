@@ -12,50 +12,50 @@ static void *reallocWrapper(void* ctx, void* ptr, long size) { return realloc(pt
 static void freeWrapper(void* ctx, void* ptr) { free(ptr); }
 
 
-template<class TStorage>
-cpptorch::Storage<TStorage>::Storage(typename TStorage::TH *th) : th_(th)
+template<typename T>
+cpptorch::Storage<T>::Storage(typename THTrait<T>::Storage *th) : th_(th)
 {
     if (th_)
     {
-        cpptorch::th::Storage<TStorage>::retain(th_);
+        cpptorch::th::Storage<T>::retain(th_);
     }
 }
 
-template<class TStorage>
-cpptorch::Storage<TStorage>::~Storage()
+template<typename T>
+cpptorch::Storage<T>::~Storage()
 {
     if (th_)
     {
-        cpptorch::th::Storage<TStorage>::release(th_);
+        cpptorch::th::Storage<T>::release(th_);
         th_ = nullptr;
     }
 }
 
-template<class TStorage>
-cpptorch::Storage<TStorage>& cpptorch::Storage<TStorage>::operator =(const cpptorch::Storage<TStorage> &other)
+template<typename T>
+cpptorch::Storage<T>& cpptorch::Storage<T>::operator =(const cpptorch::Storage<T> &other)
 {
     if (this != &other) {
         if (th_)
         {
-            cpptorch::th::Storage<TStorage>::release(th_);
+            cpptorch::th::Storage<T>::release(th_);
             th_ = nullptr;
         }
         if (other.th_)
         {
             th_ = other.th_;
-            cpptorch::th::Storage<TStorage>::retain(th_);
+            cpptorch::th::Storage<T>::retain(th_);
         }
     }
     return *this;
 }
 
-template<class TStorage>
-cpptorch::Storage<TStorage>& cpptorch::Storage<TStorage>::operator =(Storage<TStorage> &&other)
+template<typename T>
+cpptorch::Storage<T>& cpptorch::Storage<T>::operator =(Storage<T> &&other)
 {
     assert(this != &other);
     if (th_)
     {
-        cpptorch::th::Storage<TStorage>::release(th_);
+        cpptorch::th::Storage<T>::release(th_);
         th_ = nullptr;
     }
     if (other.th_)
@@ -66,33 +66,33 @@ cpptorch::Storage<TStorage>& cpptorch::Storage<TStorage>::operator =(Storage<TSt
     return *this;
 }
 
-template<class TStorage>
-int cpptorch::Storage<TStorage>::size() const
+template<typename T>
+int cpptorch::Storage<T>::size() const
 {
-    return th_ ? cpptorch::th::Storage<TStorage>::size(th_) : 0;
+    return th_ ? cpptorch::th::Storage<T>::size(th_) : 0;
 }
 
-template<class TStorage>
-const typename TStorage::Base* cpptorch::Storage<TStorage>::data() const
+template<typename T>
+const T* cpptorch::Storage<T>::data() const
 {
-    return th_ ? cpptorch::th::Storage<TStorage>::data(th_) : nullptr;
+    return th_ ? cpptorch::th::Storage<T>::data(th_) : nullptr;
 }
 
-template<class TStorage>
-typename TStorage::Base* cpptorch::Storage<TStorage>::data()
+template<typename T>
+T* cpptorch::Storage<T>::data()
 {
-    return th_ ? cpptorch::th::Storage<TStorage>::data(th_) : nullptr;
+    return th_ ? cpptorch::th::Storage<T>::data(th_) : nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-template<class TStorage>
-void cpptorch::Storage<TStorage>::unserialze(const typename TStorage::Base *ptr_src, long size, bool take_ownership_of_data)
+template<typename T>
+void cpptorch::Storage<T>::unserialze(const T *ptr_src, long size, bool take_ownership_of_data)
 {
     if (!take_ownership_of_data)
     {
-        long sz = size * sizeof(typename TStorage::Base);
-        typename TStorage::Base *ptr = (typename TStorage::Base*)malloc(sz);
+        long sz = size * sizeof(T);
+        T *ptr = (T*)malloc(sz);
         memcpy(ptr, ptr_src, sz);
         ptr_src = ptr;
     }
@@ -102,5 +102,5 @@ void cpptorch::Storage<TStorage>::unserialze(const typename TStorage::Base *ptr_
         reallocWrapper,
         freeWrapper
     };
-    th_ = cpptorch::th::Storage<TStorage>::newWithDataAndAllocator(const_cast<typename TStorage::Base*>(ptr_src), size, &allocater_, nullptr);
+    th_ = cpptorch::th::Storage<T>::newWithDataAndAllocator(const_cast<T*>(ptr_src), size, &allocater_, nullptr);
 }

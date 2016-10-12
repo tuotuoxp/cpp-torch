@@ -6,11 +6,11 @@ namespace cpptorch
 {
     namespace serializer
     {
-        template<class TTensor>
-        class SpatialReflectionPadding : public nn::SpatialReflectionPadding<TTensor>
+        template<typename T>
+        class SpatialReflectionPadding : public nn::SpatialReflectionPadding<T>
         {
         public:
-            void unserialize(const object_torch *obj, object_reader<TTensor> *mb)
+            void unserialize(const object_torch *obj, object_reader<T> *mb)
             {
                 const object_table *obj_tbl = obj->data_->to_table();
                 this->pad_l_ = *obj_tbl->get("pad_l");

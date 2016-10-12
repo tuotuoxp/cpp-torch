@@ -6,16 +6,16 @@ namespace cpptorch
 {
     namespace nn
     {
-        template<class TTensor>
-        class MulConstant : public Layer<TTensor>
+        template<typename T>
+        class MulConstant : public Layer<T>
         {
         public:
             virtual const std::string name() const override { return "nn.MulConstant"; }
-            virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
+            virtual Tensor<T> forward(const Tensor<T> &input) const override;
 
         protected:
             bool inplace_;
-            typename TTensor::Storage::Base constant_scalar_;
+            T constant_scalar_;
         };
     }
 }

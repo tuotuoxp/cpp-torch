@@ -7,8 +7,8 @@
 void specifyFully(std::vector<long> &sto_size, int nElements);
 
 
-template<class TTensor>
-cpptorch::Tensor<TTensor>::Tensor(bool auto_create) : th_(nullptr)
+template<typename T>
+cpptorch::Tensor<T>::Tensor(bool auto_create) : th_(nullptr)
 {
     if (auto_create)
     {
@@ -16,31 +16,31 @@ cpptorch::Tensor<TTensor>::Tensor(bool auto_create) : th_(nullptr)
     }
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor>& cpptorch::Tensor<TTensor>::operator =(const cpptorch::Tensor<TTensor> &other)
+template<typename T>
+cpptorch::Tensor<T>& cpptorch::Tensor<T>::operator =(const cpptorch::Tensor<T> &other)
 {
     if (this != &other) {
         if (th_)
         {
-            cpptorch::th::Tensor<TTensor>::release(th_);
+            cpptorch::th::Tensor<T>::release(th_);
             th_ = nullptr;
         }
         if (other.th_)
         {
             th_ = other.th_;
-            cpptorch::th::Tensor<TTensor>::retain(th_);
+            cpptorch::th::Tensor<T>::retain(th_);
         }
     }
     return *this;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor>& cpptorch::Tensor<TTensor>::operator =(Tensor<TTensor> &&other)
+template<typename T>
+cpptorch::Tensor<T>& cpptorch::Tensor<T>::operator =(Tensor<T> &&other)
 {
     assert(this != &other);
     if (th_)
     {
-        cpptorch::th::Tensor<TTensor>::release(th_);
+        cpptorch::th::Tensor<T>::release(th_);
         th_ = nullptr;
     }
     if (other.th_)
@@ -51,24 +51,24 @@ cpptorch::Tensor<TTensor>& cpptorch::Tensor<TTensor>::operator =(Tensor<TTensor>
     return *this;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor>::~Tensor()
+template<typename T>
+cpptorch::Tensor<T>::~Tensor()
 {
     if (th_)
     {
-        cpptorch::th::Tensor<TTensor>::release(th_);
+        cpptorch::th::Tensor<T>::release(th_);
         th_ = nullptr;
     }
 }
 
-template<class TTensor>
-const std::string cpptorch::Tensor<TTensor>::name() const
+template<typename T>
+const std::string cpptorch::Tensor<T>::name() const
 {
-    if (std::is_same<TTensor, TensorLong>::value)
+    if (std::is_same<T, long>::value)
     {
         return "torch.LongTensor";
     }
-    else if (std::is_same<TTensor, TensorFloat>::value)
+    else if (std::is_same<T, float>::value)
     {
         return "torch.FloatTensor";
     }
@@ -77,115 +77,115 @@ const std::string cpptorch::Tensor<TTensor>::name() const
 
 //////////////////////////////////////////////////////////////////////////
 
-template<class TTensor>
-void cpptorch::Tensor<TTensor>::create()
+template<typename T>
+void cpptorch::Tensor<T>::create()
 {
     assert(th_ == nullptr);
-    th_ = cpptorch::th::Tensor<TTensor>::create();
+    th_ = cpptorch::th::Tensor<T>::create();
 }
 
-template<class TTensor>
-void cpptorch::Tensor<TTensor>::create(const Storage<typename TTensor::Storage> &storage, long storage_offset,
-    const Storage<typename TTensor::SizeStorage> &size)
+template<typename T>
+void cpptorch::Tensor<T>::create(const Storage<T> &storage, long storage_offset,
+    const Storage<long> &size)
 {
     assert(th_ == nullptr);
-    th_ = cpptorch::th::Tensor<TTensor>::newWithStorage(storage, storage_offset, size, nullptr);
+    th_ = cpptorch::th::Tensor<T>::newWithStorage(storage, storage_offset, size, nullptr);
 }
 
-template<class TTensor>
-void cpptorch::Tensor<TTensor>::create(const Storage<typename TTensor::Storage> &storage, long storage_offset,
-    const Storage<typename TTensor::SizeStorage> &size, const Storage<typename TTensor::SizeStorage> &stride)
+template<typename T>
+void cpptorch::Tensor<T>::create(const Storage<T> &storage, long storage_offset,
+    const Storage<long> &size, const Storage<long> &stride)
 {
     assert(th_ == nullptr);
-    th_ = cpptorch::th::Tensor<TTensor>::newWithStorage(storage, storage_offset, size, stride);
+    th_ = cpptorch::th::Tensor<T>::newWithStorage(storage, storage_offset, size, stride);
 }
 
-template<class TTensor>
-void cpptorch::Tensor<TTensor>::resize(const Storage<typename TTensor::SizeStorage> &size)
+template<typename T>
+void cpptorch::Tensor<T>::resize(const Storage<long> &size)
 {
-    cpptorch::th::Tensor<TTensor>::resize(th_, size, nullptr);
+    cpptorch::th::Tensor<T>::resize(th_, size, nullptr);
 }
 
-template<class TTensor>
-void cpptorch::Tensor<TTensor>::resize(const Storage<typename TTensor::SizeStorage> &size, const Storage<typename TTensor::SizeStorage> &stride)
+template<typename T>
+void cpptorch::Tensor<T>::resize(const Storage<long> &size, const Storage<long> &stride)
 {
-    cpptorch::th::Tensor<TTensor>::resize(th_, size, stride);
+    cpptorch::th::Tensor<T>::resize(th_, size, stride);
 }
 
-template<class TTensor>
-void cpptorch::Tensor<TTensor>::resizeAs(const Tensor<TTensor> &src)
+template<typename T>
+void cpptorch::Tensor<T>::resizeAs(const Tensor<T> &src)
 {
-    cpptorch::th::Tensor<TTensor>::resizeAs(th_, src.th_);
+    cpptorch::th::Tensor<T>::resizeAs(th_, src.th_);
 }
 
-template<class TTensor>
-void cpptorch::Tensor<TTensor>::copy(const Tensor<TTensor> &src)
+template<typename T>
+void cpptorch::Tensor<T>::copy(const Tensor<T> &src)
 {
-    cpptorch::th::Tensor<TTensor>::copy(th_, src.th_);
+    cpptorch::th::Tensor<T>::copy(th_, src.th_);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-template<class TTensor>
-cpptorch::Storage<typename TTensor::Storage> cpptorch::Tensor<TTensor>::storage() const
+template<typename T>
+cpptorch::Storage<T> cpptorch::Tensor<T>::storage() const
 {
-    return cpptorch::Storage<typename TTensor::Storage>(th_ ? cpptorch::th::Tensor<TTensor>::storage(th_) : nullptr);
+    return cpptorch::Storage<T>(th_ ? cpptorch::th::Tensor<T>::storage(th_) : nullptr);
 }
 
-template<class TTensor>
-long cpptorch::Tensor<TTensor>::storageOffset() const
+template<typename T>
+long cpptorch::Tensor<T>::storageOffset() const
 {
-    return th_ ? cpptorch::th::Tensor<TTensor>::storageOffset(th_) : 0;
+    return th_ ? cpptorch::th::Tensor<T>::storageOffset(th_) : 0;
 }
 
-template<class TTensor>
-std::vector<long> cpptorch::Tensor<TTensor>::size() const
-{
-    std::vector<long> v;
-    if (th_)
-    {
-        typename TTensor::SizeStorage::TH *th = cpptorch::th::Tensor<TTensor>::size(th_);
-        long *p = cpptorch::th::Storage<typename TTensor::SizeStorage>::data(th);
-        v.assign(p, p + dim());
-        cpptorch::th::Storage<typename TTensor::SizeStorage>::release(th);
-    }
-    return v;
-}
-
-template<class TTensor>
-long cpptorch::Tensor<TTensor>::size(int dim) const
-{
-    return cpptorch::th::Tensor<TTensor>::size(th_, dim);
-}
-
-template<class TTensor>
-std::vector<long> cpptorch::Tensor<TTensor>::stride() const
+template<typename T>
+std::vector<long> cpptorch::Tensor<T>::size() const
 {
     std::vector<long> v;
     if (th_)
     {
-        typename TTensor::SizeStorage::TH *th = cpptorch::th::Tensor<TTensor>::stride(th_);
-        long *p = cpptorch::th::Storage<typename TTensor::SizeStorage>::data(th);
+        THTrait<long>::Storage *th = cpptorch::th::Tensor<T>::size(th_);
+        long *p = cpptorch::th::Storage<long>::data(th);
         v.assign(p, p + dim());
-        cpptorch::th::Storage<typename TTensor::SizeStorage>::release(th);
+        cpptorch::th::Storage<long>::release(th);
     }
     return v;
 }
 
-template<class TTensor>
-int cpptorch::Tensor<TTensor>::dim() const
+template<typename T>
+long cpptorch::Tensor<T>::size(int dim) const
 {
-    return cpptorch::th::Tensor<TTensor>::nDimension(th_);
+    return cpptorch::th::Tensor<T>::size(th_, dim);
 }
 
-template<class TTensor>
-typename TTensor::Storage::Base* cpptorch::Tensor<TTensor>::data() const
+template<typename T>
+std::vector<long> cpptorch::Tensor<T>::stride() const
 {
-    return cpptorch::th::Tensor<TTensor>::data(th_);
+    std::vector<long> v;
+    if (th_)
+    {
+        THTrait<long>::Storage *th = cpptorch::th::Tensor<T>::stride(th_);
+        long *p = cpptorch::th::Storage<long>::data(th);
+        v.assign(p, p + dim());
+        cpptorch::th::Storage<long>::release(th);
+    }
+    return v;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor>::operator typename TTensor::Storage::Base() const
+template<typename T>
+int cpptorch::Tensor<T>::dim() const
+{
+    return cpptorch::th::Tensor<T>::nDimension(th_);
+}
+
+template<typename T>
+T* cpptorch::Tensor<T>::data() const
+{
+    return cpptorch::th::Tensor<T>::data(th_);
+}
+
+template<typename T>
+cpptorch::Tensor<T>::operator T() const
 {
     asserter(nElement() == 1) << "only an 1-D tensor with ONE element can be cast to number";
     return data()[0];
@@ -193,39 +193,39 @@ cpptorch::Tensor<TTensor>::operator typename TTensor::Storage::Base() const
 
 //////////////////////////////////////////////////////////////////////////
 
-template<class TTensor>
-bool cpptorch::Tensor<TTensor>::isContiguous() const
+template<typename T>
+bool cpptorch::Tensor<T>::isContiguous() const
 {
-    return cpptorch::th::Tensor<TTensor>::isContiguous(th_) != 0;
+    return cpptorch::th::Tensor<T>::isContiguous(th_) != 0;
 }
 
-template<class TTensor>
-int cpptorch::Tensor<TTensor>::nElement() const
+template<typename T>
+int cpptorch::Tensor<T>::nElement() const
 {
-    return cpptorch::th::Tensor<TTensor>::nElement(th_);
+    return cpptorch::th::Tensor<T>::nElement(th_);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::narrow(int dimension, long firstIndex, long size) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::Tensor<T>::narrow(int dimension, long firstIndex, long size) const
 {
-    cpptorch::Tensor<TTensor> out(true);
-    cpptorch::th::Tensor<TTensor>::narrow(out, th_, dimension, firstIndex, size);
+    cpptorch::Tensor<T> out(true);
+    cpptorch::th::Tensor<T>::narrow(out, th_, dimension, firstIndex, size);
     return out;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::select(int dimension, long sliceIndex) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::Tensor<T>::select(int dimension, long sliceIndex) const
 {
-    cpptorch::Tensor<TTensor> out(true);
-    cpptorch::th::Tensor<TTensor>::select(out, th_, dimension, sliceIndex);
+    cpptorch::Tensor<T> out(true);
+    cpptorch::th::Tensor<T>::select(out, th_, dimension, sliceIndex);
     return out;
 }
 
-template<class TTensor>
+template<typename T>
 template<class TIterator>
-cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::view(const TIterator begin, const TIterator end) const
+cpptorch::Tensor<T> cpptorch::Tensor<T>::view(const TIterator begin, const TIterator end) const
 {
     std::vector<long> sz(begin, end);
     int origNElement = nElement();
@@ -233,14 +233,14 @@ cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::view(const TIterator begin,
 
     std::vector<long> ss = size();
     assert(isContiguous() && "expecting a contiguous tensor");
-    cpptorch::Tensor<TTensor> view;
+    cpptorch::Tensor<T> view;
     view.create(storage(), storageOffset(), sz);
     assert(view.nElement() == origNElement && "Wrong size for view. ");
     return view;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::expand(const std::vector<long> &sz) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::Tensor<T>::expand(const std::vector<long> &sz) const
 {
     int tensor_dim = dim();
     std::vector<long> tensor_stride = stride();
@@ -263,21 +263,21 @@ cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::expand(const std::vector<lo
     }
 
     // create new view, with singleton expansion:
-    cpptorch::Tensor<TTensor> output;
+    cpptorch::Tensor<T> output;
     output.create(storage(), storageOffset(), tensor_size, tensor_stride);
     return output;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::t() const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::Tensor<T>::t() const
 {
-    cpptorch::Tensor<TTensor> output(true);
-    cpptorch::th::Tensor<TTensor>::transpose(output, th_, 0, 1);
+    cpptorch::Tensor<T> output(true);
+    cpptorch::th::Tensor<T>::transpose(output, th_, 0, 1);
     return output;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::operator [] (const std::initializer_list<long> &inputs) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::Tensor<T>::operator [] (const std::initializer_list<long> &inputs) const
 {
     std::vector<long> tsize = size();
     std::vector<long> tstride = stride();
@@ -299,175 +299,175 @@ cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::operator [] (const std::ini
     tsize.erase(tsize.begin(), tsize.begin() + dim);
     tstride.erase(tstride.begin(), tstride.begin() + dim);
 
-    cpptorch::Tensor<TTensor> output;
+    cpptorch::Tensor<T> output;
     if (tsize.size() == 0)
     {
         tsize.push_back(1);
         tstride.push_back(1);
     }
-    output.create(storage(), index, cpptorch::Storage<StorageLong>(tsize), cpptorch::Storage<StorageLong>(tstride));
+    output.create(storage(), index, cpptorch::Storage<long>(tsize), cpptorch::Storage<long>(tstride));
     return output;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-template<class TTensor>
-void cpptorch::Tensor<TTensor>::fill(typename TTensor::Storage::Base val)
+template<typename T>
+void cpptorch::Tensor<T>::fill(T val)
 {
-    cpptorch::th::Tensor<TTensor>::fill(th_, val);
+    cpptorch::th::Tensor<T>::fill(th_, val);
 }
 
-template<class TTensor>
-void cpptorch::Tensor<TTensor>::abs()
+template<typename T>
+void cpptorch::Tensor<T>::abs()
 {
-    cpptorch::th::Tensor<TTensor>::abs(th_, th_);
+    cpptorch::th::Tensor<T>::abs(th_, th_);
 }
 
-template<class TTensor>
-void cpptorch::Tensor<TTensor>::addmv(typename TTensor::Storage::Base beta, const Tensor<TTensor> &t,
-    typename TTensor::Storage::Base alpha, const Tensor<TTensor> &matrix, const Tensor<TTensor> &vector)
+template<typename T>
+void cpptorch::Tensor<T>::addmv(T beta, const Tensor<T> &t,
+    T alpha, const Tensor<T> &matrix, const Tensor<T> &vector)
 {
-    cpptorch::th::Tensor<TTensor>::addmv(th_, beta, t, alpha, matrix, vector);
+    cpptorch::th::Tensor<T>::addmv(th_, beta, t, alpha, matrix, vector);
 }
 
-template<class TTensor>
-void cpptorch::Tensor<TTensor>::addmm(typename TTensor::Storage::Base beta, const Tensor<TTensor> &t,
-    typename TTensor::Storage::Base alpha, const Tensor<TTensor> &matrix1, const Tensor<TTensor> &matrix2)
+template<typename T>
+void cpptorch::Tensor<T>::addmm(T beta, const Tensor<T> &t,
+    T alpha, const Tensor<T> &matrix1, const Tensor<T> &matrix2)
 {
-    cpptorch::th::Tensor<TTensor>::addmm(th_, beta, t, alpha, matrix1, matrix2);
+    cpptorch::th::Tensor<T>::addmm(th_, beta, t, alpha, matrix1, matrix2);
 }
 
-template<class TTensor>
-void cpptorch::Tensor<TTensor>::addr(typename TTensor::Storage::Base beta, const Tensor<TTensor> &t,
-    typename TTensor::Storage::Base alpha, const Tensor<TTensor> &vector1, const Tensor<TTensor> &vector2)
+template<typename T>
+void cpptorch::Tensor<T>::addr(T beta, const Tensor<T> &t,
+    T alpha, const Tensor<T> &vector1, const Tensor<T> &vector2)
 {
-    cpptorch::th::Tensor<TTensor>::addr(th_, beta, t, alpha, vector1, vector2);
+    cpptorch::th::Tensor<T>::addr(th_, beta, t, alpha, vector1, vector2);
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor>& cpptorch::Tensor<TTensor>::operator += (typename TTensor::Storage::Base val)
+template<typename T>
+cpptorch::Tensor<T>& cpptorch::Tensor<T>::operator += (T val)
 {
-    cpptorch::th::Tensor<TTensor>::add(th_, th_, val);
+    cpptorch::th::Tensor<T>::add(th_, th_, val);
     return *this;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor>& cpptorch::Tensor<TTensor>::operator += (const cpptorch::Tensor<TTensor> &other)
+template<typename T>
+cpptorch::Tensor<T>& cpptorch::Tensor<T>::operator += (const cpptorch::Tensor<T> &other)
 {
-    cpptorch::th::Tensor<TTensor>::cadd(th_, th_, 1, other);
+    cpptorch::th::Tensor<T>::cadd(th_, th_, 1, other);
     return *this;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor>& cpptorch::Tensor<TTensor>::operator -= (const cpptorch::Tensor<TTensor> &other)
+template<typename T>
+cpptorch::Tensor<T>& cpptorch::Tensor<T>::operator -= (const cpptorch::Tensor<T> &other)
 {
-    cpptorch::th::Tensor<TTensor>::cadd(th_, th_, -1, other);
+    cpptorch::th::Tensor<T>::cadd(th_, th_, -1, other);
     return *this;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor>& cpptorch::Tensor<TTensor>::operator *= (typename TTensor::Storage::Base val)
+template<typename T>
+cpptorch::Tensor<T>& cpptorch::Tensor<T>::operator *= (T val)
 {
-    cpptorch::th::Tensor<TTensor>::mul(th_, th_, val);
+    cpptorch::th::Tensor<T>::mul(th_, th_, val);
     return *this;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor>& cpptorch::Tensor<TTensor>::operator *= (const cpptorch::Tensor<TTensor> &other)
+template<typename T>
+cpptorch::Tensor<T>& cpptorch::Tensor<T>::operator *= (const cpptorch::Tensor<T> &other)
 {
-    cpptorch::th::Tensor<TTensor>::cmul(th_, th_, other);
+    cpptorch::th::Tensor<T>::cmul(th_, th_, other);
     return *this;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor>& cpptorch::Tensor<TTensor>::operator ^= (typename TTensor::Storage::Base val)
+template<typename T>
+cpptorch::Tensor<T>& cpptorch::Tensor<T>::operator ^= (T val)
 {
-    cpptorch::th::Tensor<TTensor>::pow(th_, th_, val);
+    cpptorch::th::Tensor<T>::pow(th_, th_, val);
     return *this;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor>& cpptorch::Tensor<TTensor>::operator ^= (const Tensor<TTensor> &other)
+template<typename T>
+cpptorch::Tensor<T>& cpptorch::Tensor<T>::operator ^= (const Tensor<T> &other)
 {
-    cpptorch::th::Tensor<TTensor>::cpow(th_, th_, other);
+    cpptorch::th::Tensor<T>::cpow(th_, th_, other);
     return *this;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-template<class TTensor>
-typename TTensor::Storage::Base cpptorch::Tensor<TTensor>::minall() const
+template<typename T>
+T cpptorch::Tensor<T>::minall() const
 {
-    return th_ ? cpptorch::th::Tensor<TTensor>::minall(th_) : 0;
+    return th_ ? cpptorch::th::Tensor<T>::minall(th_) : 0;
 }
 
-template<class TTensor>
-typename TTensor::Storage::Base cpptorch::Tensor<TTensor>::maxall() const
+template<typename T>
+T cpptorch::Tensor<T>::maxall() const
 {
-    return th_ ? cpptorch::th::Tensor<TTensor>::maxall(th_) : 0;
+    return th_ ? cpptorch::th::Tensor<T>::maxall(th_) : 0;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::max(int dimension) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::Tensor<T>::max(int dimension) const
 {
-    cpptorch::Tensor<TTensor> out(true);
-    cpptorch::th::Tensor<TTensor>::max(out.th_, th_, dimension);
+    cpptorch::Tensor<T> out(true);
+    cpptorch::th::Tensor<T>::max(out.th_, th_, dimension);
     return out;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::sum(int dimension) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::Tensor<T>::sum(int dimension) const
 {
-    cpptorch::Tensor<TTensor> out(true);
-    cpptorch::th::Tensor<TTensor>::sum(out.th_, th_, dimension);
+    cpptorch::Tensor<T> out(true);
+    cpptorch::th::Tensor<T>::sum(out.th_, th_, dimension);
     return out;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::operator +(typename TTensor::Storage::Base val) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::Tensor<T>::operator +(T val) const
 {
-    cpptorch::Tensor<TTensor> out(true);
-    cpptorch::th::Tensor<TTensor>::add(out.th_, th_, val);
+    cpptorch::Tensor<T> out(true);
+    cpptorch::th::Tensor<T>::add(out.th_, th_, val);
     return out;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::operator +(const Tensor<TTensor> &other) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::Tensor<T>::operator +(const Tensor<T> &other) const
 {
-    cpptorch::Tensor<TTensor> out(true);
-    cpptorch::th::Tensor<TTensor>::cadd(out, th_, 1, other);
+    cpptorch::Tensor<T> out(true);
+    cpptorch::th::Tensor<T>::cadd(out, th_, 1, other);
     return out;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::operator -(typename TTensor::Storage::Base val) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::Tensor<T>::operator -(T val) const
 {
-    cpptorch::Tensor<TTensor> out(true);
-    cpptorch::th::Tensor<TTensor>::add(out, th_, -val);
+    cpptorch::Tensor<T> out(true);
+    cpptorch::th::Tensor<T>::add(out, th_, -val);
     return out;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::operator -(const Tensor<TTensor> &other) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::Tensor<T>::operator -(const Tensor<T> &other) const
 {
-    cpptorch::Tensor<TTensor> out(true);
-    cpptorch::th::Tensor<TTensor>::cadd(out, th_, (typename TTensor::Storage::Base)-1.0, other);
+    cpptorch::Tensor<T> out(true);
+    cpptorch::th::Tensor<T>::cadd(out, th_, (T)-1.0, other);
     return out;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::operator /(const Tensor<TTensor> &other) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::Tensor<T>::operator /(const Tensor<T> &other) const
 {
-    cpptorch::Tensor<TTensor> out(true);
-    cpptorch::th::Tensor<TTensor>::cdiv(out, th_, other);
+    cpptorch::Tensor<T> out(true);
+    cpptorch::th::Tensor<T>::cdiv(out, th_, other);
     return out;
 }
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::Tensor<TTensor>::operator ^(typename TTensor::Storage::Base val) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::Tensor<T>::operator ^(T val) const
 {
-    cpptorch::Tensor<TTensor> out(true);
-    cpptorch::th::Tensor<TTensor>::pow(out, th_, val);
+    cpptorch::Tensor<T> out(true);
+    cpptorch::th::Tensor<T>::pow(out, th_, val);
     return out;
 }
 
@@ -508,10 +508,10 @@ void specifyFully(std::vector<long> &sz, int nElements)
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::abs(const cpptorch::Tensor<TTensor> &t)
+template<typename T>
+cpptorch::Tensor<T> cpptorch::abs(const cpptorch::Tensor<T> &t)
 {
-    cpptorch::Tensor<TTensor> out(true);
-    cpptorch::th::Tensor<TTensor>::abs(out, t);
+    cpptorch::Tensor<T> out(true);
+    cpptorch::th::Tensor<T>::abs(out, t);
     return out;
 }

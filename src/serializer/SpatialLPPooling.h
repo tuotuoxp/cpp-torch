@@ -7,13 +7,13 @@ namespace cpptorch
 {
     namespace serializer
     {
-        template<class TTensor>
-        class SpatialLPPooling : public nn::SpatialLPPooling<TTensor>
+        template<typename T>
+        class SpatialLPPooling : public nn::SpatialLPPooling<T>
         {
         public:
-            void unserialize(const object_torch *obj, object_reader<TTensor> *mb)
+            void unserialize(const object_torch *obj, object_reader<T> *mb)
             {
-                CHECK_AND_CAST(SpatialLPPooling, Sequential, TTensor)->unserialize(obj, mb);
+                CHECK_AND_CAST(SpatialLPPooling, Sequential, T)->unserialize(obj, mb);
             }
         };
     }

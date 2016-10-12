@@ -7,11 +7,11 @@
 #include <limits>
 
 
-template <class TTensor>
+template<typename T>
 class TensorPrint
 {
 public:
-    TensorPrint(std::ostream &o, const cpptorch::Tensor<TTensor> &t);
+    TensorPrint(std::ostream &o, const cpptorch::Tensor<T> &t);
     
     void printTensor();
 
@@ -22,17 +22,17 @@ protected:
     
     
     std::ostream &out_;
-    const cpptorch::Tensor<TTensor> &tensor_;
-    const cpptorch::Storage<typename TTensor::Storage> storage_cache_;
+    const cpptorch::Tensor<T> &tensor_;
+    const cpptorch::Storage<T> storage_cache_;
     const std::vector<long> stride_cache_;
     const std::vector<long> size_cache_;
-    const typename TTensor::Storage::Base * const data_;
+    const T * const data_;
     const int offset_;
 };
 
 
-template <class TTensor>
-TensorPrint<TTensor>::TensorPrint(std::ostream &o, const cpptorch::Tensor<TTensor> &t) : out_(o), tensor_(t),
+template<typename T>
+TensorPrint<T>::TensorPrint(std::ostream &o, const cpptorch::Tensor<T> &t) : out_(o), tensor_(t),
     storage_cache_(tensor_.storage()),
     stride_cache_(tensor_.stride()),
     size_cache_(tensor_.size()),
@@ -40,13 +40,13 @@ TensorPrint<TTensor>::TensorPrint(std::ostream &o, const cpptorch::Tensor<TTenso
     offset_(tensor_.storageOffset()) {}
 
 
-template <class TTensor>
-void TensorPrint<TTensor>::getPrintFormat(int offset, double &scale, int &len)
+template<typename T>
+void TensorPrint<T>::getPrintFormat(int offset, double &scale, int &len)
 {
     scale = 1.0f;
     bool is_int = true;
-    auto minval = std::numeric_limits<typename TTensor::Storage::Base>::max();
-    auto maxval = std::numeric_limits<typename TTensor::Storage::Base>::min();
+    auto minval = std::numeric_limits<T>::max();
+    auto maxval = std::numeric_limits<T>::min();
 
     int dim_x = (int)size_cache_.size() - 1;
     int size_y = dim_x == 0 ? 1 : size_cache_[dim_x - 1];
@@ -121,8 +121,8 @@ void TensorPrint<TTensor>::getPrintFormat(int offset, double &scale, int &len)
 }
 
 
-template <class TTensor>
-void TensorPrint<TTensor>::printMatrix(int offset, const std::string &indent)
+template<typename T>
+void TensorPrint<T>::printMatrix(int offset, const std::string &indent)
 {
     double scale;
     int len;
@@ -178,8 +178,8 @@ void TensorPrint<TTensor>::printMatrix(int offset, const std::string &indent)
 }
 
 
-template <class TTensor>
-void TensorPrint<TTensor>::printSubTensor(int offset, std::vector<int> &dims)
+template<typename T>
+void TensorPrint<T>::printSubTensor(int offset, std::vector<int> &dims)
 {
     if (dims.size() == size_cache_.size() - 2)
     {
@@ -206,8 +206,8 @@ void TensorPrint<TTensor>::printSubTensor(int offset, std::vector<int> &dims)
 }
 
 
-template <class TTensor>
-void TensorPrint<TTensor>::printTensor()
+template<typename T>
+void TensorPrint<T>::printTensor()
 {
     std::ios state_init(nullptr);
     state_init.copyfmt(out_);
@@ -245,10 +245,10 @@ void TensorPrint<TTensor>::printTensor()
 
 //////////////////////////////////////////////////////////////////////////
 
-template<class TTensor>
-std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<TTensor> &m)
+template<typename T>
+std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<T> &m)
 {
-	TensorPrint<TTensor>(o, m).printTensor();
+	TensorPrint<T>(o, m).printTensor();
 	o << std::endl;
 	return o;
 }

@@ -9,17 +9,17 @@
 #define CREATE_BUILDER(name, T)     this->factory_.insert(std::make_pair(name, std::shared_ptr<class_factory_base>(new class_factory_impl<T>())))
 
 
-template<class TTensor>
+template<typename T>
 class object_reader
 {
 public:
     object_reader();
 
 
-    void build_storage(const cpptorch::object *obj, cpptorch::Storage<typename TTensor::Storage> &storage);
+    void build_storage(const cpptorch::object *obj, cpptorch::Storage<T> &storage);
     void build_from_size_storage(const cpptorch::object *obj, std::vector<long> &data);
-    cpptorch::Tensor<TTensor> build_tensor(const cpptorch::object *obj);
-    std::shared_ptr<cpptorch::nn::Layer<TTensor>> build_layer(const cpptorch::object *obj);
+    cpptorch::Tensor<T> build_tensor(const cpptorch::object *obj);
+    std::shared_ptr<cpptorch::nn::Layer<T>> build_layer(const cpptorch::object *obj);
 
 
 protected:
@@ -27,18 +27,18 @@ protected:
     class class_factory_base
     {
     public:
-        virtual cpptorch::nn::Layer<TTensor>* operator()(const cpptorch::object_torch *obj, object_reader<TTensor> *mb) const = 0;
+        virtual cpptorch::nn::Layer<T>* operator()(const cpptorch::object_torch *obj, object_reader<T> *mb) const = 0;
     };
 
-    template <class T>
+    template <class TNN>
     class class_factory_impl : public class_factory_base
     {
     public:
-        virtual cpptorch::nn::Layer<TTensor>* operator()(const cpptorch::object_torch *obj, object_reader<TTensor> *mb) const
+        virtual cpptorch::nn::Layer<T>* operator()(const cpptorch::object_torch *obj, object_reader<T> *mb) const
         {
-            T *t = new T();
+            TNN *t = new TNN();
             t->unserialize(obj, mb);
-            return static_cast<cpptorch::nn::Layer<TTensor>*>(t);
+            return static_cast<cpptorch::nn::Layer<T>*>(t);
         }
     };
     // class name to builder
@@ -52,8 +52,8 @@ private:
     // so here we keep a map for each nn object we created
 
     // Layer cannot be copied, only referenced by pointer allowed
-    std::map<int, std::shared_ptr<cpptorch::nn::Layer<TTensor>>> layer_map_;
+    std::map<int, std::shared_ptr<cpptorch::nn::Layer<T>>> layer_map_;
 
     // Storage can be copied, because TH is self-counted
-    std::map<int, cpptorch::Storage<typename TTensor::Storage>> storage_map_;
+    std::map<int, cpptorch::Storage<T>> storage_map_;
 };

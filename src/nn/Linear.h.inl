@@ -2,10 +2,10 @@
 #include "../../include/nn/Linear.h"
 
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::nn::Linear<TTensor>::forward(const cpptorch::Tensor<TTensor> &input) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::nn::Linear<T>::forward(const cpptorch::Tensor<T> &input) const
 {
-    cpptorch::Tensor<TTensor> output(true);
+    cpptorch::Tensor<T> output(true);
     int idim = input.dim();
     if (idim == 1)
     {
@@ -30,7 +30,7 @@ cpptorch::Tensor<TTensor> cpptorch::nn::Linear<TTensor>::forward(const cpptorch:
             output.fill(0);
         }
 
-        cpptorch::Tensor<TTensor> addBuffer(true);
+        cpptorch::Tensor<T> addBuffer(true);
         addBuffer.resize({ nframe });
         addBuffer.fill(1);
         output.addmm(0, output, 1, input, weight_.t());

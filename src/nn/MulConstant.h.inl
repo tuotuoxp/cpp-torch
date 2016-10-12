@@ -2,10 +2,10 @@
 #include "../../include/nn/MulConstant.h"
 
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::nn::MulConstant<TTensor>::forward(const cpptorch::Tensor<TTensor> &input) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::nn::MulConstant<T>::forward(const cpptorch::Tensor<T> &input) const
 {
-    cpptorch::Tensor<TTensor> output(true);
+    cpptorch::Tensor<T> output(true);
     output.resizeAs(input);
     output.copy(input);
     output *= constant_scalar_;

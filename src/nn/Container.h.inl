@@ -4,8 +4,8 @@
 #include <ostream>
 
 
-template<class TTensor>
-void cpptorch::nn::Container<TTensor>::print(std::ostream &o, int level) const
+template<typename T>
+void cpptorch::nn::Container<T>::print(std::ostream &o, int level) const
 {
     o << name() << " {" << std::endl;
     int counter = 1;

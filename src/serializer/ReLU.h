@@ -7,13 +7,13 @@ namespace cpptorch
 {
     namespace serializer
     {
-        template<class TTensor>
-        class ReLU : public nn::ReLU<TTensor>
+        template<typename T>
+        class ReLU : public nn::ReLU<T>
         {
         public:
-            void unserialize(const object_torch *obj, object_reader<TTensor> *mb)
+            void unserialize(const object_torch *obj, object_reader<T> *mb)
             {
-                CHECK_AND_CAST(ReLU, Threshold, TTensor)->unserialize(obj, mb);
+                CHECK_AND_CAST(ReLU, Threshold, T)->unserialize(obj, mb);
             }
         };
     }

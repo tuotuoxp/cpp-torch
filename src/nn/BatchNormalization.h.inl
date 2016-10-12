@@ -2,8 +2,8 @@
 #include "../../include/nn/BatchNormalization.h"
 
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::nn::BatchNormalization<TTensor>::forward(const cpptorch::Tensor<TTensor> &input) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::nn::BatchNormalization<T>::forward(const cpptorch::Tensor<T> &input) const
 {
     int idim = input.dim();
 
@@ -15,7 +15,7 @@ cpptorch::Tensor<TTensor> cpptorch::nn::BatchNormalization<TTensor>::forward(con
         << "got " << input.size(feat_dim) << "-feature tensor, expected " << running_mean_.nElement();
 
     // make input contiguous
-    cpptorch::Tensor<TTensor> input_new;
+    cpptorch::Tensor<T> input_new;
     if (!input.isContiguous())
     {
         input_new.create();
@@ -29,13 +29,13 @@ cpptorch::Tensor<TTensor> cpptorch::nn::BatchNormalization<TTensor>::forward(con
         input_new = addSingletonDimension(input_new.valid() ? input_new : input, 1);
     }
 
-    cpptorch::Tensor<TTensor> save_mean(true), save_std(true);
+    cpptorch::Tensor<T> save_mean(true), save_std(true);
     save_mean.resizeAs(running_mean_);
     save_std.resizeAs(running_var_);
 
-    cpptorch::Tensor<TTensor> output(true);
+    cpptorch::Tensor<T> output(true);
     output.resizeAs(input_new.valid() ? input_new : input);
-    cpptorch::th::NN<TTensor>::BatchNormalization_updateOutput(nullptr, input_new.valid() ? input_new : input,
+    cpptorch::th::NN<T>::BatchNormalization_updateOutput(nullptr, input_new.valid() ? input_new : input,
         output, weight_, bias_, running_mean_, running_var_, save_mean, save_std, train_, momentum_, eps_);
     return output;
 }

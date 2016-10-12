@@ -2,15 +2,15 @@
 #include "../../include/nn/Concat.h"
 
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::nn::Concat<TTensor>::forward(const cpptorch::Tensor<TTensor> &input) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::nn::Concat<T>::forward(const cpptorch::Tensor<T> &input) const
 {
     bool first = true;
     std::vector<long> outputSize;
-    std::vector<cpptorch::Tensor<TTensor>> outs;
+    std::vector<cpptorch::Tensor<T>> outs;
     for (auto &it : this->modules_)
     {
-        cpptorch::Tensor<TTensor> currentOutput = it->forward(input);
+        cpptorch::Tensor<T> currentOutput = it->forward(input);
         outs.push_back(currentOutput);
         if (first)
         {
@@ -22,13 +22,13 @@ cpptorch::Tensor<TTensor> cpptorch::nn::Concat<TTensor>::forward(const cpptorch:
             outputSize[dimension_] += currentOutput.size(dimension_);
         }
     }
-    cpptorch::Tensor<TTensor> output(true);
+    cpptorch::Tensor<T> output(true);
     output.resize(outputSize);
 
     int offset = 0;
     for (size_t i = 0; i < outs.size(); i++)
     {
-        cpptorch::Tensor<TTensor> &currentOutput = outs[i];
+        cpptorch::Tensor<T> &currentOutput = outs[i];
         output.narrow(dimension_, offset, currentOutput.size(dimension_)).copy(currentOutput);
         offset += currentOutput.size(dimension_);
     }

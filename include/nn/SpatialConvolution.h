@@ -6,15 +6,15 @@ namespace cpptorch
 {
     namespace nn
     {
-        template<class TTensor>
-        class SpatialConvolution : public Layer<TTensor>
+        template<typename T>
+        class SpatialConvolution : public Layer<T>
         {
         public:
             virtual const std::string name() const override { return "nn.SpatialConvolution"; }
-            virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
+            virtual Tensor<T> forward(const Tensor<T> &input) const override;
 
         protected:
-            Tensor<TTensor> weight_, bias_;
+            Tensor<T> weight_, bias_;
             int kW_, kH_, dW_, dH_, padW_, padH_;
         };
     }

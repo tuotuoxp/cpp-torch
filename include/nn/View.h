@@ -6,12 +6,12 @@ namespace cpptorch
 {
     namespace nn
     {
-        template<class TTensor>
-        class View : public Layer<TTensor>
+        template<typename T>
+        class View : public Layer<T>
         {
         public:
             virtual const std::string name() const override { return "nn.View"; }
-            virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
+            virtual Tensor<T> forward(const Tensor<T> &input) const override;
 
         protected:
             int num_elements_, num_input_dims_;

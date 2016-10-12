@@ -2,11 +2,11 @@
 #include "../../include/nn/Sequential.h"
 
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::nn::Sequential<TTensor>::forward(const cpptorch::Tensor<TTensor> &input) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::nn::Sequential<T>::forward(const cpptorch::Tensor<T> &input) const
 {
     bool first = true;
-    cpptorch::Tensor<TTensor> out;
+    cpptorch::Tensor<T> out;
     for (auto &it : this->modules_)
     {
         out = it->forward(first ? input : out);

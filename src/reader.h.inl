@@ -40,38 +40,38 @@ TSerializerBase* Cast(TSerializer *c)
 #include "serializer/View.h"
 
 
-template<class TTensor>
-object_reader<TTensor>::object_reader()
+template<typename T>
+object_reader<T>::object_reader()
 {
-    CREATE_BUILDER("nn.BatchNormalization", cpptorch::serializer::BatchNormalization<TTensor>);
-    CREATE_BUILDER("nn.Concat", cpptorch::serializer::Concat<TTensor>);
-    CREATE_BUILDER("nn.Decorator", cpptorch::serializer::Decorator<TTensor>);
-    CREATE_BUILDER("nn.DepthConcat", cpptorch::serializer::DepthConcat<TTensor>);
-    CREATE_BUILDER("nn.Inception", cpptorch::serializer::Inception<TTensor>);
-    CREATE_BUILDER("nn.Linear", cpptorch::serializer::Linear<TTensor>);
-    CREATE_BUILDER("nn.MulConstant", cpptorch::serializer::MulConstant<TTensor>);
-    CREATE_BUILDER("nn.Normalize", cpptorch::serializer::Normalize<TTensor>);
-    CREATE_BUILDER("nn.ReLU", cpptorch::serializer::ReLU<TTensor>);
-    CREATE_BUILDER("nn.Reshape", cpptorch::serializer::Reshape<TTensor>);
-    CREATE_BUILDER("nn.Sequential", cpptorch::serializer::Sequential<TTensor>);
-    CREATE_BUILDER("nn.SpatialAveragePooling", cpptorch::serializer::SpatialAveragePooling<TTensor>);
-    CREATE_BUILDER("nn.SpatialBatchNormalization", cpptorch::serializer::SpatialBatchNormalization<TTensor>);
-    CREATE_BUILDER("nn.SpatialConvolution", cpptorch::serializer::SpatialConvolution<TTensor>);
-    CREATE_BUILDER("nn.SpatialConvolutionMM", cpptorch::serializer::SpatialConvolutionMM<TTensor>);
-    CREATE_BUILDER("nn.SpatialCrossMapLRN", cpptorch::serializer::SpatialCrossMapLRN<TTensor>);
-    CREATE_BUILDER("nn.SpatialLPPooling", cpptorch::serializer::SpatialLPPooling<TTensor>);
-    CREATE_BUILDER("nn.SpatialMaxPooling", cpptorch::serializer::SpatialMaxPooling<TTensor>);
-    CREATE_BUILDER("nn.SpatialReflectionPadding", cpptorch::serializer::SpatialReflectionPadding<TTensor>);
-    CREATE_BUILDER("nn.Sqrt", cpptorch::serializer::Sqrt<TTensor>);
-    CREATE_BUILDER("nn.Square", cpptorch::serializer::Square<TTensor>);
-    CREATE_BUILDER("nn.Threshold", cpptorch::serializer::Threshold<TTensor>);
-    CREATE_BUILDER("nn.View", cpptorch::serializer::View<TTensor>);
+    CREATE_BUILDER("nn.BatchNormalization", cpptorch::serializer::BatchNormalization<T>);
+    CREATE_BUILDER("nn.Concat", cpptorch::serializer::Concat<T>);
+    CREATE_BUILDER("nn.Decorator", cpptorch::serializer::Decorator<T>);
+    CREATE_BUILDER("nn.DepthConcat", cpptorch::serializer::DepthConcat<T>);
+    CREATE_BUILDER("nn.Inception", cpptorch::serializer::Inception<T>);
+    CREATE_BUILDER("nn.Linear", cpptorch::serializer::Linear<T>);
+    CREATE_BUILDER("nn.MulConstant", cpptorch::serializer::MulConstant<T>);
+    CREATE_BUILDER("nn.Normalize", cpptorch::serializer::Normalize<T>);
+    CREATE_BUILDER("nn.ReLU", cpptorch::serializer::ReLU<T>);
+    CREATE_BUILDER("nn.Reshape", cpptorch::serializer::Reshape<T>);
+    CREATE_BUILDER("nn.Sequential", cpptorch::serializer::Sequential<T>);
+    CREATE_BUILDER("nn.SpatialAveragePooling", cpptorch::serializer::SpatialAveragePooling<T>);
+    CREATE_BUILDER("nn.SpatialBatchNormalization", cpptorch::serializer::SpatialBatchNormalization<T>);
+    CREATE_BUILDER("nn.SpatialConvolution", cpptorch::serializer::SpatialConvolution<T>);
+    CREATE_BUILDER("nn.SpatialConvolutionMM", cpptorch::serializer::SpatialConvolutionMM<T>);
+    CREATE_BUILDER("nn.SpatialCrossMapLRN", cpptorch::serializer::SpatialCrossMapLRN<T>);
+    CREATE_BUILDER("nn.SpatialLPPooling", cpptorch::serializer::SpatialLPPooling<T>);
+    CREATE_BUILDER("nn.SpatialMaxPooling", cpptorch::serializer::SpatialMaxPooling<T>);
+    CREATE_BUILDER("nn.SpatialReflectionPadding", cpptorch::serializer::SpatialReflectionPadding<T>);
+    CREATE_BUILDER("nn.Sqrt", cpptorch::serializer::Sqrt<T>);
+    CREATE_BUILDER("nn.Square", cpptorch::serializer::Square<T>);
+    CREATE_BUILDER("nn.Threshold", cpptorch::serializer::Threshold<T>);
+    CREATE_BUILDER("nn.View", cpptorch::serializer::View<T>);
 }
     
-template<class TTensor>
-void object_reader<TTensor>::build_storage(const cpptorch::object *obj, cpptorch::Storage<typename TTensor::Storage> &storage)
+template<typename T>
+void object_reader<T>::build_storage(const cpptorch::object *obj, cpptorch::Storage<T> &storage)
 {
-    auto obj_storage = const_cast<cpptorch::object_torch_storage<typename TTensor::Storage::Base>*>(obj->to_storage<typename TTensor::Storage::Base>());
+    auto obj_storage = const_cast<cpptorch::object_torch_storage<T>*>(obj->to_storage<T>());
     auto it = storage_map_.find(obj_storage->index_);
     if (it == storage_map_.end())
     {
@@ -86,24 +86,24 @@ void object_reader<TTensor>::build_storage(const cpptorch::object *obj, cpptorch
     }
 }
 
-template<class TTensor>
-void object_reader<TTensor>::build_from_size_storage(const cpptorch::object *obj, std::vector<long> &data)
+template<typename T>
+void object_reader<T>::build_from_size_storage(const cpptorch::object *obj, std::vector<long> &data)
 {
     auto *obj_storage = obj->to_storage<long>();
     data.assign(obj_storage->storage_, obj_storage->storage_ + obj_storage->size_);
 }
 
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> object_reader<TTensor>::build_tensor(const cpptorch::object *obj)
+template<typename T>
+cpptorch::Tensor<T> object_reader<T>::build_tensor(const cpptorch::object *obj)
 {
-    cpptorch::Tensor<TTensor> out;
+    cpptorch::Tensor<T> out;
     const cpptorch::object_torch_tensor *obj_tensor = obj->to_tensor();
     if (obj_tensor->dimension_ > 0)
     {
-        cpptorch::Storage<typename TTensor::Storage> storage;
+        cpptorch::Storage<T> storage;
         build_storage(obj_tensor->data_.get(), storage);
-        cpptorch::Storage<typename TTensor::SizeStorage> size, stride;
+        cpptorch::Storage<long> size, stride;
         size.unserialze(obj_tensor->size_, obj_tensor->dimension_, false);
         stride.unserialze(obj_tensor->stride_, obj_tensor->dimension_, false);
         out.create(storage, (long)obj_tensor->storage_offset_, size, stride);
@@ -111,8 +111,8 @@ cpptorch::Tensor<TTensor> object_reader<TTensor>::build_tensor(const cpptorch::o
     return std::move(out);
 }
 
-template<class TTensor>
-std::shared_ptr<cpptorch::nn::Layer<TTensor>> object_reader<TTensor>::build_layer(const cpptorch::object *obj)
+template<typename T>
+std::shared_ptr<cpptorch::nn::Layer<T>> object_reader<T>::build_layer(const cpptorch::object *obj)
 {
     const cpptorch::object_torch *obj_torch = obj->to_torch();
     auto it = layer_map_.find(obj_torch->index_);
@@ -121,7 +121,7 @@ std::shared_ptr<cpptorch::nn::Layer<TTensor>> object_reader<TTensor>::build_laye
         auto factory = factory_.find(obj_torch->class_name_);
         if (factory != factory_.end())
         {
-            std::shared_ptr<cpptorch::nn::Layer<TTensor>> l((*factory->second)(obj_torch, this));
+            std::shared_ptr<cpptorch::nn::Layer<T>> l((*factory->second)(obj_torch, this));
             layer_map_.insert(std::make_pair(obj_torch->index_, l));
             return l;
         }

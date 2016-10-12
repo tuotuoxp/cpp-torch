@@ -6,15 +6,15 @@ namespace cpptorch
 {
     namespace nn
     {
-        template<class TTensor>
-        class Threshold : public Layer<TTensor>
+        template<typename T>
+        class Threshold : public Layer<T>
         {
         public:
             virtual const std::string name() const override { return "nn.Threshold"; }
-            virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
+            virtual Tensor<T> forward(const Tensor<T> &input) const override;
 
         protected:
-            typename TTensor::Storage::Base threshold_, val_;
+            T threshold_, val_;
             bool inplace_;
         };
     }

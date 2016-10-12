@@ -2,15 +2,15 @@
 #include "../../include/nn/DepthConcat.h"
 
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::nn::DepthConcat<TTensor>::forward(const cpptorch::Tensor<TTensor> &input) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::nn::DepthConcat<T>::forward(const cpptorch::Tensor<T> &input) const
 {
     bool first = true;
     std::vector<long> outputSize;
-    std::vector<cpptorch::Tensor<TTensor>> outs;
+    std::vector<cpptorch::Tensor<T>> outs;
     for (auto &it : this->modules_)
     {
-        cpptorch::Tensor<TTensor> currentOutput = it->forward(input);
+        cpptorch::Tensor<T> currentOutput = it->forward(input);
         outs.push_back(currentOutput);
         if (first)
         {
@@ -31,15 +31,15 @@ cpptorch::Tensor<TTensor> cpptorch::nn::DepthConcat<TTensor>::forward(const cppt
         }
     }
 
-    cpptorch::Tensor<TTensor> output(true);
+    cpptorch::Tensor<T> output(true);
     output.resize(outputSize);
     output.fill(0);
 
     int offset = 0;
     for (size_t i = 0; i < outs.size(); i++)
     {
-        cpptorch::Tensor<TTensor> &currentOutput = outs[i];
-        cpptorch::Tensor<TTensor> outputWindow = windowNarrow(output, currentOutput, outputSize, offset);
+        cpptorch::Tensor<T> &currentOutput = outs[i];
+        cpptorch::Tensor<T> outputWindow = windowNarrow(output, currentOutput, outputSize, offset);
         outputWindow.copy(currentOutput);
         offset += currentOutput.size(this->dimension_);
     }
@@ -47,11 +47,11 @@ cpptorch::Tensor<TTensor> cpptorch::nn::DepthConcat<TTensor>::forward(const cppt
 }
 
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::nn::DepthConcat<TTensor>::windowNarrow(cpptorch::Tensor<TTensor> &output, cpptorch::Tensor<TTensor> &currentOutput,
+template<typename T>
+cpptorch::Tensor<T> cpptorch::nn::DepthConcat<T>::windowNarrow(cpptorch::Tensor<T> &output, cpptorch::Tensor<T> &currentOutput,
     std::vector<long> &outputSize, int offset) const
 {
-    cpptorch::Tensor<TTensor> outputWindow = output.narrow(this->dimension_, offset, currentOutput.size(this->dimension_));
+    cpptorch::Tensor<T> outputWindow = output.narrow(this->dimension_, offset, currentOutput.size(this->dimension_));
     for (int dim = 0; dim < (int)outputSize.size(); dim++)
     {
         long currentSize = currentOutput.size(dim);

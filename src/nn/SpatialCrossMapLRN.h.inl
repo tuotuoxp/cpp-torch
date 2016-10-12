@@ -3,13 +3,13 @@
 #include "util.h.inl"
 
 
-template<class TTensor>
-cpptorch::Tensor<TTensor> cpptorch::nn::SpatialCrossMapLRN<TTensor>::forward(const cpptorch::Tensor<TTensor> &input) const
+template<typename T>
+cpptorch::Tensor<T> cpptorch::nn::SpatialCrossMapLRN<T>::forward(const cpptorch::Tensor<T> &input) const
 {
     int idim = input.dim();
     asserter(idim == 3 || idim == 4) << "Input must be 3D or 4D";
 
-    cpptorch::Tensor<TTensor> input_new;
+    cpptorch::Tensor<T> input_new;
     bool isBatch = true;
     if (input.dim() == 3)
     {
@@ -26,15 +26,15 @@ cpptorch::Tensor<TTensor> cpptorch::nn::SpatialCrossMapLRN<TTensor>::forward(con
 
     // storage #1 : inputSquare/squareNext/squarePrevious/output
     // storage #2 : scale/scaleFirst/scalePrevious/scaleCurrent
-    cpptorch::Tensor<TTensor> inputSquare = input_new ^ (typename TTensor::Storage::Base)2;
+    cpptorch::Tensor<T> inputSquare = input_new ^ (T)2;
     
     int prePad = (size_ - 1) / 2 + 1;
     int prePadCrop = prePad > channels ? channels : prePad;
 
-    cpptorch::Tensor<TTensor> scale(true);
+    cpptorch::Tensor<T> scale(true);
     scale.resizeAs(input_new);
 
-    cpptorch::Tensor<TTensor> scaleFirst = scale.select(1, 0);
+    cpptorch::Tensor<T> scaleFirst = scale.select(1, 0);
     scaleFirst.fill(0);
 
     // compute first feature map normalization
@@ -47,26 +47,26 @@ cpptorch::Tensor<TTensor> cpptorch::nn::SpatialCrossMapLRN<TTensor>::forward(con
     // by adding the next feature map and removing the previous
     for (int c = 1; c < channels; c++)
     {
-        cpptorch::Tensor<TTensor> scalePrevious = scale.select(1, c - 1);
-        cpptorch::Tensor<TTensor> scaleCurrent = scale.select(1, c);
+        cpptorch::Tensor<T> scalePrevious = scale.select(1, c - 1);
+        cpptorch::Tensor<T> scaleCurrent = scale.select(1, c);
         scaleCurrent.copy(scalePrevious);
         if (c <= channels - prePad)
         {
-            cpptorch::Tensor<TTensor> squareNext = inputSquare.select(1, c + prePad - 1);
+            cpptorch::Tensor<T> squareNext = inputSquare.select(1, c + prePad - 1);
             scaleCurrent += squareNext;
         }
         if (c >= prePad)
         {
-            cpptorch::Tensor<TTensor> squarePrevious = inputSquare.select(1, c - prePad);
+            cpptorch::Tensor<T> squarePrevious = inputSquare.select(1, c - prePad);
             scaleCurrent -= squarePrevious;
         }
     }
 
-    scale *= alpha_ / (typename TTensor::Storage::Base)size_;
+    scale *= alpha_ / (T)size_;
     scale += k_;
 
     // use scale's storage as output buffer
-    cpptorch::Tensor<TTensor> output = scale;
+    cpptorch::Tensor<T> output = scale;
     output ^= -beta_;
     output *= input_new;
 

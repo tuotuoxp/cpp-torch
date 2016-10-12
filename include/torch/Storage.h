@@ -7,38 +7,38 @@
 
 namespace cpptorch
 {
-    template<class TStorage>
+    template<typename T>
     class Storage
     {
     public:
-        explicit Storage(typename TStorage::TH *th = nullptr);
+        explicit Storage(typename THTrait<T>::Storage *th = nullptr);
         template<class TIterator>
         Storage(TIterator begin, TIterator end) : th_(nullptr) { unserialze(begin, end); }
         template<class TContainer>
         Storage(const TContainer &c) : th_(nullptr) { unserialze(c); }
-        Storage(const std::initializer_list<typename TStorage::Base> &inputs) : th_(nullptr) { unserialze(inputs); }
-        Storage(const Storage<TStorage> &other) : th_(nullptr) { *this = other; }
-        Storage(Storage<TStorage> &&other) : th_(nullptr) { *this = std::move(other); }
+        Storage(const std::initializer_list<T> &inputs) : th_(nullptr) { unserialze(inputs); }
+        Storage(const Storage<T> &other) : th_(nullptr) { *this = other; }
+        Storage(Storage<T> &&other) : th_(nullptr) { *this = std::move(other); }
         ~Storage();
 
-        Storage<TStorage>& operator = (const Storage<TStorage> &src);
-        Storage<TStorage>& operator = (Storage<TStorage> &&src);
-        operator typename TStorage::TH* () const { return th_; }
+        Storage<T>& operator = (const Storage<T> &src);
+        Storage<T>& operator = (Storage<T> &&src);
+        operator typename THTrait<T>::Storage* () const { return th_; }
 
         // getter
         bool valid() const { return th_ != nullptr; }
         int size() const;
-        const typename TStorage::Base* data() const;
-        typename TStorage::Base* data();
+        const T* data() const;
+        T* data();
 
         // from raw ptr
-        void unserialze(const typename TStorage::Base *ptr_src, long size, bool take_ownership_of_data = true);
+        void unserialze(const T *ptr_src, long size, bool take_ownership_of_data = true);
         // from stl iterator
         template<class TIterator>
         void unserialze(const TIterator begin, const TIterator end)
         {
             long size = (long)(end - begin);
-            typename TStorage::Base *ptr = (typename TStorage::Base*)malloc(size * sizeof(typename TStorage::Base));
+            T *ptr = (T*)malloc(size * sizeof(T));
             int i = 0;
             for (auto it = begin; it != end; it++, i++)
             {
@@ -50,9 +50,9 @@ namespace cpptorch
         template<class TContainer>
         void unserialze(const TContainer &c) { return unserialze(c.begin(), c.end()); }
         // from initializer list
-        void unserialze(const std::initializer_list<typename TStorage::Base> &i) { return unserialze(i.begin(), i.end()); }
+        void unserialze(const std::initializer_list<T> &i) { return unserialze(i.begin(), i.end()); }
 
     protected:
-        typename TStorage::TH *th_;
+        typename THTrait<T>::Storage *th_;
    };
 }

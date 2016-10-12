@@ -11,30 +11,38 @@ struct THDoubleTensor;
 
 namespace cpptorch
 {
-    template <class TTHStorage, typename TStorageBase>
-    class StorageTrait
+
+    template<typename T>
+    class THTrait
     {
     public:
-        typedef TTHStorage TH;
-        typedef TStorageBase Base;
+        struct Tensor {};
+        struct Storage {};
     };
 
-    template <class TTHTensor, class TStorage, class TSizeStorage>
-    class TensorTrait
+    template<> class THTrait<long>
     {
     public:
-        typedef TTHTensor TH;
-        typedef TStorage Storage;
-        typedef TSizeStorage SizeStorage;
+        using Tensor = THLongTensor;
+        using Storage = THLongStorage;
+    };
+
+    template<> class THTrait<float>
+    {
+    public:
+        using Tensor = THFloatTensor;
+        using Storage = THFloatStorage;
+    };
+
+    template<> class THTrait<double>
+    {
+    public:
+        using Tensor = THDoubleTensor;
+        using Storage = THDoubleStorage;
     };
 }
 
-typedef cpptorch::StorageTrait<THLongStorage, long> StorageLong;
-typedef cpptorch::StorageTrait<THFloatStorage, float> StorageFloat;
-typedef cpptorch::StorageTrait<THDoubleStorage, double> StorageDouble;
-typedef cpptorch::TensorTrait<THLongTensor, StorageLong, StorageLong> TensorLong;
-typedef cpptorch::TensorTrait<THFloatTensor, StorageFloat, StorageLong> TensorFloat;
-typedef cpptorch::TensorTrait<THDoubleTensor, StorageDouble, StorageLong> TensorDouble;
+
 
 
 #ifdef _WIN64

@@ -7,13 +7,13 @@ namespace cpptorch
 {
     namespace serializer
     {
-        template<class TTensor>
-        class SpatialBatchNormalization : public nn::SpatialBatchNormalization<TTensor>
+        template<typename T>
+        class SpatialBatchNormalization : public nn::SpatialBatchNormalization<T>
         {
         public:
-            void unserialize(const object_torch *obj, object_reader<TTensor> *mb)
+            void unserialize(const object_torch *obj, object_reader<T> *mb)
             {
-                CHECK_AND_CAST(SpatialBatchNormalization, BatchNormalization, TTensor)->unserialize(obj, mb);
+                CHECK_AND_CAST(SpatialBatchNormalization, BatchNormalization, T)->unserialize(obj, mb);
             }
         };
     }

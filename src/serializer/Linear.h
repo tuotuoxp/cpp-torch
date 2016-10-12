@@ -6,11 +6,11 @@ namespace cpptorch
 {
     namespace serializer
     {
-        template<class TTensor>
-        class Linear : public nn::Linear<TTensor>
+        template<typename T>
+        class Linear : public nn::Linear<T>
         {
         public:
-            void unserialize(const object_torch *obj, object_reader<TTensor> *mb)
+            void unserialize(const object_torch *obj, object_reader<T> *mb)
             {
                 const object_table *obj_tbl = obj->data_->to_table();
                 this->weight_ = mb->build_tensor(obj_tbl->get("weight"));

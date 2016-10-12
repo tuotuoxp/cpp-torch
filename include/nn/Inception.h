@@ -6,12 +6,12 @@ namespace cpptorch
 {
     namespace nn
     {
-        template<class TTensor>
-        class Inception : public Decorator<TTensor>
+        template<typename T>
+        class Inception : public Decorator<T>
         {
         public:
             virtual const std::string name() const override { return "nn.Inception"; }
-            virtual Tensor<TTensor> forward(const Tensor<TTensor> &input) const override;
+            virtual Tensor<T> forward(const Tensor<T> &input) const override;
         };
     }
 }
