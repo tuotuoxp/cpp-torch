@@ -22,13 +22,13 @@ A simple load-and-fire routine looks like this in C++:
 // read input tensor
 std::ifstream fs_input("input_tensor.t7", std::ios::binary);
 auto obj_input = cpptorch::load(fs_input);
-auto input = cpptorch::read_tensor<TensorFloat>(obj_input.get());
+auto input = cpptorch::read_tensor<float>(obj_input.get());
 std::cout << input << std::endl;
 
 // read network
 std::ifstream fs_net("net.t7", std::ios::binary);
 auto obj_net = cpptorch::load(fs_net);
-auto net = cpptorch::read_net<TensorFloat>(obj_net.get());
+auto net = cpptorch::read_net<float>(obj_net.get());
 std::cout << *net << std::endl;
 
 // forward
