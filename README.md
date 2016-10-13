@@ -38,13 +38,6 @@ std::cout << output << std::endl;
 
 We also provides an [example script]() to test the famous [CMU OpenFace](https://github.com/cmusatyalab/openface) model. This network transfers a 3 * 96 * 96 face image into a 128 * 1 feature vector, representing the identity of the person.
 
-# Performance
-This wrapper is **about 2x faster** than torch's lua implementation in CPU mode.
-
-|model|torch|cpp-torch|
-|----|----|----|
-|nn4.small2|?|?|
-
 
 # Progress
 Currently, this library supports forward pass in CPU mode of
