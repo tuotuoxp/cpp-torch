@@ -37,10 +37,7 @@ namespace cpptorch
             stride[d] = tstride[d - 1];
         }
         cpptorch::Tensor<T> view;
-        cpptorch::Storage<long> size_storage, stride_storage;
-        size_storage.unserialze(size);
-        stride_storage.unserialze(stride);
-        view.create(t.storage(), t.storageOffset(), size_storage, stride_storage);
+        view.create(t.storage(), t.storageOffset(), size, stride);
         return view;
     }
 
