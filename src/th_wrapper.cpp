@@ -7,11 +7,23 @@
 #include <assert.h>
 
 
-namespace cpptorch
-{
-namespace th
-{
+namespace cpptorch { namespace th {
 
+template<>
+THLongStorage* Storage<long>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
+{
+    return THLongStorage_newWithAllocator(0, allocator, allocatorContext);
+}
+template<>
+THFloatStorage* Storage<float>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
+{
+    return THFloatStorage_newWithAllocator(0, allocator, allocatorContext);
+}
+template<>
+THDoubleStorage* Storage<double>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
+{
+    return THDoubleStorage_newWithAllocator(0, allocator, allocatorContext);
+}
 
 template<>
 THLongStorage* Storage<long>::newWithDataAndAllocator(long *data, long size, THAllocator *allocator, void *allocatorContext)
@@ -100,22 +112,6 @@ int Storage<double>::size(THDoubleStorage *storage)
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
-
-template<>
-THLongTensor* Tensor<long>::create()
-{
-    return THLongTensor_new();
-}
-template<>
-THFloatTensor* Tensor<float>::create()
-{
-    return THFloatTensor_new();
-}
-template<>
-THDoubleTensor* Tensor<double>::create()
-{
-    return THDoubleTensor_new();
-}
 
 template<>
 THLongTensor* Tensor<long>::newWithStorage(THLongStorage *storage, long offset, THLongStorage *size, THLongStorage *stride)

@@ -15,6 +15,7 @@ namespace cpptorch
         {
         public:
             // creation methods
+            static typename THTrait<T>::Storage* newWithAllocator(THAllocator *allocator, void *allocatorContext);
             static typename THTrait<T>::Storage* newWithDataAndAllocator(T *data, long size,
                 THAllocator *allocator, void *allocatorContext);
             static void retain(typename THTrait<T>::Storage *storage);
@@ -31,7 +32,6 @@ namespace cpptorch
         {
         public:
             // creation methods
-            static typename THTrait<T>::Tensor* create();
             static typename THTrait<T>::Tensor* newWithStorage(typename THTrait<T>::Storage *storage, long offset,
                 THTrait<long>::Storage *size, THTrait<long>::Storage *stride);
             static void resize(typename THTrait<T>::Tensor *self,

@@ -81,7 +81,9 @@ template<typename T>
 void cpptorch::Tensor<T>::create()
 {
     assert(th_ == nullptr);
-    th_ = cpptorch::th::Tensor<T>::create();
+    Storage<T> s;
+    s.create();
+    th_ = cpptorch::th::Tensor<T>::newWithStorage(s, 0, nullptr, nullptr);
 }
 
 template<typename T>
