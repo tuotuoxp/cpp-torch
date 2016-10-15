@@ -31,6 +31,8 @@ namespace cpptorch
         const T* data() const;
         T* data();
 
+        // creator
+        void create();
         // from raw ptr
         void unserialze(const T *ptr_src, long size, bool take_ownership_of_data = true);
         // from stl iterator
