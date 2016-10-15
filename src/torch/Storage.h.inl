@@ -1,7 +1,7 @@
 #pragma once
 #include "../../include/torch/Storage.h"
 #include "../th_wrapper.h"
-#include "allocator.h"
+#include "../allocator.h"
 
 #include <sstream>
 #include <assert.h>
