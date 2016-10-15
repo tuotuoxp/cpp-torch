@@ -1,6 +1,6 @@
 #pragma once
 #include "../../include/torch/Storage.h"
-#include "../../include/th_wrapper.h"
+#include "../th_wrapper.h"
 #include "allocator.h"
 
 #include <sstream>
@@ -84,6 +84,7 @@ T* cpptorch::Storage<T>::data()
 template<typename T>
 void cpptorch::Storage<T>::create()
 {
+    assert(th_ == nullptr);
     th_ = cpptorch::th::Storage<T>::newWithAllocator(cpptorch::allocator::get(), cpptorch::allocator::generateInfo(0));
 }
 
@@ -97,5 +98,6 @@ void cpptorch::Storage<T>::unserialze(const T *ptr_src, long size, bool take_own
         memcpy(ptr, ptr_src, sz);
         ptr_src = ptr;
     }
-    th_ = cpptorch::th::Storage<T>::newWithDataAndAllocator(const_cast<T*>(ptr_src), size, cpptorch::allocator::get(), cpptorch::allocator::generateInfo(size * sizeof(T)));
+    th_ = cpptorch::th::Storage<T>::newWithDataAndAllocator(const_cast<T*>(ptr_src), size,
+        cpptorch::allocator::get(), cpptorch::allocator::generateInfo(size * sizeof(T)));
 }

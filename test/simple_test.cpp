@@ -47,7 +47,11 @@ void test_layer(const char *data_path, const char *subdir)
     std::cout << *net;
 
     auto begin = std::chrono::high_resolution_clock::now();
-    auto yy = net->forward(x);
+    cpptorch::Tensor<float> yy;
+    for (int i = 0; i < 100000; i++)
+    {
+        yy = net->forward(x);
+    }
     auto end = std::chrono::high_resolution_clock::now();
     auto sub = cpptorch::abs(y - yy);
     if (sub.minall() > 1e-05 || sub.maxall() > 1e-05)
@@ -62,6 +66,9 @@ void test_layer(const char *data_path, const char *subdir)
 
 int main(int argc, char *argv[])
 {
+    test_layer(argv[1], "SpatialBatchNormalization");
+    cpptorch::allocator::init();
+
 //    test_index(argv[1]);
 //    test_layer(argv[1], "Inception");
 //    test_layer(argv[1], "InceptionBig");
@@ -74,7 +81,7 @@ int main(int argc, char *argv[])
 //    test_layer(argv[1], "Reshape");
 //    test_layer(argv[1], "Reshape_batch");
 //    test_layer(argv[1], "SpatialAveragePooling");
-//    test_layer(argv[1], "SpatialBatchNormalization");
+    test_layer(argv[1], "SpatialBatchNormalization");
 //    test_layer(argv[1], "SpatialConvolution");
 //    test_layer(argv[1], "SpatialCrossMapLRN");
 //    test_layer(argv[1], "SpatialMaxPooling");
@@ -82,9 +89,10 @@ int main(int argc, char *argv[])
 //    test_layer(argv[1], "Sqrt");
 //    test_layer(argv[1], "Square");
 //    test_layer(argv[1], "View");
-    test_layer(argv[1], "_face");
+//    test_layer(argv[1], "_face");
 
     //test_fast_neural_style(argv[1], "candy");
+    cpptorch::allocator::clearup();
 
 #ifdef _WIN64
     _CrtDumpMemoryLeaks();

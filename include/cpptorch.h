@@ -30,5 +30,5 @@
 #include "nn/Threshold.h"
 #include "nn/View.h"
 
-#include "th_wrapper.h"
+#include "allocator.h"
 #include "builder.h"

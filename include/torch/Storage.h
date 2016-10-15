@@ -17,6 +17,7 @@ namespace cpptorch
         template<class TContainer>
         Storage(const TContainer &c) : th_(nullptr) { unserialze(c); }
         Storage(const std::initializer_list<T> &inputs) : th_(nullptr) { unserialze(inputs); }
+        Storage(const T *ptr_src, long size, bool take_ownership_of_data = true) : th_(nullptr) { unserialze(ptr_src, size, take_ownership_of_data); }
         Storage(const Storage<T> &other) : th_(nullptr) { *this = other; }
         Storage(Storage<T> &&other) : th_(nullptr) { *this = std::move(other); }
         ~Storage();

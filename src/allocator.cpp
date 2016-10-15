@@ -1,4 +1,5 @@
 #include "allocator.h"
+#include "../include/allocator.h"
 
 #include <set>
 #include <TH/TH.h>
@@ -66,6 +67,10 @@ static MemoryCache *cache_ = nullptr;
 
 static void* mallocWrapper(void* ctx, long size)
 {
+    if (size == 0)
+    {
+        return nullptr;
+    }
     MemoryAllocation *mem = (MemoryAllocation*)ctx;
     if (cache_)
     {
@@ -82,6 +87,20 @@ static void* mallocWrapper(void* ctx, long size)
 static void* reallocWrapper(void* ctx, void* ptr, long size)
 {
     MemoryAllocation *mem = (MemoryAllocation*)ctx;
+    if (cache_)
+    {
+        MemoryAllocation mem_new;
+        void *ptr_new = cache_->alloc(size, &mem_new);
+        if (ptr_new)
+        {
+            if (mem->capacity > 0)
+            {
+                cache_->release(mem, ptr);
+            }
+            mem->capacity = mem_new.capacity;
+            return ptr_new;
+        }
+    }
     mem->capacity = size;
     return realloc(ptr, size);
 }
@@ -107,10 +126,15 @@ void cpptorch::allocator::init()
 
 void cpptorch::allocator::clearup()
 {
-    cache_->cleanup();
+    if (cache_)
+    {
+        cache_->cleanup();
+        delete cache_;
+        cache_ = nullptr;
+    }
 }
 
-
+//////////////////////////////////////////////////////////////////////////
 
 THAllocator* cpptorch::allocator::get()
 {

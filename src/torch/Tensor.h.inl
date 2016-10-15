@@ -83,7 +83,7 @@ void cpptorch::Tensor<T>::create()
     assert(th_ == nullptr);
     Storage<T> s;
     s.create();
-    th_ = cpptorch::th::Tensor<T>::newWithStorage(s, 0, nullptr, nullptr);
+    th_ = cpptorch::th::Tensor<T>::newWithStorage(s, 0, 0, nullptr, nullptr);
 }
 
 template<typename T>
@@ -91,15 +91,15 @@ void cpptorch::Tensor<T>::create(const Storage<T> &storage, long storage_offset,
     const Storage<long> &size)
 {
     assert(th_ == nullptr);
-    th_ = cpptorch::th::Tensor<T>::newWithStorage(storage, storage_offset, size, nullptr);
+    th_ = cpptorch::th::Tensor<T>::newWithStorage(storage, storage_offset, size);
 }
 
 template<typename T>
-void cpptorch::Tensor<T>::create(const Storage<T> &storage, long storage_offset,
-    const Storage<long> &size, const Storage<long> &stride)
+void cpptorch::Tensor<T>::create(const Storage<T> &storage, long storage_offset, int dim,
+    const long *size, const long *stride)
 {
     assert(th_ == nullptr);
-    th_ = cpptorch::th::Tensor<T>::newWithStorage(storage, storage_offset, size, stride);
+    th_ = cpptorch::th::Tensor<T>::newWithStorage(storage, storage_offset, dim, size, stride);
 }
 
 template<typename T>
@@ -266,7 +266,7 @@ cpptorch::Tensor<T> cpptorch::Tensor<T>::expand(const std::vector<long> &sz) con
 
     // create new view, with singleton expansion:
     cpptorch::Tensor<T> output;
-    output.create(storage(), storageOffset(), tensor_size, tensor_stride);
+    output.create(storage(), storageOffset(), tensor_dim, &tensor_size[0], &tensor_stride[0]);
     return output;
 }
 
@@ -307,7 +307,7 @@ cpptorch::Tensor<T> cpptorch::Tensor<T>::operator [] (const std::initializer_lis
         tsize.push_back(1);
         tstride.push_back(1);
     }
-    output.create(storage(), index, cpptorch::Storage<long>(tsize), cpptorch::Storage<long>(tstride));
+    output.create(storage(), index, (int)tsize.size(), &tsize[0], &tstride[0]);
     return output;
 }
 
