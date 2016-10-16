@@ -5,6 +5,7 @@
 
 #include <sstream>
 #include <assert.h>
+#include <string.h>
 
 
 template<typename T>

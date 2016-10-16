@@ -3,7 +3,6 @@
 
 #include <set>
 #include <vector>
-#include <string.h>
 #include <assert.h>
 #include <TH/TH.h>
 
