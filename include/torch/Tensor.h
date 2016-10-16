@@ -25,7 +25,7 @@ namespace cpptorch
         // creation methods
         void create();
         void create(const Storage<T> &storage, long storage_offset, const Storage<long> &size);
-        void create(const Storage<T> &storage, long storage_offset, const Storage<long> &size, const Storage<long> &stride);
+        void create(const Storage<T> &storage, long storage_offset, int dim, const long *size, const long *stride);
         void resize(const Storage<long> &size);
         void resize(const Storage<long> &size, const Storage<long> &stride);
         void resizeAs(const Tensor<T> &src);

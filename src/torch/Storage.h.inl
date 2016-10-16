@@ -1,15 +1,11 @@
 #pragma once
 #include "../../include/torch/Storage.h"
-#include "../../include/th_wrapper.h"
+#include "../th_wrapper.h"
+#include "../allocator.h"
 
 #include <sstream>
 #include <assert.h>
-#include <TH/TH.h>
-
-
-static void *mallocWrapper(void* ctx, long size) { return malloc(size); }
-static void *reallocWrapper(void* ctx, void* ptr, long size) { return realloc(ptr, size); }
-static void freeWrapper(void* ctx, void* ptr) { free(ptr); }
+#include <string.h>
 
 
 template<typename T>
@@ -87,6 +83,13 @@ T* cpptorch::Storage<T>::data()
 //////////////////////////////////////////////////////////////////////////
 
 template<typename T>
+void cpptorch::Storage<T>::create()
+{
+    assert(th_ == nullptr);
+    th_ = cpptorch::th::Storage<T>::newWithAllocator(cpptorch::allocator::get(), cpptorch::allocator::requestIndex());
+}
+
+template<typename T>
 void cpptorch::Storage<T>::unserialze(const T *ptr_src, long size, bool take_ownership_of_data)
 {
     if (!take_ownership_of_data)
@@ -96,11 +99,6 @@ void cpptorch::Storage<T>::unserialze(const T *ptr_src, long size, bool take_own
         memcpy(ptr, ptr_src, sz);
         ptr_src = ptr;
     }
-    static THAllocator allocater_ =
-    {
-        mallocWrapper,
-        reallocWrapper,
-        freeWrapper
-    };
-    th_ = cpptorch::th::Storage<T>::newWithDataAndAllocator(const_cast<T*>(ptr_src), size, &allocater_, nullptr);
+    th_ = cpptorch::th::Storage<T>::newWithDataAndAllocator(const_cast<T*>(ptr_src), size,
+        cpptorch::allocator::get(), cpptorch::allocator::requestIndex());
 }

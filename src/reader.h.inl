@@ -103,10 +103,7 @@ cpptorch::Tensor<T> object_reader<T>::build_tensor(const cpptorch::object *obj)
     {
         cpptorch::Storage<T> storage;
         build_storage(obj_tensor->data_.get(), storage);
-        cpptorch::Storage<long> size, stride;
-        size.unserialze(obj_tensor->size_, obj_tensor->dimension_, false);
-        stride.unserialze(obj_tensor->stride_, obj_tensor->dimension_, false);
-        out.create(storage, (long)obj_tensor->storage_offset_, size, stride);
+        out.create(storage, (long)obj_tensor->storage_offset_, obj_tensor->dimension_, obj_tensor->size_, obj_tensor->stride_);
     }
     return std::move(out);
 }

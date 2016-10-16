@@ -1,4 +1,4 @@
-#include "../include/th_wrapper.h"
+#include "th_wrapper.h"
 #include "../include/torch/Storage.h"
 #include "../include/torch/Tensor.h"
 
@@ -7,11 +7,23 @@
 #include <assert.h>
 
 
-namespace cpptorch
-{
-namespace th
-{
+namespace cpptorch { namespace th {
 
+template<>
+THLongStorage* Storage<long>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
+{
+    return THLongStorage_newWithAllocator(0, allocator, allocatorContext);
+}
+template<>
+THFloatStorage* Storage<float>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
+{
+    return THFloatStorage_newWithAllocator(0, allocator, allocatorContext);
+}
+template<>
+THDoubleStorage* Storage<double>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
+{
+    return THDoubleStorage_newWithAllocator(0, allocator, allocatorContext);
+}
 
 template<>
 THLongStorage* Storage<long>::newWithDataAndAllocator(long *data, long size, THAllocator *allocator, void *allocatorContext)
@@ -102,35 +114,59 @@ int Storage<double>::size(THDoubleStorage *storage)
 
 
 template<>
-THLongTensor* Tensor<long>::create()
+THLongTensor* Tensor<long>::newWithStorage(THLongStorage *storage, long offset, THLongStorage *size)
 {
-    return THLongTensor_new();
+    return THLongTensor_newWithStorage(storage, offset, size, nullptr);
 }
 template<>
-THFloatTensor* Tensor<float>::create()
+THFloatTensor* Tensor<float>::newWithStorage(THFloatStorage *storage, long offset, THLongStorage *size)
 {
-    return THFloatTensor_new();
+    return THFloatTensor_newWithStorage(storage, offset, size, nullptr);
 }
 template<>
-THDoubleTensor* Tensor<double>::create()
+THDoubleTensor* Tensor<double>::newWithStorage(THDoubleStorage *storage, long offset, THLongStorage *size)
 {
-    return THDoubleTensor_new();
+    return THDoubleTensor_newWithStorage(storage, offset, size, nullptr);
 }
 
 template<>
-THLongTensor* Tensor<long>::newWithStorage(THLongStorage *storage, long offset, THLongStorage *size, THLongStorage *stride)
+THLongTensor* Tensor<long>::newWithStorage(THLongStorage *storage, long offset, int dim, const long *size, const long *stride)
 {
-    return THLongTensor_newWithStorage(storage, offset, size, stride);
+    switch (dim)
+    {
+    case 0: return THLongTensor_newWithStorage(storage, offset, nullptr, nullptr);
+    case 1: return THLongTensor_newWithStorage1d(storage, offset, size[0], stride[0]);
+    case 2: return THLongTensor_newWithStorage2d(storage, offset, size[0], stride[0], size[1], stride[1]);
+    case 3: return THLongTensor_newWithStorage3d(storage, offset, size[0], stride[0], size[1], stride[1], size[2], stride[2]);
+    case 4: return THLongTensor_newWithStorage4d(storage, offset, size[0], stride[0], size[1], stride[1], size[2], stride[2], size[3], stride[3]);
+    }
+    return THLongTensor_newWithStorage(storage, offset, cpptorch::Storage<long>(size, dim, false), cpptorch::Storage<long>(stride, dim, false));
 }
 template<>
-THFloatTensor* Tensor<float>::newWithStorage(THFloatStorage *storage, long offset, THLongStorage *size, THLongStorage *stride)
+THFloatTensor* Tensor<float>::newWithStorage(THFloatStorage *storage, long offset, int dim, const long *size, const long *stride)
 {
-    return THFloatTensor_newWithStorage(storage, offset, size, stride);
+    switch (dim)
+    {
+    case 0: return THFloatTensor_newWithStorage(storage, offset, nullptr, nullptr);
+    case 1: return THFloatTensor_newWithStorage1d(storage, offset, size[0], stride[0]);
+    case 2: return THFloatTensor_newWithStorage2d(storage, offset, size[0], stride[0], size[1], stride[1]);
+    case 3: return THFloatTensor_newWithStorage3d(storage, offset, size[0], stride[0], size[1], stride[1], size[2], stride[2]);
+    case 4: return THFloatTensor_newWithStorage4d(storage, offset, size[0], stride[0], size[1], stride[1], size[2], stride[2], size[3], stride[3]);
+    }
+    return THFloatTensor_newWithStorage(storage, offset, cpptorch::Storage<long>(size, dim, false), cpptorch::Storage<long>(stride, dim, false));
 }
 template<>
-THDoubleTensor* Tensor<double>::newWithStorage(THDoubleStorage *storage, long offset, THLongStorage *size, THLongStorage *stride)
+THDoubleTensor* Tensor<double>::newWithStorage(THDoubleStorage *storage, long offset, int dim, const long *size, const long *stride)
 {
-    return THDoubleTensor_newWithStorage(storage, offset, size, stride);
+    switch (dim)
+    {
+    case 0: return THDoubleTensor_newWithStorage(storage, offset, nullptr, nullptr);
+    case 1: return THDoubleTensor_newWithStorage1d(storage, offset, size[0], stride[0]);
+    case 2: return THDoubleTensor_newWithStorage2d(storage, offset, size[0], stride[0], size[1], stride[1]);
+    case 3: return THDoubleTensor_newWithStorage3d(storage, offset, size[0], stride[0], size[1], stride[1], size[2], stride[2]);
+    case 4: return THDoubleTensor_newWithStorage4d(storage, offset, size[0], stride[0], size[1], stride[1], size[2], stride[2], size[3], stride[3]);
+    }
+    return THDoubleTensor_newWithStorage(storage, offset, cpptorch::Storage<long>(size, dim, false), cpptorch::Storage<long>(stride, dim, false));
 }
 
 template<>
@@ -464,23 +500,20 @@ double Tensor<double>::maxall(THDoubleTensor *r)
 template<>
 void Tensor<long>::max(THLongTensor *values, THLongTensor *t, int dimension)
 {
-    THLongTensor *l = THLongTensor_new();
+    cpptorch::Tensor<long> l(true);
     THLongTensor_max(values, l, t, dimension);
-    THLongTensor_free(l);
 }
 template<>
 void Tensor<float>::max(THFloatTensor *values, THFloatTensor *t, int dimension)
 {
-    THLongTensor *l = THLongTensor_new();
+    cpptorch::Tensor<long> l(true);
     THFloatTensor_max(values, l, t, dimension);
-    THLongTensor_free(l);
 }
 template<>
 void Tensor<double>::max(THDoubleTensor *values, THDoubleTensor *t, int dimension)
 {
-    THLongTensor *l = THLongTensor_new();
+    cpptorch::Tensor<long> l(true);
     THDoubleTensor_max(values, l, t, dimension);
-    THLongTensor_free(l);
 }
 
 template<>

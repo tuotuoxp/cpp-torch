@@ -1,5 +1,5 @@
 #pragma once
-#include "General.h"
+#include "../include/General.h"
 
 
 typedef void THNNState;
@@ -11,10 +11,11 @@ namespace cpptorch
     namespace th
     {
         template<typename T>
-        class API Storage
+        class Storage
         {
         public:
             // creation methods
+            static typename THTrait<T>::Storage* newWithAllocator(THAllocator *allocator, void *allocatorContext);
             static typename THTrait<T>::Storage* newWithDataAndAllocator(T *data, long size,
                 THAllocator *allocator, void *allocatorContext);
             static void retain(typename THTrait<T>::Storage *storage);
@@ -27,13 +28,13 @@ namespace cpptorch
 
 
         template<typename T>
-        class API Tensor
+        class Tensor
         {
         public:
             // creation methods
-            static typename THTrait<T>::Tensor* create();
-            static typename THTrait<T>::Tensor* newWithStorage(typename THTrait<T>::Storage *storage, long offset,
-                THTrait<long>::Storage *size, THTrait<long>::Storage *stride);
+            static typename THTrait<T>::Tensor* newWithStorage(typename THTrait<T>::Storage *storage, long offset, THTrait<long>::Storage *size);
+            static typename THTrait<T>::Tensor* newWithStorage(typename THTrait<T>::Storage *storage, long offset, int dim,
+                const long *size, const long *stride);
             static void resize(typename THTrait<T>::Tensor *self,
                 typename THTrait<long>::Storage *size, typename THTrait<long>::Storage *stride);
             static void resizeAs(typename THTrait<T>::Tensor *self, typename THTrait<T>::Tensor *src);
@@ -101,7 +102,7 @@ namespace cpptorch
 
 
         template<typename T>
-        class API NN
+        class NN
         {
         public:
             static void BatchNormalization_updateOutput(THNNState *state,
