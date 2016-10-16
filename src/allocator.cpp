@@ -2,6 +2,9 @@
 #include "../include/allocator.h"
 
 #include <set>
+#include <vector>
+#include <string.h>
+#include <assert.h>
 #include <TH/TH.h>
 
 
@@ -9,57 +12,119 @@ struct MemoryAllocation
 {
     void *buf;
     long capacity;
-    
-    bool operator < (const MemoryAllocation &m) const
-    {
-        if (capacity < m.capacity)
-        {
-            return true;
-        }
-        else if (capacity > m.capacity)
-        {
-            return false;
-        }
-        else
-        {
-            return buf < m.buf;
-        }
-    }
 };
 
 
-class MemoryCache : protected std::set<MemoryAllocation>
+class MemoryCache
 {
 public:
-    void* alloc(long size, MemoryAllocation *mem)
+    MemoryCache()
     {
-        for (auto it = begin(); it != end(); it++)
+        memory_block_info_.reserve(1024);
+        free_block_info_index_.reserve(1024);
+        available_memory_block_.reserve(1024);
+    }
+
+    int requestIndex()
+    {
+        MemoryAllocation m = {};
+        if (!free_block_info_index_.empty())
         {
-            if (it->capacity >= size)
+            int idx = *free_block_info_index_.rbegin();
+            free_block_info_index_.pop_back();
+            memory_block_info_[idx] = m;
+            return idx + 1;
+        }
+        memory_block_info_.push_back(m);
+        return (int)memory_block_info_.size();
+    }
+
+
+    void* alloc(int index, long size)
+    {
+        MemoryAllocation &m = memory_block_info_[index];
+        for (size_t i = 0; i < available_memory_block_.size(); i++)
+        {
+            MemoryAllocation &findm = available_memory_block_[i];
+            if (findm.capacity >= size)
             {
-                mem->capacity = it->capacity;
-                void *buf = it->buf;
-                erase(it);
+                m.capacity = findm.capacity;
+                void *buf = findm.buf;
+                available_memory_block_.erase(available_memory_block_.begin() + i);
                 return buf;
             }
         }
-        return nullptr;
+        // cannot find proper memory block
+        m.capacity = size;
+        return malloc(size);
     }
 
-    void release(MemoryAllocation *mem, void *buf)
+    void* re_alloc(int index, void *ptr, long new_size)
     {
-        mem->buf = buf;
-        insert(*mem);
+        MemoryAllocation &m = memory_block_info_[index];
+        for (size_t i = 0; i < available_memory_block_.size(); i++)
+        {
+            MemoryAllocation &findm = available_memory_block_[i];
+            if (findm.capacity >= new_size)
+            {
+                // cache old
+                if (m.capacity > 0)
+                {
+                    m.buf = ptr;
+                    insertIntoAvailableMemory(m);
+                }
+
+                // assign new
+                m.capacity = findm.capacity;
+                void *buf = findm.buf;
+                available_memory_block_.erase(available_memory_block_.begin() + i);
+                return buf;
+            }
+        }
+        // cannot find proper memory block
+        m.capacity = new_size;
+        return realloc(ptr, new_size);
+    }
+
+    void release(int index, void *buf)
+    {
+        MemoryAllocation &m = memory_block_info_[index];
+        m.buf = buf;
+        insertIntoAvailableMemory(m);
+        free_block_info_index_.push_back(index);
     }
     
     void cleanup()
     {
-        for (auto it = begin(); it != end(); it++)
+        for (auto it = available_memory_block_.begin(); it != available_memory_block_.end(); it++)
         {
             free(it->buf);
         }
-        clear();
+        available_memory_block_.clear();
     }
+
+private:
+    void insertIntoAvailableMemory(MemoryAllocation ma)
+    {
+        for (int i = (int)available_memory_block_.size(); i >= 1; i--)
+        {
+            if (available_memory_block_[i - 1].capacity <= ma.capacity)
+            {
+                available_memory_block_.insert(available_memory_block_.begin() + i, ma);
+                return;
+            }
+        }
+        available_memory_block_.insert(available_memory_block_.begin(), ma);
+    }
+
+    // memory block info (include using and unused)
+    std::vector<MemoryAllocation> memory_block_info_;
+
+    // empty holes in memory_block_info_
+    std::vector<int> free_block_info_index_;
+
+    // memory blocks which can be reused
+    std::vector<MemoryAllocation> available_memory_block_;
 };
 
 static MemoryCache *cache_ = nullptr;
@@ -71,60 +136,42 @@ static void* mallocWrapper(void* ctx, long size)
     {
         return nullptr;
     }
-    MemoryAllocation *mem = (MemoryAllocation*)ctx;
-    if (cache_)
+    if (cache_ && ctx)
     {
-        void *ptr = cache_->alloc(size, mem);
-        if (ptr)
-        {
-            return ptr;
-        }
+        return cache_->alloc((int)(long long)ctx - 1, size);
     }
-    mem->capacity = size;
     return malloc(size);
 }
 
 static void* reallocWrapper(void* ctx, void* ptr, long size)
 {
-    MemoryAllocation *mem = (MemoryAllocation*)ctx;
-    if (cache_)
+    if (cache_ && ctx)
     {
-        MemoryAllocation mem_new;
-        void *ptr_new = cache_->alloc(size, &mem_new);
-        if (ptr_new)
-        {
-            if (mem->capacity > 0)
-            {
-                cache_->release(mem, ptr);
-            }
-            mem->capacity = mem_new.capacity;
-            return ptr_new;
-        }
+        return cache_->re_alloc((int)(long long)ctx - 1, ptr, size);
     }
-    mem->capacity = size;
     return realloc(ptr, size);
 }
 
 static void freeWrapper(void* ctx, void* ptr)
 {
-    MemoryAllocation *mem = (MemoryAllocation*)ctx;
-    if (cache_)
+    if (cache_ && ctx)
     {
-        cache_->release(mem, ptr);
+        cache_->release((int)(long long)ctx - 1, ptr);
     }
     else
     {
         free(ptr);
     }
-    delete mem;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void cpptorch::allocator::init()
 {
     cache_ = new MemoryCache();
 }
 
-void cpptorch::allocator::clearup()
+void cpptorch::allocator::cleanup()
 {
     if (cache_)
     {
@@ -147,9 +194,11 @@ THAllocator* cpptorch::allocator::get()
     return &allocator;
 }
 
-void* cpptorch::allocator::generateInfo(long sz)
+void* cpptorch::allocator::requestIndex()
 {
-    MemoryAllocation *mem = new MemoryAllocation();
-    mem->capacity = sz;
-    return mem;
+    if (cache_)
+    {
+        return (void*)(long long)cache_->requestIndex();
+    }
+    return nullptr;
 }

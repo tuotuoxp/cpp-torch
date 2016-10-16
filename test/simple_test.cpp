@@ -39,7 +39,7 @@ void test_index(const char *data_path)
 }
 
 
-void test_layer(const char *data_path, const char *subdir)
+void test_layer(const char *data_path, const char *subdir, int count = 1)
 {
     auto net = read_layer<float>(std::string(data_path) + "/" + subdir + "/net.t7");
     cpptorch::Tensor<float> x = read_tensor<float>(std::string(data_path) + "/" + subdir + "/x.t7");
@@ -48,7 +48,7 @@ void test_layer(const char *data_path, const char *subdir)
 
     auto begin = std::chrono::high_resolution_clock::now();
     cpptorch::Tensor<float> yy;
-    for (int i = 0; i < 100000; i++)
+    for (int i = 0; i < count; i++)
     {
         yy = net->forward(x);
     }
@@ -66,7 +66,7 @@ void test_layer(const char *data_path, const char *subdir)
 
 int main(int argc, char *argv[])
 {
-    test_layer(argv[1], "SpatialBatchNormalization");
+    test_layer(argv[1], "SpatialBatchNormalization", 100000);
     cpptorch::allocator::init();
 
 //    test_index(argv[1]);
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 //    test_layer(argv[1], "Reshape");
 //    test_layer(argv[1], "Reshape_batch");
 //    test_layer(argv[1], "SpatialAveragePooling");
-    test_layer(argv[1], "SpatialBatchNormalization");
+    test_layer(argv[1], "SpatialBatchNormalization", 100000);
 //    test_layer(argv[1], "SpatialConvolution");
 //    test_layer(argv[1], "SpatialCrossMapLRN");
 //    test_layer(argv[1], "SpatialMaxPooling");
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 //    test_layer(argv[1], "_face");
 
     //test_fast_neural_style(argv[1], "candy");
-    cpptorch::allocator::clearup();
+    cpptorch::allocator::cleanup();
 
 #ifdef _WIN64
     _CrtDumpMemoryLeaks();

@@ -7,6 +7,6 @@ namespace cpptorch
     namespace allocator
     {
         API void init();
-        API void clearup();
+        API void cleanup();
     }
 }

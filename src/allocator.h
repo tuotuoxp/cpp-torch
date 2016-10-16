@@ -9,6 +9,6 @@ namespace cpptorch
     namespace allocator
     {
         THAllocator* get();
-        void* generateInfo(long sz);
+        void* requestIndex();
     }
 }
