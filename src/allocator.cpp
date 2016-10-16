@@ -88,8 +88,11 @@ public:
     void release(int index, void *buf)
     {
         MemoryAllocation &m = memory_block_info_[index];
-        m.buf = buf;
-        insertIntoAvailableMemory(m);
+        if (m.capacity > 0)
+        {
+            m.buf = buf;
+            insertIntoAvailableMemory(m);
+        }
         free_block_info_index_.push_back(index);
     }
     
