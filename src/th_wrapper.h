@@ -23,7 +23,7 @@ namespace cpptorch
 
             // getter
             static T* data(typename THTrait<T>::Storage *storage);
-            static int size(typename THTrait<T>::Storage *storage);
+            static long size(typename THTrait<T>::Storage *storage);
         };
 
 
@@ -53,7 +53,7 @@ namespace cpptorch
 
             // calculative access methods
             static int isContiguous(const typename THTrait<T>::Tensor *tensor);
-            static int nElement(const typename THTrait<T>::Tensor *tensor);
+            static long nElement(const typename THTrait<T>::Tensor *tensor);
 
             // special access methods (shares the same storage)
             static void narrow(typename THTrait<T>::Tensor *self, typename THTrait<T>::Tensor *src, int dimension, long firstIndex, long size);

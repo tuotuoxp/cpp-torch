@@ -132,7 +132,7 @@ private:
 static MemoryCache *cache_ = nullptr;
 
 
-static void* mallocWrapper(void* ctx, long size)
+static void* mallocWrapper(void* ctx, ptrdiff_t size)
 {
     if (size == 0)
     {
@@ -140,16 +140,16 @@ static void* mallocWrapper(void* ctx, long size)
     }
     if (cache_ && ctx)
     {
-        return cache_->alloc((int)(long long)ctx - 1, size);
+        return cache_->alloc((int)(long long)ctx - 1, (long)size);
     }
     return malloc(size);
 }
 
-static void* reallocWrapper(void* ctx, void* ptr, long size)
+static void* reallocWrapper(void* ctx, void* ptr, ptrdiff_t size)
 {
     if (cache_ && ctx)
     {
-        return cache_->re_alloc((int)(long long)ctx - 1, ptr, size);
+        return cache_->re_alloc((int)(long long)ctx - 1, ptr, (long)size);
     }
     return realloc(ptr, size);
 }

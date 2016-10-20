@@ -92,19 +92,19 @@ double* Storage<double>::data(THDoubleStorage *storage)
 }
 
 template<>
-int Storage<long>::size(THLongStorage *storage)
+long Storage<long>::size(THLongStorage *storage)
 {
-    return THLongStorage_size(storage);
+    return (long)THLongStorage_size(storage);
 }
 template<>
-int Storage<float>::size(THFloatStorage *storage)
+long Storage<float>::size(THFloatStorage *storage)
 {
-    return THFloatStorage_size(storage);
+    return (long)THFloatStorage_size(storage);
 }
 template<>
-int Storage<double>::size(THDoubleStorage *storage)
+long Storage<double>::size(THDoubleStorage *storage)
 {
-    return THDoubleStorage_size(storage);
+    return (long)THDoubleStorage_size(storage);
 }
 
 
@@ -270,17 +270,17 @@ THDoubleStorage* Tensor<double>::storage(const THDoubleTensor *tensor)
 template<>
 long Tensor<long>::storageOffset(const THLongTensor *tensor)
 {
-    return THLongTensor_storageOffset(tensor);
+    return (long)THLongTensor_storageOffset(tensor);
 }
 template<>
 long Tensor<float>::storageOffset(const THFloatTensor *tensor)
 {
-    return THFloatTensor_storageOffset(tensor);
+    return (long)THFloatTensor_storageOffset(tensor);
 }
 template<>
 long Tensor<double>::storageOffset(const THDoubleTensor *tensor)
 {
-    return THDoubleTensor_storageOffset(tensor);
+    return (long)THDoubleTensor_storageOffset(tensor);
 }
 
 template<>
@@ -382,19 +382,19 @@ int Tensor<double>::isContiguous(const THDoubleTensor *tensor)
 }
 
 template<>
-int Tensor<long>::nElement(const THLongTensor *tensor)
+long Tensor<long>::nElement(const THLongTensor *tensor)
 {
-    return THLongTensor_nElement(tensor);
+    return (long)THLongTensor_nElement(tensor);
 }
 template<>
-int Tensor<float>::nElement(const THFloatTensor *tensor)
+long Tensor<float>::nElement(const THFloatTensor *tensor)
 {
-    return THFloatTensor_nElement(tensor);
+    return (long)THFloatTensor_nElement(tensor);
 }
 template<>
-int Tensor<double>::nElement(const THDoubleTensor *tensor)
+long Tensor<double>::nElement(const THDoubleTensor *tensor)
 {
-    return THDoubleTensor_nElement(tensor);
+    return (long)THDoubleTensor_nElement(tensor);
 }
 
 //////////////////////////////////////////////////////////////////////////
