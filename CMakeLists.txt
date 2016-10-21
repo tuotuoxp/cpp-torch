@@ -12,23 +12,43 @@ if(NOT TH_FOUND)
 endif()
 
 
-# create target
-file(GLOB_RECURSE cpptorch_SRC
-    "src/*.h"
-    "src/*.h.inl"
-    "src/*.cpp"
-    "src/*.cc"
-    "include/*.h"
-)
+macro(make_project name src)
+  # create target
+  add_library(${name} SHARED ${src})
 
-foreach(each_file ${cpptorch_SRC})
+  if(MSVC)
+    target_compile_definitions(${name} PRIVATE API_CPPTORCH_DEF=1)
+  endif()
+
+  # include dirs
+  target_include_directories(${name} PRIVATE "${TH_INCLUDE_DIR}" "${TH_INCLUDE_DIR}/../THNN" "${TH_INCLUDE_DIR}/..")
+
+  # link
+  find_library(TH_LIBRARY NAMES TH PATHS ${TH_LIB_DIR})
+  find_library(THNN_LIBRARY NAMES THNN PATHS ${TH_LIB_DIR})
+  target_link_libraries(${name} ${TH_LIBRARY} ${THNN_LIBRARY})
+
+  # install target
+  install(TARGETS ${name}
+    RUNTIME DESTINATION "bin"
+    ARCHIVE DESTINATION "lib"
+    LIBRARY DESTINATION "lib"
+  )
+  set_target_properties(${name} PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+  set_target_properties(${name} PROPERTIES MACOSX_RPATH TRUE)
+endmacro()
+
+
+# cpptorch
+file(GLOB_RECURSE cpptorch_src "include/*.h" "src/*.h" "src/*.h.inl" "src/*.cpp" "src/*.cc")
+foreach(each_file ${cpptorch_src})
   get_filename_component(file_dir "${each_file}" PATH)
   # absolute path -> relative path
   string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" file_relative_dir "${file_dir}")
 
   # skip src or include directory
   string(REGEX REPLACE "(\\./)?(src)/?" "" group_name "${file_relative_dir}")
-  # changes / to \\
+  # changes "/" to "\"
   string(REPLACE "/" "\\" group_name "${group_name}")
 
   # group into "Source Files" and "Header Files"
@@ -40,32 +60,12 @@ foreach(each_file ${cpptorch_SRC})
 
   source_group("${group_name}" FILES "${each_file}")
 endforeach()
-
-add_library(cpptorch SHARED ${cpptorch_SRC})
-
-if(MSVC)
-  target_compile_definitions(cpptorch PRIVATE API_CPPTORCH_DEF=1)
-endif()
+make_project(cpptorch "${cpptorch_src}")
 
 
-# include dirs
-target_include_directories(cpptorch PRIVATE "${TH_INCLUDE_DIR}" "${TH_INCLUDE_DIR}/../THNN" "${TH_INCLUDE_DIR}/..")
-
-
-# link
-find_library(TH_LIBRARY NAMES TH PATHS ${TH_LIB_DIR})
-find_library(THNN_LIBRARY NAMES THNN PATHS ${TH_LIB_DIR})
-target_link_libraries(cpptorch ${TH_LIBRARY} ${THNN_LIBRARY})
-
-
-# install target
-install(TARGETS cpptorch
-  RUNTIME DESTINATION "bin"
-  ARCHIVE DESTINATION "lib"
-  LIBRARY DESTINATION "lib"
-)
-set_target_properties(cpptorch PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
-set_target_properties(cpptorch PROPERTIES MACOSX_RPATH TRUE)
+# cpptorch_cuda
+file(GLOB_RECURSE cpptorch_cuda_src "src_cuda/*.cpp" "src_cuda/*.cc")
+make_project(cpptorch_cuda "${cpptorch_cuda_src}")
 
 
 # install headers
