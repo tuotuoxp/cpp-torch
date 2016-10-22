@@ -81,17 +81,17 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 
-#define CREATE_BUILDER(name, T)     this->factory_.insert(std::make_pair(name, std::shared_ptr<class_factory_base>(new class_factory_impl<T>())))
+#define CREATE_BUILDER(name, T)     this->factory_.insert(std::make_pair(name, std::shared_ptr<class_factory_base>(new class_factory_impl<T,C>())))
 
 
 object_loader::object_loader()
 {
-    CREATE_BUILDER("torch.LongTensor", object_torch_tensor_reader);
-    CREATE_BUILDER("torch.FloatTensor", object_torch_tensor_reader);
-    CREATE_BUILDER("torch.DoubleTensor", object_torch_tensor_reader);
-    CREATE_BUILDER("torch.LongStorage", object_torch_storage_reader<long>);
-    CREATE_BUILDER("torch.FloatStorage", object_torch_storage_reader<float>);
-    CREATE_BUILDER("torch.DoubleStorage", object_torch_storage_reader<double>);
+    addClass<object_torch_tensor_reader>("torch.LongTensor");
+    addClass<object_torch_tensor_reader>("torch.FloatTensor");
+    addClass<object_torch_tensor_reader>("torch.DoubleTensor");
+    addClass<object_torch_storage_reader<long>>("torch.LongStorage");
+    addClass<object_torch_storage_reader<float>>("torch.FloatStorage");
+    addClass<object_torch_storage_reader<double>>("torch.DoubleStorage");
 }
 
 std::shared_ptr<cpptorch::object> object_loader::read_object(std::istream &is)

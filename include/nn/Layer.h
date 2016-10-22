@@ -9,7 +9,7 @@ namespace cpptorch
 {
     namespace nn
     {
-        template<typename T>
+        template<typename T, bool C = false>
         class Layer
         {
         public:
@@ -18,7 +18,7 @@ namespace cpptorch
 
             virtual const std::string name() const = 0;
             virtual void print(std::ostream &o, int level = 0) const { o << name(); }
-            virtual Tensor<T> forward(const Tensor<T> &input) const = 0;
+            virtual Tensor<T,C> forward(const Tensor<T,C> &input) const = 0;
 
             friend std::ostream& operator << (std::ostream &o, const Layer &m)
             {
@@ -29,7 +29,7 @@ namespace cpptorch
 
         protected:
             // copy constructor disallowd
-            Layer(const Layer<T> &other);
+            Layer(const Layer<T,C> &other);
         };
     }
 }

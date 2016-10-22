@@ -12,8 +12,8 @@ namespace cpptorch
      *  after: dim = 0 : 1xaxbxcxd
      *         dim = 2 : axbx1xcxd
      */
-    template<typename T>
-    cpptorch::Tensor<T> addSingletonDimension(const cpptorch::Tensor<T> &t, int dim)
+    template<typename T, bool C>
+    cpptorch::Tensor<T,C> addSingletonDimension(const cpptorch::Tensor<T,C> &t, int dim)
     {
         int tdim = t.dim();
         asserter(dim > 0 && dim <= tdim + 1)
@@ -36,7 +36,7 @@ namespace cpptorch
             size[d] = tsize[d - 1];
             stride[d] = tstride[d - 1];
         }
-        cpptorch::Tensor<T> view;
+        cpptorch::Tensor<T,C> view;
         view.create(t.storage(), t.storageOffset(), (int)size.size(), &size[0], &stride[0]);
         return view;
     }
@@ -47,8 +47,8 @@ namespace cpptorch
     * before: axbxc
     *  after: 1xaxbxc
     */
-    template<typename T>
-    cpptorch::Tensor<T> toBatch(const cpptorch::Tensor<T> &tensor)
+    template<typename T, bool C>
+    cpptorch::Tensor<T,C> toBatch(const cpptorch::Tensor<T,C> &tensor)
     {
         std::vector<long> tsize = tensor.size();
         tsize.insert(tsize.begin(), 1);
@@ -61,8 +61,8 @@ namespace cpptorch
     * before: 1xaxbxc
     *  after: axbxc
     */
-    template<typename T>
-    cpptorch::Tensor<T> fromBatch(const cpptorch::Tensor<T> &tensor)
+    template<typename T, bool C>
+    cpptorch::Tensor<T,C> fromBatch(const cpptorch::Tensor<T,C> &tensor)
     {
         std::vector<long> tsize = tensor.size();
         assert(tsize[0] == 1);

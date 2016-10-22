@@ -6,8 +6,8 @@ namespace cpptorch
 {
     namespace nn
     {
-        template<typename T>
-        class SpatialBatchNormalization : public BatchNormalization<T>
+        template<typename T, bool C>
+        class SpatialBatchNormalization : public BatchNormalization<T,C>
         {
         public:
             SpatialBatchNormalization() { this->ndim = 4; }

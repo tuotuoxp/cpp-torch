@@ -2,11 +2,11 @@
 #include "../../include/nn/SpatialAveragePooling.h"
 
 
-template<typename T>
-cpptorch::Tensor<T> cpptorch::nn::SpatialAveragePooling<T>::forward(const cpptorch::Tensor<T> &input) const
+template<typename T, bool C>
+cpptorch::Tensor<T,C> cpptorch::nn::SpatialAveragePooling<T,C>::forward(const cpptorch::Tensor<T,C> &input) const
 {
-    cpptorch::Tensor<T> output(true);
-    cpptorch::th::NN<T>::SpatialAveragePooling_updateOutput(nullptr, input, output,
+    cpptorch::Tensor<T,C> output(true);
+    cpptorch::th::NN<T,C>::SpatialAveragePooling_updateOutput(nullptr, input, output,
         kW_, kH_, dW_, dH_, padW_, padH_, ceil_mode_, count_include_pad_);
 
     // for backward compatibility with saved models which are not supposed to have "divide" field

@@ -2,10 +2,10 @@
 #include "../../include/nn/Square.h"
 
 
-template<typename T>
-cpptorch::Tensor<T> cpptorch::nn::Square<T>::forward(const cpptorch::Tensor<T> &input) const
+template<typename T, bool C>
+cpptorch::Tensor<T,C> cpptorch::nn::Square<T,C>::forward(const cpptorch::Tensor<T,C> &input) const
 {
-    cpptorch::Tensor<T> output(true);
-    cpptorch::th::NN<T>::Square_updateOutput(nullptr, input, output);
+    cpptorch::Tensor<T,C> output(true);
+    cpptorch::th::NN<T,C>::Square_updateOutput(nullptr, input, output);
     return output;
 }

@@ -56,6 +56,14 @@ public:
         return p;
     }
 
+protected:
+
+    template<class TF>
+    inline void addClass(const std::string &name)
+    {
+        this->factory_.insert(std::make_pair(name, std::shared_ptr<class_factory_base>(new class_factory_impl<TF>())));
+    }
+
 
     // index -> object
     std::map<int, std::shared_ptr<cpptorch::object>> objects_;

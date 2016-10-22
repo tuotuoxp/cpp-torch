@@ -6,12 +6,12 @@ namespace cpptorch
 {
     namespace nn
     {
-        template<typename T>
-        class SpatialReflectionPadding : public Layer<T>
+        template<typename T, bool C>
+        class SpatialReflectionPadding : public Layer<T,C>
         {
         public:
             virtual const std::string name() const override { return "nn.SpatialReflectionPadding"; }
-            virtual Tensor<T> forward(const Tensor<T> &input) const override;
+            virtual Tensor<T,C> forward(const Tensor<T,C> &input) const override;
 
         protected:
             int pad_l_, pad_r_, pad_t_, pad_b_;

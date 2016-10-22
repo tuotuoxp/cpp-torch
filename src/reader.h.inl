@@ -11,7 +11,7 @@ TSerializerBase* Cast(TSerializer *c)
     return (TSerializerBase*)c;
 }
 
-#define CHECK_AND_CAST(class_name, class_base_name, T) Cast<serializer::class_name<T>, serializer::class_base_name<T>, nn::class_name<T>, nn::class_base_name<T>>(this)
+#define CHECK_AND_CAST(class_name, class_base_name, T) Cast<serializer::class_name<T,C>, serializer::class_base_name<T,C>, nn::class_name<T,C>, nn::class_base_name<T,C>>(this)
 
 
 #include "serializer/BatchNormalization.h"
@@ -40,36 +40,36 @@ TSerializerBase* Cast(TSerializer *c)
 #include "serializer/View.h"
 
 
-template<typename T>
-object_reader<T>::object_reader()
+template<typename T, bool C>
+object_reader<T,C>::object_reader()
 {
-    CREATE_BUILDER("nn.BatchNormalization", cpptorch::serializer::BatchNormalization<T>);
-    CREATE_BUILDER("nn.Concat", cpptorch::serializer::Concat<T>);
-    CREATE_BUILDER("nn.Decorator", cpptorch::serializer::Decorator<T>);
-    CREATE_BUILDER("nn.DepthConcat", cpptorch::serializer::DepthConcat<T>);
-    CREATE_BUILDER("nn.Inception", cpptorch::serializer::Inception<T>);
-    CREATE_BUILDER("nn.Linear", cpptorch::serializer::Linear<T>);
-    CREATE_BUILDER("nn.MulConstant", cpptorch::serializer::MulConstant<T>);
-    CREATE_BUILDER("nn.Normalize", cpptorch::serializer::Normalize<T>);
-    CREATE_BUILDER("nn.ReLU", cpptorch::serializer::ReLU<T>);
-    CREATE_BUILDER("nn.Reshape", cpptorch::serializer::Reshape<T>);
-    CREATE_BUILDER("nn.Sequential", cpptorch::serializer::Sequential<T>);
-    CREATE_BUILDER("nn.SpatialAveragePooling", cpptorch::serializer::SpatialAveragePooling<T>);
-    CREATE_BUILDER("nn.SpatialBatchNormalization", cpptorch::serializer::SpatialBatchNormalization<T>);
-    CREATE_BUILDER("nn.SpatialConvolution", cpptorch::serializer::SpatialConvolution<T>);
-    CREATE_BUILDER("nn.SpatialConvolutionMM", cpptorch::serializer::SpatialConvolutionMM<T>);
-    CREATE_BUILDER("nn.SpatialCrossMapLRN", cpptorch::serializer::SpatialCrossMapLRN<T>);
-    CREATE_BUILDER("nn.SpatialLPPooling", cpptorch::serializer::SpatialLPPooling<T>);
-    CREATE_BUILDER("nn.SpatialMaxPooling", cpptorch::serializer::SpatialMaxPooling<T>);
-    CREATE_BUILDER("nn.SpatialReflectionPadding", cpptorch::serializer::SpatialReflectionPadding<T>);
-    CREATE_BUILDER("nn.Sqrt", cpptorch::serializer::Sqrt<T>);
-    CREATE_BUILDER("nn.Square", cpptorch::serializer::Square<T>);
-    CREATE_BUILDER("nn.Threshold", cpptorch::serializer::Threshold<T>);
-    CREATE_BUILDER("nn.View", cpptorch::serializer::View<T>);
+    addClass<cpptorch::serializer::BatchNormalization<T, C>>("nn.BatchNormalization");
+    addClass<cpptorch::serializer::Concat<T, C>>("nn.Concat");
+    addClass<cpptorch::serializer::Decorator<T, C>>("nn.Decorator");
+    addClass<cpptorch::serializer::DepthConcat<T, C>>("nn.DepthConcat");
+    addClass<cpptorch::serializer::Inception<T, C>>("nn.Inception");
+    addClass<cpptorch::serializer::Linear<T, C>>("nn.Linear");
+    addClass<cpptorch::serializer::MulConstant<T, C>>("nn.MulConstant");
+    addClass<cpptorch::serializer::Normalize<T, C>>("nn.Normalize");
+    addClass<cpptorch::serializer::ReLU<T, C>>("nn.ReLU");
+    addClass<cpptorch::serializer::Reshape<T, C>>("nn.Reshape");
+    addClass<cpptorch::serializer::Sequential<T, C>>("nn.Sequential");
+    addClass<cpptorch::serializer::SpatialAveragePooling<T, C>>("nn.SpatialAveragePooling");
+    addClass<cpptorch::serializer::SpatialBatchNormalization<T, C>>("nn.SpatialBatchNormalization");
+    addClass<cpptorch::serializer::SpatialConvolution<T, C>>("nn.SpatialConvolution");
+    addClass<cpptorch::serializer::SpatialConvolutionMM<T, C>>("nn.SpatialConvolutionMM");
+    addClass<cpptorch::serializer::SpatialCrossMapLRN<T, C>>("nn.SpatialCrossMapLRN");
+    addClass<cpptorch::serializer::SpatialLPPooling<T, C>>("nn.SpatialLPPooling");
+    addClass<cpptorch::serializer::SpatialMaxPooling<T, C>>("nn.SpatialMaxPooling");
+    addClass<cpptorch::serializer::SpatialReflectionPadding<T, C>>("nn.SpatialReflectionPadding");
+    addClass<cpptorch::serializer::Sqrt<T, C>>("nn.Sqrt");
+    addClass<cpptorch::serializer::Square<T, C>>("nn.Square");
+    addClass<cpptorch::serializer::Threshold<T, C>>("nn.Threshold");
+    addClass<cpptorch::serializer::View<T, C>>("nn.View");
 }
     
-template<typename T>
-void object_reader<T>::build_storage(const cpptorch::object *obj, cpptorch::Storage<T> &storage)
+template<typename T, bool C>
+void object_reader<T,C>::build_storage(const cpptorch::object *obj, cpptorch::Storage<T,C> &storage)
 {
     auto obj_storage = const_cast<cpptorch::object_torch_storage<T>*>(obj->to_storage<T>());
     auto it = storage_map_.find(obj_storage->index_);
@@ -86,30 +86,30 @@ void object_reader<T>::build_storage(const cpptorch::object *obj, cpptorch::Stor
     }
 }
 
-template<typename T>
-void object_reader<T>::build_from_size_storage(const cpptorch::object *obj, std::vector<long> &data)
+template<typename T, bool C>
+void object_reader<T,C>::build_from_size_storage(const cpptorch::object *obj, std::vector<long> &data)
 {
     auto *obj_storage = obj->to_storage<long>();
     data.assign(obj_storage->storage_, obj_storage->storage_ + obj_storage->size_);
 }
 
 
-template<typename T>
-cpptorch::Tensor<T> object_reader<T>::build_tensor(const cpptorch::object *obj)
+template<typename T, bool C>
+cpptorch::Tensor<T,C> object_reader<T,C>::build_tensor(const cpptorch::object *obj)
 {
-    cpptorch::Tensor<T> out;
+    cpptorch::Tensor<T,C> out;
     const cpptorch::object_torch_tensor *obj_tensor = obj->to_tensor();
     if (obj_tensor->dimension_ > 0)
     {
-        cpptorch::Storage<T> storage;
+        cpptorch::Storage<T,C> storage;
         build_storage(obj_tensor->data_.get(), storage);
         out.create(storage, (long)obj_tensor->storage_offset_, obj_tensor->dimension_, obj_tensor->size_, obj_tensor->stride_);
     }
     return std::move(out);
 }
 
-template<typename T>
-std::shared_ptr<cpptorch::nn::Layer<T>> object_reader<T>::build_layer(const cpptorch::object *obj)
+template<typename T, bool C>
+std::shared_ptr<cpptorch::nn::Layer<T,C>> object_reader<T,C>::build_layer(const cpptorch::object *obj)
 {
     const cpptorch::object_torch *obj_torch = obj->to_torch();
     auto it = layer_map_.find(obj_torch->index_);
@@ -118,7 +118,7 @@ std::shared_ptr<cpptorch::nn::Layer<T>> object_reader<T>::build_layer(const cppt
         auto factory = factory_.find(obj_torch->class_name_);
         if (factory != factory_.end())
         {
-            std::shared_ptr<cpptorch::nn::Layer<T>> l((*factory->second)(obj_torch, this));
+            std::shared_ptr<cpptorch::nn::Layer<T,C>> l((*factory->second)(obj_torch, this));
             layer_map_.insert(std::make_pair(obj_torch->index_, l));
             return l;
         }

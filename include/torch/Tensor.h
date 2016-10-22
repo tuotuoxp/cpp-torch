@@ -7,33 +7,33 @@
 
 namespace cpptorch
 {
-    template<typename T>
+    template<typename T, bool C = false>
     class API Tensor
     {
     public:
         explicit Tensor(bool auto_create = false);
-        Tensor(const Tensor<T> &other) : th_(nullptr) { *this = other; }
-        Tensor(Tensor<T> &&other) : th_(nullptr) { *this = std::move(other); }
+        Tensor(const Tensor<T,C> &other) : th_(nullptr) { *this = other; }
+        Tensor(Tensor<T,C> &&other) : th_(nullptr) { *this = std::move(other); }
         ~Tensor();
 
-        Tensor<T>& operator = (const Tensor<T> &src);
-        Tensor<T>& operator = (Tensor<T> &&src);
-        operator typename THTrait<T>::Tensor* () const { return th_; }
+        Tensor<T,C>& operator = (const Tensor<T,C> &src);
+        Tensor<T,C>& operator = (Tensor<T,C> &&src);
+        operator typename THTrait<T,C>::Tensor* () const { return th_; }
 
         const std::string name() const;
 
         // creation methods
         void create();
-        void create(const Storage<T> &storage, long storage_offset, const Storage<long> &size);
-        void create(const Storage<T> &storage, long storage_offset, int dim, const long *size, const long *stride);
+        void create(const Storage<T,C> &storage, long storage_offset, const Storage<long> &size);
+        void create(const Storage<T,C> &storage, long storage_offset, int dim, const long *size, const long *stride);
         void resize(const Storage<long> &size);
         void resize(const Storage<long> &size, const Storage<long> &stride);
-        void resizeAs(const Tensor<T> &src);
-        void copy(const Tensor<T> &src);
+        void resizeAs(const Tensor<T,C> &src);
+        void copy(const Tensor<T,C> &src);
 
         // direct access methods
         bool valid() const { return th_ != nullptr; }
-        Storage<T> storage() const;
+        Storage<T,C> storage() const;
         long storageOffset() const;
         std::vector<long> size() const;
         long size(int dim) const;
@@ -49,68 +49,68 @@ namespace cpptorch
 
         // special access methods
         // tensor returned by following methods share the same storage
-        Tensor<T> narrow(int dimension, long firstIndex, long size) const;
-        Tensor<T> select(int dimension, long sliceIndex) const;
+        Tensor<T,C> narrow(int dimension, long firstIndex, long size) const;
+        Tensor<T,C> select(int dimension, long sliceIndex) const;
         template<class TIterator>
-        Tensor<T> view(const TIterator begin, const TIterator end) const;
+        Tensor<T,C> view(const TIterator begin, const TIterator end) const;
         template<class TContainer>
-        Tensor<T> view(const TContainer &c) const { return view(c.begin(), c.end()); }
-        Tensor<T> view(const std::initializer_list<long> &i) const { return view(i.begin(), i.end()); }
-        Tensor<T> expand(const std::vector<long> &size) const;
+        Tensor<T,C> view(const TContainer &c) const { return view(c.begin(), c.end()); }
+        Tensor<T,C> view(const std::initializer_list<long> &i) const { return view(i.begin(), i.end()); }
+        Tensor<T,C> expand(const std::vector<long> &size) const;
         template<class TIterator>
-        Tensor<T> expand(const TIterator begin, const TIterator end) const { return expand(std::vector<long>(begin, end)); }
+        Tensor<T,C> expand(const TIterator begin, const TIterator end) const { return expand(std::vector<long>(begin, end)); }
         template<class TContainer>
-        Tensor<T> expand(const TContainer &c) const { return expand(std::vector<long>(c.begin(), c.end())); }
-        Tensor<T> expand(const std::initializer_list<long> &i) const { return expand(i.begin(), i.end()); }
-        Tensor<T> t() const;
-        Tensor<T> operator [] (const std::initializer_list<long> &inputs) const;
-        Tensor<T> operator [] (long dim) const { return (*this)[{ dim }]; }
+        Tensor<T,C> expand(const TContainer &c) const { return expand(std::vector<long>(c.begin(), c.end())); }
+        Tensor<T,C> expand(const std::initializer_list<long> &i) const { return expand(i.begin(), i.end()); }
+        Tensor<T,C> t() const;
+        Tensor<T,C> operator [] (const std::initializer_list<long> &inputs) const;
+        Tensor<T,C> operator [] (long dim) const { return (*this)[{ dim }]; }
 
         // math ops (modify tensor itself)
         void fill(T val);
         void abs();
-        void addmv(T beta, const Tensor<T> &t,
-            T alpha, const Tensor<T> &matrix, const Tensor<T> &vector);
-        void addmv(T alpha, const Tensor<T> &matrix, const Tensor<T> &vector)
+        void addmv(T beta, const Tensor<T,C> &t,
+            T alpha, const Tensor<T,C> &matrix, const Tensor<T,C> &vector);
+        void addmv(T alpha, const Tensor<T,C> &matrix, const Tensor<T,C> &vector)
         {
             addmv(1, *this, alpha, matrix, vector);
         }
-        void addmm(T beta, const Tensor<T> &t,
-            T alpha, const Tensor<T> &matrix1, const Tensor<T> &matrix2);
-        void addr(T beta, const Tensor<T> &t,
-            T alpha, const Tensor<T> &vector1, const Tensor<T> &vector2);
-        void addr(T alpha, const Tensor<T> &vector1, const Tensor<T> &vector2)
+        void addmm(T beta, const Tensor<T,C> &t,
+            T alpha, const Tensor<T,C> &matrix1, const Tensor<T,C> &matrix2);
+        void addr(T beta, const Tensor<T,C> &t,
+            T alpha, const Tensor<T,C> &vector1, const Tensor<T,C> &vector2);
+        void addr(T alpha, const Tensor<T,C> &vector1, const Tensor<T,C> &vector2)
         {
             addr(1, *this, alpha, vector1, vector2);
         }
-        Tensor<T>& operator += (T val);
-        Tensor<T>& operator += (const Tensor<T> &other);
-        Tensor<T>& operator -= (const Tensor<T> &other);
-        Tensor<T>& operator *= (T val);
-        Tensor<T>& operator *= (const Tensor<T> &other);
-        Tensor<T>& operator ^= (T val);
-        Tensor<T>& operator ^= (const Tensor<T> &other);
+        Tensor<T,C>& operator += (T val);
+        Tensor<T,C>& operator += (const Tensor<T,C> &other);
+        Tensor<T,C>& operator -= (const Tensor<T,C> &other);
+        Tensor<T,C>& operator *= (T val);
+        Tensor<T,C>& operator *= (const Tensor<T,C> &other);
+        Tensor<T,C>& operator ^= (T val);
+        Tensor<T,C>& operator ^= (const Tensor<T,C> &other);
 
         // tensor math ops (donot modify tensor itself)
         T minall() const;
         T maxall() const;
-        Tensor<T> max(int dimension) const;
-        Tensor<T> sum(int dimension) const;
-        Tensor<T> operator + (T val) const;
-        Tensor<T> operator + (const Tensor<T> &other) const;
-        Tensor<T> operator - (T val) const;
-        Tensor<T> operator - (const Tensor<T> &other) const;
-        Tensor<T> operator / (const Tensor<T> &other) const;
-        Tensor<T> operator ^ (T val) const;
+        Tensor<T,C> max(int dimension) const;
+        Tensor<T,C> sum(int dimension) const;
+        Tensor<T,C> operator + (T val) const;
+        Tensor<T,C> operator + (const Tensor<T,C> &other) const;
+        Tensor<T,C> operator - (T val) const;
+        Tensor<T,C> operator - (const Tensor<T,C> &other) const;
+        Tensor<T,C> operator / (const Tensor<T,C> &other) const;
+        Tensor<T,C> operator ^ (T val) const;
 
     protected:
-        typename THTrait<T>::Tensor *th_;
+        typename THTrait<T,C>::Tensor *th_;
     };
 
 
-    template<typename T>
-    API cpptorch::Tensor<T> abs(const cpptorch::Tensor<T> &t);
+    template<typename T, bool C>
+    API cpptorch::Tensor<T,C> abs(const cpptorch::Tensor<T,C> &t);
 }
 
-template<typename T>
-API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<T> &m);
+template<typename T, bool C>
+API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<T,C> &m);

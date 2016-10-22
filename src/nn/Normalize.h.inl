@@ -4,12 +4,12 @@
 #include <cmath>
 
 
-template<typename T>
-cpptorch::Tensor<T> cpptorch::nn::Normalize<T>::forward(const cpptorch::Tensor<T> &input) const
+template<typename T, bool C>
+cpptorch::Tensor<T,C> cpptorch::nn::Normalize<T,C>::forward(const cpptorch::Tensor<T,C> &input) const
 {
     assert(input.dim() <= 2 && "only 1d layer supported");
     std::vector<long> input_size = input.size();
-    cpptorch::Tensor<T> input_new;
+    cpptorch::Tensor<T,C> input_new;
     if (input.dim() == 1)
     {
         input_new = input.view({ 1, -1 });
@@ -19,7 +19,7 @@ cpptorch::Tensor<T> cpptorch::nn::Normalize<T>::forward(const cpptorch::Tensor<T
         input_new = input;
     }
 
-    cpptorch::Tensor<T> norm;
+    cpptorch::Tensor<T,C> norm;
     if (std::isinf((double)p_))
     {
         // specialization for the infinity norm
@@ -27,7 +27,7 @@ cpptorch::Tensor<T> cpptorch::nn::Normalize<T>::forward(const cpptorch::Tensor<T
     }
     else
     {
-        cpptorch::Tensor<T> buffer;
+        cpptorch::Tensor<T,C> buffer;
         if ((int)p_ % 2 != 0)
         {
             buffer = cpptorch::abs(input_new) ^ p_;
@@ -39,7 +39,7 @@ cpptorch::Tensor<T> cpptorch::nn::Normalize<T>::forward(const cpptorch::Tensor<T
         norm = (buffer.sum(1) + eps_) ^ (1 / p_);
     }
 
-    cpptorch::Tensor<T> output;
+    cpptorch::Tensor<T,C> output;
     output = (input / norm.view({ -1, 1 }).expand(input_new.size())).view(input_size);
     return output;
 }

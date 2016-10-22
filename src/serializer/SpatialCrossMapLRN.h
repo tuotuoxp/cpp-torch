@@ -6,11 +6,11 @@ namespace cpptorch
 {
     namespace serializer
     {
-        template<typename T>
-        class SpatialCrossMapLRN : public nn::SpatialCrossMapLRN<T>
+        template<typename T, bool C>
+        class SpatialCrossMapLRN : public nn::SpatialCrossMapLRN<T,C>
         {
         public:
-            void unserialize(const object_torch *obj, object_reader<T> *mb)
+            void unserialize(const object_torch *obj, object_reader<T,C> *mb)
             {
                 const object_table *obj_tbl = obj->data_->to_table();
                 this->size_ = *obj_tbl->get("size");
