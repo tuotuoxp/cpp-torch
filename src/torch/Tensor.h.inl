@@ -87,29 +87,30 @@ void cpptorch::Tensor<T,C>::create()
 }
 
 template<typename T, bool C>
-void cpptorch::Tensor<T,C>::create(const Storage<T,C> &storage, long storage_offset,
-    const Storage<long> &size)
-{
-    assert(th_ == nullptr);
-    th_ = cpptorch::th::Tensor<T,C>::newWithStorage(storage, storage_offset, size);
-}
-
-template<typename T, bool C>
 void cpptorch::Tensor<T,C>::create(const Storage<T,C> &storage, long storage_offset, int dim,
     const long *size, const long *stride)
 {
     assert(th_ == nullptr);
+    if (!stride)
+    {
+        long *new_stride = (long*)alloca(sizeof(long) * dim);
+        for (int i = 0; i < dim; i++)
+        {
+            new_stride[i] = -1;
+        }
+        stride = new_stride;
+    }
     th_ = cpptorch::th::Tensor<T,C>::newWithStorage(storage, storage_offset, dim, size, stride);
 }
 
 template<typename T, bool C>
-void cpptorch::Tensor<T,C>::resize(const Storage<long> &size)
+void cpptorch::Tensor<T,C>::resize(const Storage<long, false> &size)
 {
     cpptorch::th::Tensor<T,C>::resize(th_, size, nullptr);
 }
 
 template<typename T, bool C>
-void cpptorch::Tensor<T,C>::resize(const Storage<long> &size, const Storage<long> &stride)
+void cpptorch::Tensor<T,C>::resize(const Storage<long, false> &size, const Storage<long, false> &stride)
 {
     cpptorch::th::Tensor<T,C>::resize(th_, size, stride);
 }
@@ -146,10 +147,9 @@ std::vector<long> cpptorch::Tensor<T,C>::size() const
     std::vector<long> v;
     if (th_)
     {
-        THTrait<long>::Storage *th = cpptorch::th::Tensor<T,C>::size(th_);
-        long *p = cpptorch::th::Storage<long, C>::data(th);
+        Storage<long, false> sz(cpptorch::th::Tensor<T, C>::size(th_));
+        long *p = sz.data();
         v.assign(p, p + dim());
-        cpptorch::th::Storage<long, C>::release(th);
     }
     return v;
 }
@@ -166,10 +166,10 @@ std::vector<long> cpptorch::Tensor<T,C>::stride() const
     std::vector<long> v;
     if (th_)
     {
-        THTrait<long>::Storage *th = cpptorch::th::Tensor<T,C>::stride(th_);
-        long *p = cpptorch::th::Storage<long, C>::data(th);
+        THTrait<long, false>::Storage *th = cpptorch::th::Tensor<T,C>::stride(th_);
+        long *p = cpptorch::th::Storage<long, false>::data(th);
         v.assign(p, p + dim());
-        cpptorch::th::Storage<long, C>::release(th);
+        cpptorch::th::Storage<long, false>::release(th);
     }
     return v;
 }
@@ -236,7 +236,7 @@ cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::view(const TIterator begin, const T
     std::vector<long> ss = size();
     assert(isContiguous() && "expecting a contiguous tensor");
     cpptorch::Tensor<T,C> view;
-    view.create(storage(), storageOffset(), sz);
+    view.create(storage(), storageOffset(), (int)sz.size(), &sz[0]);
     assert(view.nElement() == origNElement && "Wrong size for view. ");
     return view;
 }

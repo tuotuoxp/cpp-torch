@@ -114,22 +114,6 @@ long Storage<double, false>::size(THDoubleStorage *storage)
 
 
 template<>
-THLongTensor* Tensor<long, false>::newWithStorage(THLongStorage *storage, long offset, THLongStorage *size)
-{
-    return THLongTensor_newWithStorage(storage, offset, size, nullptr);
-}
-template<>
-THFloatTensor* Tensor<float, false>::newWithStorage(THFloatStorage *storage, long offset, THLongStorage *size)
-{
-    return THFloatTensor_newWithStorage(storage, offset, size, nullptr);
-}
-template<>
-THDoubleTensor* Tensor<double, false>::newWithStorage(THDoubleStorage *storage, long offset, THLongStorage *size)
-{
-    return THDoubleTensor_newWithStorage(storage, offset, size, nullptr);
-}
-
-template<>
 THLongTensor* Tensor<long, false>::newWithStorage(THLongStorage *storage, long offset, int dim, const long *size, const long *stride)
 {
     switch (dim)

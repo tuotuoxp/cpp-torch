@@ -4,20 +4,20 @@
 #include "torch/TensorPrint.h.inl"
 
 
-template API class cpptorch::Storage<long>;
-template API class cpptorch::Storage<float>;
-template API class cpptorch::Storage<double>;
-template API class cpptorch::Tensor<long>;
-template API class cpptorch::Tensor<float>;
-template API class cpptorch::Tensor<double>;
+template API class cpptorch::Storage<long, false>;
+template API class cpptorch::Storage<float, false>;
+template API class cpptorch::Storage<double, false>;
+template API class cpptorch::Tensor<long, false>;
+template API class cpptorch::Tensor<float, false>;
+template API class cpptorch::Tensor<double, false>;
 
-template API cpptorch::Tensor<long> cpptorch::abs(const cpptorch::Tensor<long> &t);
-template API cpptorch::Tensor<float> cpptorch::abs(const cpptorch::Tensor<float> &t);
-template API cpptorch::Tensor<double> cpptorch::abs(const cpptorch::Tensor<double> &t);
+template API cpptorch::Tensor<long, false> cpptorch::abs(const cpptorch::Tensor<long, false> &t);
+template API cpptorch::Tensor<float, false> cpptorch::abs(const cpptorch::Tensor<float, false> &t);
+template API cpptorch::Tensor<double, false> cpptorch::abs(const cpptorch::Tensor<double, false> &t);
 
-template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<long> &m);
-template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<float> &m);
-template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<double> &m);
+template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<long, false> &m);
+template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<float, false> &m);
+template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<double, false> &m);
 
 
 #include "nn/BatchNormalization.h.inl"
@@ -47,7 +47,7 @@ template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<
 #include "reader.h.inl"
 
 
-template API cpptorch::Tensor<float> cpptorch::read_tensor(const object *obj);
-template API cpptorch::Tensor<double> cpptorch::read_tensor(const object *obj);
-template API std::shared_ptr<cpptorch::nn::Layer<float>> cpptorch::read_net(const object *obj);
-template API std::shared_ptr<cpptorch::nn::Layer<double>> cpptorch::read_net(const object *obj);
+template API cpptorch::Tensor<float, false> cpptorch::read_tensor(const object *obj);
+template API cpptorch::Tensor<double, false> cpptorch::read_tensor(const object *obj);
+template API std::shared_ptr<cpptorch::nn::Layer<float, false>> cpptorch::read_net(const object *obj);
+template API std::shared_ptr<cpptorch::nn::Layer<double, false>> cpptorch::read_net(const object *obj);

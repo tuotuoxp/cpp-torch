@@ -8,7 +8,7 @@
 namespace cpptorch
 {
     template<typename T, bool C = false>
-    class Storage
+    class API Storage
     {
     public:
         explicit Storage(typename THTrait<T,C>::Storage *th = nullptr);

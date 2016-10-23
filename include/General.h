@@ -8,12 +8,12 @@ struct THLongTensor;
 struct THFloatTensor;
 struct THDoubleTensor;
 
-struct THCLongStorage;
-struct THCFloatStorage;
-struct THCDoubleStorage;
-struct THCLongTensor;
-struct THCFloatTensor;
-struct THCDoubleTensor;
+struct THCudaStorage;
+struct THCudaLongStorage;
+struct THCudaDoubleStorage;
+struct THCudaTensor;
+struct THCudaLongTensor;
+struct THCudaDoubleTensor;
 
 
 namespace cpptorch
@@ -50,22 +50,22 @@ namespace cpptorch
     template<> class THTrait<long, true>
     {
     public:
-        using Tensor = THCLongTensor;
-        using Storage = THCLongStorage;
+        using Tensor = THCudaLongTensor;
+        using Storage = THCudaLongStorage;
     };
 
     template<> class THTrait<float, true>
     {
     public:
-        using Tensor = THCFloatTensor;
-        using Storage = THCFloatStorage;
+        using Tensor = THCudaTensor;
+        using Storage = THCudaStorage;
     };
 
     template<> class THTrait<double, true>
     {
     public:
-        using Tensor = THCDoubleTensor;
-        using Storage = THCDoubleStorage;
+        using Tensor = THCudaDoubleTensor;
+        using Storage = THCudaDoubleStorage;
     };
 }
 
