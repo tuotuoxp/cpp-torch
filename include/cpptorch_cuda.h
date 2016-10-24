@@ -2,10 +2,23 @@
 #include "cpptorch.h"
 
 
+struct THCState;
+
+
 namespace cpptorch
 {
-    template<typename T>
-    API Tensor<T, true> read_cuda_tensor(const object *obj);
-    template<typename T>
-    API std::shared_ptr<nn::Layer<T, true>> read_cuda_net(const object *obj);
+    typedef Tensor<float, true> CudaTensor;
+    namespace nn
+    {
+        typedef Layer<float, true> CudaLayer;
+    }
+
+    API CudaTensor read_cuda_tensor(const object *obj);
+    API std::shared_ptr<nn::CudaLayer> read_cuda_net(const object *obj);
+
+    namespace cuda
+    {
+        API void init();
+        API void free();
+    }
 }

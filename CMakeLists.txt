@@ -106,7 +106,7 @@ file(GLOB_RECURSE cpptorch_TEST
 add_executable(cpptorch_test ${cpptorch_TEST})
 
 target_include_directories(cpptorch_test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
-target_link_libraries(cpptorch_test cpptorch)
+target_link_libraries(cpptorch_test cpptorch cpptorch_cuda)
 
 
 set_target_properties(cpptorch_test PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")

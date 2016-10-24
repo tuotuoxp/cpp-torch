@@ -24,9 +24,9 @@ public:
         available_memory_block_.reserve(1024);
     }
 
-    int requestIndex()
+    int requestIndex(long init_size)
     {
-        MemoryAllocation m = {};
+        MemoryAllocation m = { nullptr, init_size };
         if (!free_block_info_index_.empty())
         {
             int idx = *free_block_info_index_.rbegin();
@@ -196,11 +196,11 @@ THAllocator* cpptorch::allocator::get()
     return &allocator;
 }
 
-void* cpptorch::allocator::requestIndex()
+void* cpptorch::allocator::requestIndex(long init_size)
 {
     if (cache_)
     {
-        return (void*)(long long)cache_->requestIndex();
+        return (void*)(long long)cache_->requestIndex(init_size);
     }
     return nullptr;
 }

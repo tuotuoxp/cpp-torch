@@ -86,7 +86,7 @@ template<typename T, bool C>
 void cpptorch::Storage<T,C>::create()
 {
     assert(th_ == nullptr);
-    th_ = cpptorch::th::Storage<T,C>::newWithAllocator(cpptorch::allocator::get(), cpptorch::allocator::requestIndex());
+    th_ = cpptorch::th::Storage<T,C>::newWithAllocator(cpptorch::allocator::get(), cpptorch::allocator::requestIndex(0));
 }
 
 template<typename T, bool C>
@@ -100,5 +100,5 @@ void cpptorch::Storage<T,C>::unserialze(const T *ptr_src, long size, bool take_o
         ptr_src = ptr;
     }
     th_ = cpptorch::th::Storage<T,C>::newWithDataAndAllocator(const_cast<T*>(ptr_src), size,
-        cpptorch::allocator::get(), cpptorch::allocator::requestIndex());
+        cpptorch::allocator::get(), cpptorch::allocator::requestIndex(size * sizeof(T)));
 }

@@ -47,5 +47,14 @@ template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<
 #include "../src/reader.h.inl"
 
 
-template API cpptorch::Tensor<float, true> cpptorch::read_cuda_tensor(const object *obj);
-template API std::shared_ptr<cpptorch::nn::Layer<float, true>> cpptorch::read_cuda_net(const object *obj);
+cpptorch::CudaTensor cpptorch::read_cuda_tensor(const cpptorch::object *obj)
+{
+    object_reader<float, true> mb;
+    return mb.build_tensor(obj);
+}
+
+std::shared_ptr<cpptorch::nn::CudaLayer> cpptorch::read_cuda_net(const cpptorch::object *obj)
+{
+    object_reader<float, true> mb;
+    return std::static_pointer_cast<cpptorch::nn::Layer<float, true>>(mb.build_layer(obj));
+}
