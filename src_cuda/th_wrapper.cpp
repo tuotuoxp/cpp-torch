@@ -12,14 +12,17 @@ static THCState* GetCudaState() { return nullptr; }
 namespace cpptorch { namespace th {
 
 
+template <>
 THCudaLongStorage* Storage<long, true>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
 {
     return THCudaLongStorage_newWithAllocator(GetCudaState(), 0, allocator, allocatorContext);
 }
+template <>
 THCudaStorage* Storage<float, true>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
 {
     return THCudaStorage_newWithAllocator(GetCudaState(), 0, allocator, allocatorContext);
 }
+template <>
 THCudaDoubleStorage* Storage<double, true>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
 {
     return THCudaDoubleStorage_newWithAllocator(GetCudaState(), 0, allocator, allocatorContext);
