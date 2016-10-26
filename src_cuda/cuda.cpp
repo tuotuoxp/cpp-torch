@@ -6,6 +6,12 @@
 static THCState *global_thc = nullptr;
 
 
+THCState* GetCudaState()
+{
+    return global_thc;
+}
+
+
 void cpptorch::cuda::init()
 {
     global_thc = THCState_alloc();

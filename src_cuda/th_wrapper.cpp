@@ -7,7 +7,8 @@
 #include <assert.h>
 
 
-static THCState* GetCudaState() { return nullptr; }
+extern THCState* GetCudaState();
+
 
 namespace cpptorch { namespace th {
 
