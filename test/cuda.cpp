@@ -5,6 +5,7 @@
 #include <iostream>
 #include <chrono>
 
+/*
 
 std::shared_ptr<cpptorch::nn::CudaLayer> read_cuda_layer(const std::string &path)
 {
@@ -56,3 +57,6 @@ void test_cuda(const char *path)
 
     cpptorch::cuda::free();
 }
+
+
+*/

@@ -1,44 +1,70 @@
 #include "th_wrapper.h"
 #include "../include/torch/Storage.h"
 #include "../include/torch/Tensor.h"
+#include "allocator.h"
 
 #include <TH/TH.h>
 #include <THNN/THNN.h>
 #include <assert.h>
 
 
+template<typename T>
+static T* bypass(const T *ptr_src, long size, bool take_ownership_of_data)
+{
+    if (!take_ownership_of_data)
+    {
+        long sz = size * sizeof(T);
+        T *ptr = (T*)malloc(sz);
+        memcpy(ptr, ptr_src, sz);
+        return const_cast<T*>(ptr);
+    }
+    else
+    {
+        return const_cast<T*>(ptr_src);
+    }
+}
+
+
 namespace cpptorch { namespace th {
 
 template<>
-THLongStorage* Storage<long, false>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
+THLongStorage* Storage<long, false>::newWithData(const long *ptr_src, long size, bool take_ownership_of_data)
 {
-    return THLongStorage_newWithAllocator(0, allocator, allocatorContext);
+    if (ptr_src)
+    {
+        return THLongStorage_newWithDataAndAllocator(bypass(ptr_src, size, take_ownership_of_data), size,
+            cpptorch::allocator::get(), cpptorch::allocator::requestIndex(size));
+    }
+    else
+    {
+        return THLongStorage_newWithAllocator(0, cpptorch::allocator::get(), cpptorch::allocator::requestIndex(0));
+    }
 }
 template<>
-THFloatStorage* Storage<float, false>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
+THFloatStorage* Storage<float, false>::newWithData(const float *ptr_src, long size, bool take_ownership_of_data)
 {
-    return THFloatStorage_newWithAllocator(0, allocator, allocatorContext);
+    if (ptr_src)
+    {
+        return THFloatStorage_newWithDataAndAllocator(bypass(ptr_src, size, take_ownership_of_data), size,
+            cpptorch::allocator::get(), cpptorch::allocator::requestIndex(size));
+    }
+    else
+    {
+        return THFloatStorage_newWithAllocator(0, cpptorch::allocator::get(), cpptorch::allocator::requestIndex(0));
+    }
 }
 template<>
-THDoubleStorage* Storage<double, false>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
+THDoubleStorage* Storage<double, false>::newWithData(const double *ptr_src, long size, bool take_ownership_of_data)
 {
-    return THDoubleStorage_newWithAllocator(0, allocator, allocatorContext);
-}
-
-template<>
-THLongStorage* Storage<long, false>::newWithDataAndAllocator(long *data, long size, THAllocator *allocator, void *allocatorContext)
-{
-    return THLongStorage_newWithDataAndAllocator(data, size, allocator, allocatorContext);
-}
-template<>
-THFloatStorage* Storage<float, false>::newWithDataAndAllocator(float *data, long size, THAllocator *allocator, void *allocatorContext)
-{
-    return THFloatStorage_newWithDataAndAllocator(data, size, allocator, allocatorContext);
-}
-template<>
-THDoubleStorage* Storage<double, false>::newWithDataAndAllocator(double *data, long size, THAllocator *allocator, void *allocatorContext)
-{
-    return THDoubleStorage_newWithDataAndAllocator(data, size, allocator, allocatorContext);
+    if (ptr_src)
+    {
+        return THDoubleStorage_newWithDataAndAllocator(bypass(ptr_src, size, take_ownership_of_data), size,
+            cpptorch::allocator::get(), cpptorch::allocator::requestIndex(size));
+    }
+    else
+    {
+        return THDoubleStorage_newWithAllocator(0, cpptorch::allocator::get(), cpptorch::allocator::requestIndex(0));
+    }
 }
 
 template<>

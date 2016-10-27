@@ -68,7 +68,7 @@ extern void test_cuda(const char *path);
 
 int main(int argc, char *argv[])
 {
-    test_cuda(argv[1]);
+//    test_cuda(argv[1]);
 
 
 //    test_layer(argv[1], "SpatialBatchNormalization", 100000);
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 //    test_layer(argv[1], "Sqrt");
 //    test_layer(argv[1], "Square");
 //    test_layer(argv[1], "View");
-    test_layer(argv[1], "_face");
+    test_layer(argv[1], "_face", 10);
 
     //test_fast_neural_style(argv[1], "candy");
     cpptorch::allocator::cleanup();

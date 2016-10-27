@@ -35,7 +35,7 @@ namespace cpptorch
         // creator
         void create();
         // from raw ptr
-        void unserialze(const T *ptr_src, long size, bool take_ownership_of_data = true);
+        void unserialze(const T *ptr_src, long count, bool take_ownership_of_data = true);
         // from stl iterator
         template<class TIterator>
         void unserialze(const TIterator begin, const TIterator end)

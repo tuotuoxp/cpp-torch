@@ -1,7 +1,6 @@
 #pragma once
 #include "../../include/torch/Storage.h"
 #include "../th_wrapper.h"
-#include "../allocator.h"
 
 #include <sstream>
 #include <assert.h>
@@ -86,19 +85,11 @@ template<typename T, bool C>
 void cpptorch::Storage<T,C>::create()
 {
     assert(th_ == nullptr);
-    th_ = cpptorch::th::Storage<T,C>::newWithAllocator(cpptorch::allocator::get(), cpptorch::allocator::requestIndex(0));
+    th_ = cpptorch::th::Storage<T,C>::newWithData(nullptr, 0, false);
 }
 
 template<typename T, bool C>
-void cpptorch::Storage<T,C>::unserialze(const T *ptr_src, long size, bool take_ownership_of_data)
+void cpptorch::Storage<T,C>::unserialze(const T *ptr_src, long count, bool take_ownership_of_data)
 {
-    if (!take_ownership_of_data)
-    {
-        long sz = size * sizeof(T);
-        T *ptr = (T*)malloc(sz);
-        memcpy(ptr, ptr_src, sz);
-        ptr_src = ptr;
-    }
-    th_ = cpptorch::th::Storage<T,C>::newWithDataAndAllocator(const_cast<T*>(ptr_src), size,
-        cpptorch::allocator::get(), cpptorch::allocator::requestIndex(size * sizeof(T)));
+    th_ = cpptorch::th::Storage<T, C>::newWithData(ptr_src, sizeof(T) * count, take_ownership_of_data);
 }

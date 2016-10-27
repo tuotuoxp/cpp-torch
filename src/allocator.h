@@ -9,7 +9,7 @@ namespace cpptorch
 {
     namespace allocator
     {
-        API THAllocator* get();
-        API void* requestIndex(long init_size);
+        THAllocator* get();
+        void* requestIndex(long init_size);
     }
 }

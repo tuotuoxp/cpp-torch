@@ -14,35 +14,58 @@ namespace cpptorch { namespace th {
 
 
 template <>
-THCudaLongStorage* Storage<long, true>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
+THCudaLongStorage* Storage<long, true>::newWithData(const long *ptr_src, long size, bool take_ownership_of_data)
 {
-    return THCudaLongStorage_newWithAllocator(GetCudaState(), 0, allocator, allocatorContext);
+    if (ptr_src)
+    {
+        THCudaLongStorage *th = THCudaLongStorage_newWithSize(GetCudaState(), size);
+        THCudaLongStorage_rawCopy(GetCudaState(), th, const_cast<long*>(ptr_src));
+        if (take_ownership_of_data)
+        {
+            free(const_cast<long*>(ptr_src));
+        }
+        return th;
+    }
+    else
+    {
+        return THCudaLongStorage_new(GetCudaState());
+    }
 }
 template <>
-THCudaStorage* Storage<float, true>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
+THCudaStorage* Storage<float, true>::newWithData(const float *ptr_src, long size, bool take_ownership_of_data)
 {
-    return THCudaStorage_newWithAllocator(GetCudaState(), 0, allocator, allocatorContext);
+    if (ptr_src)
+    {
+        THCudaStorage *th = THCudaStorage_newWithSize(GetCudaState(), size);
+        THCudaStorage_rawCopy(GetCudaState(), th, const_cast<float*>(ptr_src));
+        if (take_ownership_of_data)
+        {
+            free(const_cast<float*>(ptr_src));
+        }
+        return th;
+    }
+    else
+    {
+        return THCudaStorage_new(GetCudaState());
+    }
 }
 template <>
-THCudaDoubleStorage* Storage<double, true>::newWithAllocator(THAllocator *allocator, void *allocatorContext)
+THCudaDoubleStorage* Storage<double, true>::newWithData(const double *ptr_src, long size, bool take_ownership_of_data)
 {
-    return THCudaDoubleStorage_newWithAllocator(GetCudaState(), 0, allocator, allocatorContext);
-}
-
-template<>
-THCudaLongStorage* Storage<long, true>::newWithDataAndAllocator(long *data, long size, THAllocator *allocator, void *allocatorContext)
-{
-    return THCudaLongStorage_newWithDataAndAllocator(GetCudaState(), data, size, allocator, allocatorContext);
-}
-template<>
-THCudaStorage* Storage<float, true>::newWithDataAndAllocator(float *data, long size, THAllocator *allocator, void *allocatorContext)
-{
-    return THCudaStorage_newWithDataAndAllocator(GetCudaState(), data, size, allocator, allocatorContext);
-}
-template<>
-THCudaDoubleStorage* Storage<double, true>::newWithDataAndAllocator(double *data, long size, THAllocator *allocator, void *allocatorContext)
-{
-    return THCudaDoubleStorage_newWithDataAndAllocator(GetCudaState(), data, size, allocator, allocatorContext);
+    if (ptr_src)
+    {
+        THCudaDoubleStorage *th = THCudaDoubleStorage_newWithSize(GetCudaState(), size);
+        THCudaDoubleStorage_rawCopy(GetCudaState(), th, const_cast<double*>(ptr_src));
+        if (take_ownership_of_data)
+        {
+            free(const_cast<double*>(ptr_src));
+        }
+        return th;
+    }
+    else
+    {
+        return THCudaDoubleStorage_new(GetCudaState());
+    }
 }
 
 template<>
