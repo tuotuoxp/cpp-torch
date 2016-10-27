@@ -91,5 +91,5 @@ void cpptorch::Storage<T,C>::create()
 template<typename T, bool C>
 void cpptorch::Storage<T,C>::unserialze(const T *ptr_src, long count, bool take_ownership_of_data)
 {
-    th_ = cpptorch::th::Storage<T, C>::newWithData(ptr_src, sizeof(T) * count, take_ownership_of_data);
+    th_ = cpptorch::th::Storage<T, C>::newWithData(ptr_src, count, take_ownership_of_data);
 }

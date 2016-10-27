@@ -15,7 +15,7 @@ namespace cpptorch
         {
         public:
             // creation methods
-            static typename THTrait<T,C>::Storage* newWithData(const T *ptr_src, long size, bool take_ownership_of_data);
+            static typename THTrait<T,C>::Storage* newWithData(const T *ptr_src, long count, bool take_ownership_of_data);
             static void retain(typename THTrait<T,C>::Storage *storage);
             static void release(typename THTrait<T,C>::Storage *storage);
 

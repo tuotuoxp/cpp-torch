@@ -9,11 +9,11 @@
 
 
 template<typename T>
-static T* bypass(const T *ptr_src, long size, bool take_ownership_of_data)
+static T* bypass(const T *ptr_src, long count, bool take_ownership_of_data)
 {
     if (!take_ownership_of_data)
     {
-        long sz = size * sizeof(T);
+        long sz = count * sizeof(T);
         T *ptr = (T*)malloc(sz);
         memcpy(ptr, ptr_src, sz);
         return const_cast<T*>(ptr);
@@ -28,12 +28,12 @@ static T* bypass(const T *ptr_src, long size, bool take_ownership_of_data)
 namespace cpptorch { namespace th {
 
 template<>
-THLongStorage* Storage<long, false>::newWithData(const long *ptr_src, long size, bool take_ownership_of_data)
+THLongStorage* Storage<long, false>::newWithData(const long *ptr_src, long count, bool take_ownership_of_data)
 {
     if (ptr_src)
     {
-        return THLongStorage_newWithDataAndAllocator(bypass(ptr_src, size, take_ownership_of_data), size,
-            cpptorch::allocator::get(), cpptorch::allocator::requestIndex(size));
+        return THLongStorage_newWithDataAndAllocator(bypass(ptr_src, count, take_ownership_of_data), count,
+            cpptorch::allocator::get(), cpptorch::allocator::requestIndex(count * sizeof(long)));
     }
     else
     {
@@ -41,12 +41,12 @@ THLongStorage* Storage<long, false>::newWithData(const long *ptr_src, long size,
     }
 }
 template<>
-THFloatStorage* Storage<float, false>::newWithData(const float *ptr_src, long size, bool take_ownership_of_data)
+THFloatStorage* Storage<float, false>::newWithData(const float *ptr_src, long count, bool take_ownership_of_data)
 {
     if (ptr_src)
     {
-        return THFloatStorage_newWithDataAndAllocator(bypass(ptr_src, size, take_ownership_of_data), size,
-            cpptorch::allocator::get(), cpptorch::allocator::requestIndex(size));
+        return THFloatStorage_newWithDataAndAllocator(bypass(ptr_src, count, take_ownership_of_data), count,
+            cpptorch::allocator::get(), cpptorch::allocator::requestIndex(count * sizeof(float)));
     }
     else
     {
@@ -54,12 +54,12 @@ THFloatStorage* Storage<float, false>::newWithData(const float *ptr_src, long si
     }
 }
 template<>
-THDoubleStorage* Storage<double, false>::newWithData(const double *ptr_src, long size, bool take_ownership_of_data)
+THDoubleStorage* Storage<double, false>::newWithData(const double *ptr_src, long count, bool take_ownership_of_data)
 {
     if (ptr_src)
     {
-        return THDoubleStorage_newWithDataAndAllocator(bypass(ptr_src, size, take_ownership_of_data), size,
-            cpptorch::allocator::get(), cpptorch::allocator::requestIndex(size));
+        return THDoubleStorage_newWithDataAndAllocator(bypass(ptr_src, count, take_ownership_of_data), count,
+            cpptorch::allocator::get(), cpptorch::allocator::requestIndex(count * sizeof(double)));
     }
     else
     {
