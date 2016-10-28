@@ -721,64 +721,64 @@ void Tensor<double, true>::abs(THCudaDoubleTensor *r, THCudaDoubleTensor *t)
 #include <THCUNN/THCUNN.h>
 
 template<>
-void NN<float, true>::BatchNormalization_updateOutput(void *state, THCudaTensor *input, THCudaTensor *output,
+void NN<float, true>::BatchNormalization_updateOutput(THCudaTensor *input, THCudaTensor *output,
     THCudaTensor *weight, THCudaTensor *bias, THCudaTensor *running_mean, THCudaTensor *running_var,
     THCudaTensor *save_mean, THCudaTensor *save_std,
     bool train, double momentum, double eps)
 {
-    THNN_CudaBatchNormalization_updateOutput((THCState*)state, input, output, weight, bias, running_mean, running_var, save_mean, save_std,
+    THNN_CudaBatchNormalization_updateOutput(GetCudaState(), input, output, weight, bias, running_mean, running_var, save_mean, save_std,
         train, momentum, eps);
 }
 
 template<>
-void NN<float, true>::SpatialAveragePooling_updateOutput(void *state, THCudaTensor *input, THCudaTensor *output,
+void NN<float, true>::SpatialAveragePooling_updateOutput(THCudaTensor *input, THCudaTensor *output,
     int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode, bool count_include_pad)
 {
-    THNN_CudaSpatialAveragePooling_updateOutput((THCState*)state, input, output, kW, kH, dW, dH, padW, padH, ceil_mode, count_include_pad);
+    THNN_CudaSpatialAveragePooling_updateOutput(GetCudaState(), input, output, kW, kH, dW, dH, padW, padH, ceil_mode, count_include_pad);
 }
 
 template<>
-void NN<float, true>::SpatialConvolutionMM_updateOutput(void *state, THCudaTensor *input, THCudaTensor *output,
+void NN<float, true>::SpatialConvolutionMM_updateOutput(THCudaTensor *input, THCudaTensor *output,
     THCudaTensor *weight, THCudaTensor *bias, THCudaTensor *finput, THCudaTensor *fgradInput,
     int kW, int kH, int dW, int dH, int padW, int padH)
 {
-    THNN_CudaSpatialConvolutionMM_updateOutput((THCState*)state, input, output, weight, bias, finput, fgradInput,
+    THNN_CudaSpatialConvolutionMM_updateOutput(GetCudaState(), input, output, weight, bias, finput, fgradInput,
         kW, kH, dW, dH, padW, padH);
 }
 
 template<>
-void NN<float, true>::SpatialMaxPooling_updateOutput(void *state,
+void NN<float, true>::SpatialMaxPooling_updateOutput(
     THCudaTensor *input, THCudaTensor *output, THCudaTensor *indices,
     int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode)
 {
-    THNN_CudaSpatialMaxPooling_updateOutput((THCState*)state, input, output, indices, kW, kH, dW, dH, padW, padH, ceil_mode);
+    THNN_CudaSpatialMaxPooling_updateOutput(GetCudaState(), input, output, indices, kW, kH, dW, dH, padW, padH, ceil_mode);
 }
 
 template<>
-void NN<float, true>::SpatialReflectionPadding_updateOutput(void *state,
+void NN<float, true>::SpatialReflectionPadding_updateOutput(
     THCudaTensor *input, THCudaTensor *output,
     int pad_l, int pad_r, int pad_t, int pad_b)
 {
-    THNN_CudaSpatialReflectionPadding_updateOutput((THCState*)state, input, output, pad_l, pad_r, pad_t, pad_b);
+    THNN_CudaSpatialReflectionPadding_updateOutput(GetCudaState(), input, output, pad_l, pad_r, pad_t, pad_b);
 }
 
 template<>
-void NN<float, true>::Square_updateOutput(void *state, THCudaTensor *input, THCudaTensor *output)
+void NN<float, true>::Square_updateOutput(THCudaTensor *input, THCudaTensor *output)
 {
-    THNN_CudaSquare_updateOutput((THCState*)state, input, output);
+    THNN_CudaSquare_updateOutput(GetCudaState(), input, output);
 }
 
 template<>
-void NN<float, true>::Sqrt_updateOutput(void *state, THCudaTensor *input, THCudaTensor *output, float eps)
+void NN<float, true>::Sqrt_updateOutput(THCudaTensor *input, THCudaTensor *output, float eps)
 {
-    THNN_CudaSqrt_updateOutput((THCState*)state, input, output, eps);
+    THNN_CudaSqrt_updateOutput(GetCudaState(), input, output, eps);
 }
 
 template<>
-void NN<float, true>::Threshold_updateOutput(void *state, THCudaTensor *input, THCudaTensor *output,
+void NN<float, true>::Threshold_updateOutput(THCudaTensor *input, THCudaTensor *output,
     float threshold, float val, bool inplace)
 {
-    THNN_CudaThreshold_updateOutput((THCState*)state, input, output, threshold, val, inplace);
+    THNN_CudaThreshold_updateOutput(GetCudaState(), input, output, threshold, val, inplace);
 }
 
 

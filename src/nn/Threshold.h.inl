@@ -12,6 +12,6 @@ cpptorch::Tensor<T,C> cpptorch::nn::Threshold<T,C>::forward(const cpptorch::Tens
     }
 
     cpptorch::Tensor<T,C> output(true);
-    cpptorch::th::NN<T,C>::Threshold_updateOutput(nullptr, input, output, threshold_, val_, inplace_);
+    cpptorch::th::NN<T,C>::Threshold_updateOutput(input, output, threshold_, val_, inplace_);
     return output;
 }

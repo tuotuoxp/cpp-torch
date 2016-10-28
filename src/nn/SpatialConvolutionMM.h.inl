@@ -15,7 +15,7 @@ cpptorch::Tensor<T,C> cpptorch::nn::SpatialConvolutionMM<T,C>::forward(const cpp
     }
 
     cpptorch::Tensor<T,C> out(true);
-    cpptorch::th::NN<T,C>::SpatialConvolutionMM_updateOutput(nullptr, input_new.valid() ? input_new : input, 
+    cpptorch::th::NN<T,C>::SpatialConvolutionMM_updateOutput(input_new.valid() ? input_new : input, 
         out, weight_, bias_, finput, fgradinput, kW_, kH_, dW_, dH_, padW_, padH_);
     return out;
 }

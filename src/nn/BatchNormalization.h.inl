@@ -35,7 +35,7 @@ cpptorch::Tensor<T,C> cpptorch::nn::BatchNormalization<T,C>::forward(const cppto
 
     cpptorch::Tensor<T,C> output(true);
     output.resizeAs(input_new.valid() ? input_new : input);
-    cpptorch::th::NN<T,C>::BatchNormalization_updateOutput(nullptr, input_new.valid() ? input_new : input,
+    cpptorch::th::NN<T,C>::BatchNormalization_updateOutput(input_new.valid() ? input_new : input,
         output, weight_, bias_, running_mean_, running_var_, save_mean, save_std, train_, momentum_, eps_);
     return output;
 }

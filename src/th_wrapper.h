@@ -102,40 +102,40 @@ namespace cpptorch
         class NN
         {
         public:
-            static void BatchNormalization_updateOutput(void *state,
+            static void BatchNormalization_updateOutput(
                 typename THTrait<T,C>::Tensor *input, typename THTrait<T,C>::Tensor *output,
                 typename THTrait<T,C>::Tensor *weight, typename THTrait<T,C>::Tensor *bias,
                 typename THTrait<T,C>::Tensor *running_mean, typename THTrait<T,C>::Tensor *running_var,
                 typename THTrait<T,C>::Tensor *save_mean, typename THTrait<T,C>::Tensor *save_std,
                 bool train, double momentum, double eps);
 
-            static void SpatialAveragePooling_updateOutput(void *state,
+            static void SpatialAveragePooling_updateOutput(
                 typename THTrait<T,C>::Tensor *input, typename THTrait<T,C>::Tensor *output,
                 int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode, bool count_include_pad);
 
-            static void SpatialConvolutionMM_updateOutput(void *state,
+            static void SpatialConvolutionMM_updateOutput(
                 typename THTrait<T,C>::Tensor *input, typename THTrait<T,C>::Tensor *output,
                 typename THTrait<T,C>::Tensor *weight, typename THTrait<T,C>::Tensor *bias,
                 typename THTrait<T,C>::Tensor *finput, typename THTrait<T,C>::Tensor *fgradInput,
                 int kW, int kH, int dW, int dH, int padW, int padH);
 
-            static void SpatialMaxPooling_updateOutput(void *state,
+            static void SpatialMaxPooling_updateOutput(
                 typename THTrait<T,C>::Tensor *input, typename THTrait<T,C>::Tensor *output,
                 typename THTrait<T,C>::Tensor *indices,
                 int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode);
 
-            static void SpatialReflectionPadding_updateOutput(void *state,
+            static void SpatialReflectionPadding_updateOutput(
                 typename THTrait<T,C>::Tensor *input, typename THTrait<T,C>::Tensor *output,
                 int pad_l, int pad_r, int pad_t, int pad_b);
 
-            static void Sqrt_updateOutput(void *state,
+            static void Sqrt_updateOutput(
                 typename THTrait<T,C>::Tensor *input, typename THTrait<T,C>::Tensor *output,
                 T eps);
 
-            static void Square_updateOutput(void *state,
+            static void Square_updateOutput(
                 typename THTrait<T,C>::Tensor *input, typename THTrait<T,C>::Tensor *output);
 
-            static void Threshold_updateOutput(void *state,
+            static void Threshold_updateOutput(
                 typename THTrait<T,C>::Tensor *input, typename THTrait<T,C>::Tensor *output,
                 T threshold, T val,
                 bool inplace);

@@ -726,117 +726,117 @@ void Tensor<double, false>::abs(THDoubleTensor *r, THDoubleTensor *t)
 
 
 template<>
-void NN<float, false>::BatchNormalization_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output,
+void NN<float, false>::BatchNormalization_updateOutput(THFloatTensor *input, THFloatTensor *output,
     THFloatTensor *weight, THFloatTensor *bias, THFloatTensor *running_mean, THFloatTensor *running_var,
     THFloatTensor *save_mean, THFloatTensor *save_std,
     bool train, double momentum, double eps)
 {
-    THNN_FloatBatchNormalization_updateOutput(state, input, output, weight, bias, running_mean, running_var, save_mean, save_std,
+    THNN_FloatBatchNormalization_updateOutput(nullptr, input, output, weight, bias, running_mean, running_var, save_mean, save_std,
         train, momentum, eps);
 }
 template<>
-void NN<double, false>::BatchNormalization_updateOutput(THNNState *state, THDoubleTensor *input, THDoubleTensor *output,
+void NN<double, false>::BatchNormalization_updateOutput(THDoubleTensor *input, THDoubleTensor *output,
     THDoubleTensor *weight, THDoubleTensor *bias, THDoubleTensor *running_mean, THDoubleTensor *running_var,
     THDoubleTensor *save_mean, THDoubleTensor *save_std,
     bool train, double momentum, double eps)
 {
-    THNN_DoubleBatchNormalization_updateOutput(state, input, output, weight, bias, running_mean, running_var, save_mean, save_std,
+    THNN_DoubleBatchNormalization_updateOutput(nullptr, input, output, weight, bias, running_mean, running_var, save_mean, save_std,
         train, momentum, eps);
 }
 
 template<>
-void NN<float, false>::SpatialAveragePooling_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output,
+void NN<float, false>::SpatialAveragePooling_updateOutput(THFloatTensor *input, THFloatTensor *output,
     int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode, bool count_include_pad)
 {
-    THNN_FloatSpatialAveragePooling_updateOutput(state, input, output, kW, kH, dW, dH, padW, padH, ceil_mode, count_include_pad);
+    THNN_FloatSpatialAveragePooling_updateOutput(nullptr, input, output, kW, kH, dW, dH, padW, padH, ceil_mode, count_include_pad);
 }
 template<>
-void NN<double, false>::SpatialAveragePooling_updateOutput(THNNState *state, THDoubleTensor *input, THDoubleTensor *output,
+void NN<double, false>::SpatialAveragePooling_updateOutput(THDoubleTensor *input, THDoubleTensor *output,
     int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode, bool count_include_pad)
 {
-    THNN_DoubleSpatialAveragePooling_updateOutput(state, input, output, kW, kH, dW, dH, padW, padH, ceil_mode, count_include_pad);
+    THNN_DoubleSpatialAveragePooling_updateOutput(nullptr, input, output, kW, kH, dW, dH, padW, padH, ceil_mode, count_include_pad);
 }
 
 template<>
-void NN<float, false>::SpatialConvolutionMM_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output,
+void NN<float, false>::SpatialConvolutionMM_updateOutput(THFloatTensor *input, THFloatTensor *output,
     THFloatTensor *weight, THFloatTensor *bias, THFloatTensor *finput, THFloatTensor *fgradInput,
     int kW, int kH, int dW, int dH, int padW, int padH)
 {
-    THNN_FloatSpatialConvolutionMM_updateOutput(state, input, output, weight, bias, finput, fgradInput,
+    THNN_FloatSpatialConvolutionMM_updateOutput(nullptr, input, output, weight, bias, finput, fgradInput,
         kW, kH, dW, dH, padW, padH);
 }
 template<>
-void NN<double, false>::SpatialConvolutionMM_updateOutput(THNNState *state, THDoubleTensor *input, THDoubleTensor *output,
+void NN<double, false>::SpatialConvolutionMM_updateOutput(THDoubleTensor *input, THDoubleTensor *output,
     THDoubleTensor *weight, THDoubleTensor *bias, THDoubleTensor *finput, THDoubleTensor *fgradInput,
     int kW, int kH, int dW, int dH, int padW, int padH)
 {
-    THNN_DoubleSpatialConvolutionMM_updateOutput(state, input, output, weight, bias, finput, fgradInput,
+    THNN_DoubleSpatialConvolutionMM_updateOutput(nullptr, input, output, weight, bias, finput, fgradInput,
         kW, kH, dW, dH, padW, padH);
 }
 
 template<>
-void NN<float, false>::SpatialMaxPooling_updateOutput(THNNState *state,
+void NN<float, false>::SpatialMaxPooling_updateOutput(
     THFloatTensor *input, THFloatTensor *output, THFloatTensor *indices,
     int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode)
 {
-    THNN_FloatSpatialMaxPooling_updateOutput(state, input, output, indices, kW, kH, dW, dH, padW, padH, ceil_mode);
+    THNN_FloatSpatialMaxPooling_updateOutput(nullptr, input, output, indices, kW, kH, dW, dH, padW, padH, ceil_mode);
 }
 template<>
-void NN<double, false>::SpatialMaxPooling_updateOutput(THNNState *state,
+void NN<double, false>::SpatialMaxPooling_updateOutput(
     THDoubleTensor *input, THDoubleTensor *output, THDoubleTensor *indices,
     int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode)
 {
-    THNN_DoubleSpatialMaxPooling_updateOutput(state, input, output, indices, kW, kH, dW, dH, padW, padH, ceil_mode);
+    THNN_DoubleSpatialMaxPooling_updateOutput(nullptr, input, output, indices, kW, kH, dW, dH, padW, padH, ceil_mode);
 }
 
 template<>
-void NN<float, false>::SpatialReflectionPadding_updateOutput(THNNState *state,
+void NN<float, false>::SpatialReflectionPadding_updateOutput(
     THFloatTensor *input, THFloatTensor *output,
     int pad_l, int pad_r, int pad_t, int pad_b)
 {
-    THNN_FloatSpatialReflectionPadding_updateOutput(state, input, output, pad_l, pad_r, pad_t, pad_b);
+    THNN_FloatSpatialReflectionPadding_updateOutput(nullptr, input, output, pad_l, pad_r, pad_t, pad_b);
 }
 template<>
-void NN<double, false>::SpatialReflectionPadding_updateOutput(THNNState *state,
+void NN<double, false>::SpatialReflectionPadding_updateOutput(
     THDoubleTensor *input, THDoubleTensor *output,
     int pad_l, int pad_r, int pad_t, int pad_b)
 {
-    THNN_DoubleSpatialReflectionPadding_updateOutput(state, input, output, pad_l, pad_r, pad_t, pad_b);
+    THNN_DoubleSpatialReflectionPadding_updateOutput(nullptr, input, output, pad_l, pad_r, pad_t, pad_b);
 }
 
 template<>
-void NN<float, false>::Square_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output)
+void NN<float, false>::Square_updateOutput(THFloatTensor *input, THFloatTensor *output)
 {
-    THNN_FloatSquare_updateOutput(state, input, output);
+    THNN_FloatSquare_updateOutput(nullptr, input, output);
 }
 template<>
-void NN<double, false>::Square_updateOutput(THNNState *state, THDoubleTensor *input, THDoubleTensor *output)
+void NN<double, false>::Square_updateOutput(THDoubleTensor *input, THDoubleTensor *output)
 {
-    THNN_DoubleSquare_updateOutput(state, input, output);
-}
-
-template<>
-void NN<float, false>::Sqrt_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output, float eps)
-{
-    THNN_FloatSqrt_updateOutput(state, input, output, eps);
-}
-template<>
-void NN<double, false>::Sqrt_updateOutput(THNNState *state, THDoubleTensor *input, THDoubleTensor *output, double eps)
-{
-    THNN_DoubleSqrt_updateOutput(state, input, output, eps);
+    THNN_DoubleSquare_updateOutput(nullptr, input, output);
 }
 
 template<>
-void NN<float, false>::Threshold_updateOutput(THNNState *state, THFloatTensor *input, THFloatTensor *output,
+void NN<float, false>::Sqrt_updateOutput(THFloatTensor *input, THFloatTensor *output, float eps)
+{
+    THNN_FloatSqrt_updateOutput(nullptr, input, output, eps);
+}
+template<>
+void NN<double, false>::Sqrt_updateOutput(THDoubleTensor *input, THDoubleTensor *output, double eps)
+{
+    THNN_DoubleSqrt_updateOutput(nullptr, input, output, eps);
+}
+
+template<>
+void NN<float, false>::Threshold_updateOutput(THFloatTensor *input, THFloatTensor *output,
     float threshold, float val, bool inplace)
 {
-    THNN_FloatThreshold_updateOutput(state, input, output, threshold, val, inplace);
+    THNN_FloatThreshold_updateOutput(nullptr, input, output, threshold, val, inplace);
 }
 template<>
-void NN<double, false>::Threshold_updateOutput(THNNState *state, THDoubleTensor *input, THDoubleTensor *output,
+void NN<double, false>::Threshold_updateOutput(THDoubleTensor *input, THDoubleTensor *output,
     double threshold, double val, bool inplace)
 {
-    THNN_DoubleThreshold_updateOutput(state, input, output, threshold, val, inplace);
+    THNN_DoubleThreshold_updateOutput(nullptr, input, output, threshold, val, inplace);
 }
 
 
