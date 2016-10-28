@@ -14,17 +14,15 @@ namespace cpptorch { namespace th {
 
 
 template <>
-THCudaLongStorage* Storage<long, true>::newWithData(const long *ptr_src, long size, bool take_ownership_of_data)
+THCudaLongStorage* Storage<long, true>::newWithData(const long *ptr_src, long count, bool take_ownership_of_data)
 {
     if (ptr_src)
     {
-        THCudaLongStorage *th = THCudaLongStorage_newWithSize(GetCudaState(), size);
-        THCudaLongStorage_rawCopy(GetCudaState(), th, const_cast<long*>(ptr_src));
-        if (take_ownership_of_data)
-        {
-            free(const_cast<long*>(ptr_src));
-        }
-        return th;
+        cpptorch::Storage<long> th;
+        th.unserialze(ptr_src, count, take_ownership_of_data);
+        THCudaLongStorage *thc = THCudaLongStorage_newWithSize(GetCudaState(), count);
+        THCudaLongStorage_copyCPU(GetCudaState(), thc, th);
+        return thc;
     }
     else
     {
@@ -32,17 +30,15 @@ THCudaLongStorage* Storage<long, true>::newWithData(const long *ptr_src, long si
     }
 }
 template <>
-THCudaStorage* Storage<float, true>::newWithData(const float *ptr_src, long size, bool take_ownership_of_data)
+THCudaStorage* Storage<float, true>::newWithData(const float *ptr_src, long count, bool take_ownership_of_data)
 {
     if (ptr_src)
     {
-        THCudaStorage *th = THCudaStorage_newWithSize(GetCudaState(), size);
-        THCudaStorage_rawCopy(GetCudaState(), th, const_cast<float*>(ptr_src));
-        if (take_ownership_of_data)
-        {
-            free(const_cast<float*>(ptr_src));
-        }
-        return th;
+        cpptorch::Storage<float> th;
+        th.unserialze(ptr_src, count, take_ownership_of_data);
+        THCudaStorage *thc = THCudaStorage_newWithSize(GetCudaState(), count);
+        THCudaStorage_copyCPU(GetCudaState(), thc, th);
+        return thc;
     }
     else
     {
@@ -50,17 +46,15 @@ THCudaStorage* Storage<float, true>::newWithData(const float *ptr_src, long size
     }
 }
 template <>
-THCudaDoubleStorage* Storage<double, true>::newWithData(const double *ptr_src, long size, bool take_ownership_of_data)
+THCudaDoubleStorage* Storage<double, true>::newWithData(const double *ptr_src, long count, bool take_ownership_of_data)
 {
     if (ptr_src)
     {
-        THCudaDoubleStorage *th = THCudaDoubleStorage_newWithSize(GetCudaState(), size);
-        THCudaDoubleStorage_rawCopy(GetCudaState(), th, const_cast<double*>(ptr_src));
-        if (take_ownership_of_data)
-        {
-            free(const_cast<double*>(ptr_src));
-        }
-        return th;
+        cpptorch::Storage<double> th;
+        th.unserialze(ptr_src, count, take_ownership_of_data);
+        THCudaDoubleStorage *thc = THCudaDoubleStorage_newWithSize(GetCudaState(), count);
+        THCudaDoubleStorage_copyCPU(GetCudaState(), thc, th);
+        return thc;
     }
     else
     {
