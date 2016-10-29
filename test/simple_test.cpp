@@ -63,15 +63,9 @@ void test_layer(const char *data_path, const char *subdir, int count = 1)
 }
 
 
-extern void test_cuda(const char *path);
-
 
 int main(int argc, char *argv[])
 {
-//    test_cuda(argv[1]);
-
-
-//    test_layer(argv[1], "SpatialBatchNormalization", 100000);
     cpptorch::allocator::init();
 
 //    test_index(argv[1]);

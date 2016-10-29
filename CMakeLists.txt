@@ -12,7 +12,7 @@ if(NOT TH_FOUND)
 endif()
 
 
-macro(make_project name src)
+macro(generate_project name src)
   # create target
   add_library(${name} SHARED ${src})
 
@@ -60,19 +60,21 @@ foreach(each_file ${cpptorch_src})
 
   source_group("${group_name}" FILES "${each_file}")
 endforeach()
-make_project(cpptorch "${cpptorch_src}")
+generate_project(cpptorch "${cpptorch_src}")
 
 
 # cpptorch_cuda
-if(NOT CUDA_FOUND)
-  find_package(CUDA 5.5 REQUIRED)
+if(WITH_CUDA)
+  if(NOT CUDA_FOUND)
+    find_package(CUDA 5.5 REQUIRED)
+  endif()
+  file(GLOB_RECURSE cpptorch_cuda_src "src_cuda/*.cpp" "src_cuda/*.cc")
+  generate_project(cpptorch_cuda "${cpptorch_cuda_src}")
+  target_include_directories(cpptorch_cuda PRIVATE ${CUDA_INCLUDE_DIRS})
+  find_library(THC_LIBRARY NAMES THC PATHS ${TH_LIB_DIR})
+  find_library(THCUNN_LIBRARY NAMES THCUNN PATHS ${TH_LIB_DIR})
+  target_link_libraries(cpptorch_cuda cpptorch ${THC_LIBRARY} ${THCUNN_LIBRARY})
 endif()
-file(GLOB_RECURSE cpptorch_cuda_src "src_cuda/*.cpp" "src_cuda/*.cc")
-make_project(cpptorch_cuda "${cpptorch_cuda_src}")
-target_include_directories(cpptorch_cuda PRIVATE ${CUDA_INCLUDE_DIRS})
-find_library(THC_LIBRARY NAMES THC PATHS ${TH_LIB_DIR})
-find_library(THCUNN_LIBRARY NAMES THCUNN PATHS ${TH_LIB_DIR})
-target_link_libraries(cpptorch_cuda cpptorch ${THC_LIBRARY} ${THCUNN_LIBRARY})
 
 
 # install headers
@@ -95,23 +97,21 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/cmake-exports/cpptorch-config.cmake"
 #############################################################
 
 
-file(GLOB_RECURSE cpptorch_TEST
-    "test/*.h"
-    "test/*.h.inl"
-    "test/*.cpp"
-    "test/*.cc"
-)
+macro(generate_test_project name src)
+  add_executable(${name} ${src})
 
+  target_include_directories(${name} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+  target_link_libraries(${name} cpptorch)
 
-add_executable(cpptorch_test ${cpptorch_TEST})
+  set_target_properties(${name} PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+  set_target_properties(${name} PROPERTIES MACOSX_RPATH TRUE)
 
-target_include_directories(cpptorch_test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
-target_link_libraries(cpptorch_test cpptorch cpptorch_cuda)
+  install(TARGETS ${name} RUNTIME DESTINATION "bin")
+endmacro()
 
+generate_test_project(cpptorch_test "test/simple_test.cpp")
 
-set_target_properties(cpptorch_test PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
-set_target_properties(cpptorch_test PROPERTIES MACOSX_RPATH TRUE)
-
-
-install(TARGETS cpptorch_test RUNTIME DESTINATION "bin")
-
+if(WITH_CUDA)
+  generate_test_project(cpptorch_test_cuda "test/simple_test_cuda.cpp")
+  target_link_libraries(cpptorch_test_cuda cpptorch_cuda)
+endif()
