@@ -7,8 +7,8 @@
 void specifyFully(std::vector<long> &sto_size, int nElements);
 
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C>::Tensor(bool auto_create) : th_(nullptr)
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F>::Tensor(bool auto_create) : th_(nullptr)
 {
     if (auto_create)
     {
@@ -16,31 +16,31 @@ cpptorch::Tensor<T,C>::Tensor(bool auto_create) : th_(nullptr)
     }
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C>& cpptorch::Tensor<T,C>::operator =(const cpptorch::Tensor<T,C> &other)
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F>& cpptorch::Tensor<T, F>::operator =(const cpptorch::Tensor<T, F> &other)
 {
     if (this != &other) {
         if (th_)
         {
-            cpptorch::th::Tensor<T,C>::release(th_);
+            cpptorch::th::Tensor<T, F>::release(th_);
             th_ = nullptr;
         }
         if (other.th_)
         {
             th_ = other.th_;
-            cpptorch::th::Tensor<T,C>::retain(th_);
+            cpptorch::th::Tensor<T, F>::retain(th_);
         }
     }
     return *this;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C>& cpptorch::Tensor<T,C>::operator =(Tensor<T,C> &&other)
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F>& cpptorch::Tensor<T, F>::operator =(Tensor<T, F> &&other)
 {
     assert(this != &other);
     if (th_)
     {
-        cpptorch::th::Tensor<T,C>::release(th_);
+        cpptorch::th::Tensor<T, F>::release(th_);
         th_ = nullptr;
     }
     if (other.th_)
@@ -51,18 +51,18 @@ cpptorch::Tensor<T,C>& cpptorch::Tensor<T,C>::operator =(Tensor<T,C> &&other)
     return *this;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C>::~Tensor()
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F>::~Tensor()
 {
     if (th_)
     {
-        cpptorch::th::Tensor<T,C>::release(th_);
+        cpptorch::th::Tensor<T, F>::release(th_);
         th_ = nullptr;
     }
 }
 
-template<typename T, bool C>
-const std::string cpptorch::Tensor<T,C>::name() const
+template<typename T, GPUFlag F>
+const std::string cpptorch::Tensor<T, F>::name() const
 {
     if (std::is_same<T, long>::value)
     {
@@ -77,17 +77,17 @@ const std::string cpptorch::Tensor<T,C>::name() const
 
 //////////////////////////////////////////////////////////////////////////
 
-template<typename T, bool C>
-void cpptorch::Tensor<T,C>::create()
+template<typename T, GPUFlag F>
+void cpptorch::Tensor<T, F>::create()
 {
     assert(th_ == nullptr);
-    Storage<T,C> s;
+    Storage<T, F> s;
     s.create();
-    th_ = cpptorch::th::Tensor<T,C>::newWithStorage(s, 0, 0, nullptr, nullptr);
+    th_ = cpptorch::th::Tensor<T, F>::newWithStorage(s, 0, 0, nullptr, nullptr);
 }
 
-template<typename T, bool C>
-void cpptorch::Tensor<T,C>::create(const Storage<T,C> &storage, long storage_offset, int dim,
+template<typename T, GPUFlag F>
+void cpptorch::Tensor<T, F>::create(const Storage<T, F> &storage, long storage_offset, int dim,
     const long *size, const long *stride)
 {
     assert(th_ == nullptr);
@@ -100,94 +100,97 @@ void cpptorch::Tensor<T,C>::create(const Storage<T,C> &storage, long storage_off
         }
         stride = new_stride;
     }
-    th_ = cpptorch::th::Tensor<T,C>::newWithStorage(storage, storage_offset, dim, size, stride);
+    th_ = cpptorch::th::Tensor<T, F>::newWithStorage(storage, storage_offset, dim, size, stride);
 }
 
-template<typename T, bool C>
-void cpptorch::Tensor<T,C>::resize(const Storage<long, false> &size)
+template<typename T, GPUFlag F>
+void cpptorch::Tensor<T, F>::resize(const std::vector<long> &size)
 {
-    cpptorch::th::Tensor<T,C>::resize(th_, size, nullptr);
+    cpptorch::Storage<long, GPU_None> sz(size);
+    cpptorch::th::Tensor<T, F>::resize(th_, sz, nullptr);
 }
 
-template<typename T, bool C>
-void cpptorch::Tensor<T,C>::resize(const Storage<long, false> &size, const Storage<long, false> &stride)
+template<typename T, GPUFlag F>
+void cpptorch::Tensor<T, F>::resize(const std::vector<long> &size, const std::vector<long> &stride)
 {
-    cpptorch::th::Tensor<T,C>::resize(th_, size, stride);
+    cpptorch::Storage<long, GPU_None> sz(size);
+    cpptorch::Storage<long, GPU_None> st(stride);
+    cpptorch::th::Tensor<T, F>::resize(th_, sz, st);
 }
 
-template<typename T, bool C>
-void cpptorch::Tensor<T,C>::resizeAs(const Tensor<T,C> &src)
+template<typename T, GPUFlag F>
+void cpptorch::Tensor<T, F>::resizeAs(const Tensor<T, F> &src)
 {
-    cpptorch::th::Tensor<T,C>::resizeAs(th_, src.th_);
+    cpptorch::th::Tensor<T, F>::resizeAs(th_, src.th_);
 }
 
-template<typename T, bool C>
-void cpptorch::Tensor<T,C>::copy(const Tensor<T,C> &src)
+template<typename T, GPUFlag F>
+void cpptorch::Tensor<T, F>::copy(const Tensor<T, F> &src)
 {
-    cpptorch::th::Tensor<T,C>::copy(th_, src.th_);
+    cpptorch::th::Tensor<T, F>::copy(th_, src.th_);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-template<typename T, bool C>
-cpptorch::Storage<T,C> cpptorch::Tensor<T,C>::storage() const
+template<typename T, GPUFlag F>
+cpptorch::Storage<T, F> cpptorch::Tensor<T, F>::storage() const
 {
-    return cpptorch::Storage<T,C>(th_ ? cpptorch::th::Tensor<T,C>::storage(th_) : nullptr);
+    return cpptorch::Storage<T, F>(th_ ? cpptorch::th::Tensor<T, F>::storage(th_) : nullptr);
 }
 
-template<typename T, bool C>
-long cpptorch::Tensor<T,C>::storageOffset() const
+template<typename T, GPUFlag F>
+long cpptorch::Tensor<T, F>::storageOffset() const
 {
-    return th_ ? cpptorch::th::Tensor<T,C>::storageOffset(th_) : 0;
+    return th_ ? cpptorch::th::Tensor<T, F>::storageOffset(th_) : 0;
 }
 
-template<typename T, bool C>
-std::vector<long> cpptorch::Tensor<T,C>::size() const
+template<typename T, GPUFlag F>
+std::vector<long> cpptorch::Tensor<T, F>::size() const
 {
     std::vector<long> v;
     if (th_)
     {
-        Storage<long, false> sz(cpptorch::th::Tensor<T, C>::size(th_));
+        Storage<long, GPU_None> sz(cpptorch::th::Tensor<T, F>::size(th_));
         long *p = sz.data();
         v.assign(p, p + dim());
     }
     return v;
 }
 
-template<typename T, bool C>
-long cpptorch::Tensor<T,C>::size(int dim) const
+template<typename T, GPUFlag F>
+long cpptorch::Tensor<T, F>::size(int dim) const
 {
-    return cpptorch::th::Tensor<T,C>::size(th_, dim);
+    return cpptorch::th::Tensor<T, F>::size(th_, dim);
 }
 
-template<typename T, bool C>
-std::vector<long> cpptorch::Tensor<T,C>::stride() const
+template<typename T, GPUFlag F>
+std::vector<long> cpptorch::Tensor<T, F>::stride() const
 {
     std::vector<long> v;
     if (th_)
     {
-        THTrait<long, false>::Storage *th = cpptorch::th::Tensor<T,C>::stride(th_);
-        long *p = cpptorch::th::Storage<long, false>::data(th);
+        THTrait<long, GPU_None>::Storage *th = cpptorch::th::Tensor<T, F>::stride(th_);
+        long *p = cpptorch::th::Storage<long, GPU_None>::data(th);
         v.assign(p, p + dim());
-        cpptorch::th::Storage<long, false>::release(th);
+        cpptorch::th::Storage<long, GPU_None>::release(th);
     }
     return v;
 }
 
-template<typename T, bool C>
-int cpptorch::Tensor<T,C>::dim() const
+template<typename T, GPUFlag F>
+int cpptorch::Tensor<T, F>::dim() const
 {
-    return cpptorch::th::Tensor<T,C>::nDimension(th_);
+    return cpptorch::th::Tensor<T, F>::nDimension(th_);
 }
 
-template<typename T, bool C>
-T* cpptorch::Tensor<T,C>::data() const
+template<typename T, GPUFlag F>
+T* cpptorch::Tensor<T, F>::data() const
 {
-    return cpptorch::th::Tensor<T,C>::data(th_);
+    return cpptorch::th::Tensor<T, F>::data(th_);
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C>::operator T() const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F>::operator T() const
 {
     asserter(nElement() == 1) << "only an 1-D tensor with ONE element can be cast to number";
     return data()[0];
@@ -195,39 +198,39 @@ cpptorch::Tensor<T,C>::operator T() const
 
 //////////////////////////////////////////////////////////////////////////
 
-template<typename T, bool C>
-bool cpptorch::Tensor<T,C>::isContiguous() const
+template<typename T, GPUFlag F>
+bool cpptorch::Tensor<T, F>::isContiguous() const
 {
-    return cpptorch::th::Tensor<T,C>::isContiguous(th_) != 0;
+    return cpptorch::th::Tensor<T, F>::isContiguous(th_) != 0;
 }
 
-template<typename T, bool C>
-int cpptorch::Tensor<T,C>::nElement() const
+template<typename T, GPUFlag F>
+int cpptorch::Tensor<T, F>::nElement() const
 {
-    return cpptorch::th::Tensor<T,C>::nElement(th_);
+    return cpptorch::th::Tensor<T, F>::nElement(th_);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::narrow(int dimension, long firstIndex, long size) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::Tensor<T, F>::narrow(int dimension, long firstIndex, long size) const
 {
-    cpptorch::Tensor<T,C> out(true);
-    cpptorch::th::Tensor<T,C>::narrow(out, th_, dimension, firstIndex, size);
+    cpptorch::Tensor<T, F> out(true);
+    cpptorch::th::Tensor<T, F>::narrow(out, th_, dimension, firstIndex, size);
     return out;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::select(int dimension, long sliceIndex) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::Tensor<T, F>::select(int dimension, long sliceIndex) const
 {
-    cpptorch::Tensor<T,C> out(true);
-    cpptorch::th::Tensor<T,C>::select(out, th_, dimension, sliceIndex);
+    cpptorch::Tensor<T, F> out(true);
+    cpptorch::th::Tensor<T, F>::select(out, th_, dimension, sliceIndex);
     return out;
 }
 
-template<typename T, bool C>
+template<typename T, GPUFlag F>
 template<class TIterator>
-cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::view(const TIterator begin, const TIterator end) const
+cpptorch::Tensor<T, F> cpptorch::Tensor<T, F>::view(const TIterator begin, const TIterator end) const
 {
     std::vector<long> sz(begin, end);
     int origNElement = nElement();
@@ -235,14 +238,14 @@ cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::view(const TIterator begin, const T
 
     std::vector<long> ss = size();
     assert(isContiguous() && "expecting a contiguous tensor");
-    cpptorch::Tensor<T,C> view;
+    cpptorch::Tensor<T, F> view;
     view.create(storage(), storageOffset(), (int)sz.size(), &sz[0]);
     assert(view.nElement() == origNElement && "Wrong size for view. ");
     return view;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::expand(const std::vector<long> &sz) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::Tensor<T, F>::expand(const std::vector<long> &sz) const
 {
     int tensor_dim = dim();
     std::vector<long> tensor_stride = stride();
@@ -265,21 +268,21 @@ cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::expand(const std::vector<long> &sz)
     }
 
     // create new view, with singleton expansion:
-    cpptorch::Tensor<T,C> output;
+    cpptorch::Tensor<T, F> output;
     output.create(storage(), storageOffset(), tensor_dim, &tensor_size[0], &tensor_stride[0]);
     return output;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::t() const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::Tensor<T, F>::t() const
 {
-    cpptorch::Tensor<T,C> output(true);
-    cpptorch::th::Tensor<T,C>::transpose(output, th_, 0, 1);
+    cpptorch::Tensor<T, F> output(true);
+    cpptorch::th::Tensor<T, F>::transpose(output, th_, 0, 1);
     return output;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::operator [] (const std::initializer_list<long> &inputs) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::Tensor<T, F>::operator [] (const std::initializer_list<long> &inputs) const
 {
     std::vector<long> tsize = size();
     std::vector<long> tstride = stride();
@@ -301,7 +304,7 @@ cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::operator [] (const std::initializer
     tsize.erase(tsize.begin(), tsize.begin() + dim);
     tstride.erase(tstride.begin(), tstride.begin() + dim);
 
-    cpptorch::Tensor<T,C> output;
+    cpptorch::Tensor<T, F> output;
     if (tsize.size() == 0)
     {
         tsize.push_back(1);
@@ -313,163 +316,163 @@ cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::operator [] (const std::initializer
 
 //////////////////////////////////////////////////////////////////////////
 
-template<typename T, bool C>
-void cpptorch::Tensor<T,C>::fill(T val)
+template<typename T, GPUFlag F>
+void cpptorch::Tensor<T, F>::fill(T val)
 {
-    cpptorch::th::Tensor<T,C>::fill(th_, val);
+    cpptorch::th::Tensor<T, F>::fill(th_, val);
 }
 
-template<typename T, bool C>
-void cpptorch::Tensor<T,C>::abs()
+template<typename T, GPUFlag F>
+void cpptorch::Tensor<T, F>::abs()
 {
-    cpptorch::th::Tensor<T,C>::abs(th_, th_);
+    cpptorch::th::Tensor<T, F>::abs(th_, th_);
 }
 
-template<typename T, bool C>
-void cpptorch::Tensor<T,C>::addmv(T beta, const Tensor<T,C> &t,
-    T alpha, const Tensor<T,C> &matrix, const Tensor<T,C> &vector)
+template<typename T, GPUFlag F>
+void cpptorch::Tensor<T, F>::addmv(T beta, const Tensor<T, F> &t,
+    T alpha, const Tensor<T, F> &matrix, const Tensor<T, F> &vector)
 {
-    cpptorch::th::Tensor<T,C>::addmv(th_, beta, t, alpha, matrix, vector);
+    cpptorch::th::Tensor<T, F>::addmv(th_, beta, t, alpha, matrix, vector);
 }
 
-template<typename T, bool C>
-void cpptorch::Tensor<T,C>::addmm(T beta, const Tensor<T,C> &t,
-    T alpha, const Tensor<T,C> &matrix1, const Tensor<T,C> &matrix2)
+template<typename T, GPUFlag F>
+void cpptorch::Tensor<T, F>::addmm(T beta, const Tensor<T, F> &t,
+    T alpha, const Tensor<T, F> &matrix1, const Tensor<T, F> &matrix2)
 {
-    cpptorch::th::Tensor<T,C>::addmm(th_, beta, t, alpha, matrix1, matrix2);
+    cpptorch::th::Tensor<T, F>::addmm(th_, beta, t, alpha, matrix1, matrix2);
 }
 
-template<typename T, bool C>
-void cpptorch::Tensor<T,C>::addr(T beta, const Tensor<T,C> &t,
-    T alpha, const Tensor<T,C> &vector1, const Tensor<T,C> &vector2)
+template<typename T, GPUFlag F>
+void cpptorch::Tensor<T, F>::addr(T beta, const Tensor<T, F> &t,
+    T alpha, const Tensor<T, F> &vector1, const Tensor<T, F> &vector2)
 {
-    cpptorch::th::Tensor<T,C>::addr(th_, beta, t, alpha, vector1, vector2);
+    cpptorch::th::Tensor<T, F>::addr(th_, beta, t, alpha, vector1, vector2);
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C>& cpptorch::Tensor<T,C>::operator += (T val)
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F>& cpptorch::Tensor<T, F>::operator += (T val)
 {
-    cpptorch::th::Tensor<T,C>::add(th_, th_, val);
+    cpptorch::th::Tensor<T, F>::add(th_, th_, val);
     return *this;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C>& cpptorch::Tensor<T,C>::operator += (const cpptorch::Tensor<T,C> &other)
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F>& cpptorch::Tensor<T, F>::operator += (const cpptorch::Tensor<T, F> &other)
 {
-    cpptorch::th::Tensor<T,C>::cadd(th_, th_, 1, other);
+    cpptorch::th::Tensor<T, F>::cadd(th_, th_, 1, other);
     return *this;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C>& cpptorch::Tensor<T,C>::operator -= (const cpptorch::Tensor<T,C> &other)
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F>& cpptorch::Tensor<T, F>::operator -= (const cpptorch::Tensor<T, F> &other)
 {
-    cpptorch::th::Tensor<T,C>::cadd(th_, th_, -1, other);
+    cpptorch::th::Tensor<T, F>::cadd(th_, th_, -1, other);
     return *this;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C>& cpptorch::Tensor<T,C>::operator *= (T val)
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F>& cpptorch::Tensor<T, F>::operator *= (T val)
 {
-    cpptorch::th::Tensor<T,C>::mul(th_, th_, val);
+    cpptorch::th::Tensor<T, F>::mul(th_, th_, val);
     return *this;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C>& cpptorch::Tensor<T,C>::operator *= (const cpptorch::Tensor<T,C> &other)
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F>& cpptorch::Tensor<T, F>::operator *= (const cpptorch::Tensor<T, F> &other)
 {
-    cpptorch::th::Tensor<T,C>::cmul(th_, th_, other);
+    cpptorch::th::Tensor<T, F>::cmul(th_, th_, other);
     return *this;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C>& cpptorch::Tensor<T,C>::operator ^= (T val)
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F>& cpptorch::Tensor<T, F>::operator ^= (T val)
 {
-    cpptorch::th::Tensor<T,C>::pow(th_, th_, val);
+    cpptorch::th::Tensor<T, F>::pow(th_, th_, val);
     return *this;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C>& cpptorch::Tensor<T,C>::operator ^= (const Tensor<T,C> &other)
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F>& cpptorch::Tensor<T, F>::operator ^= (const Tensor<T, F> &other)
 {
-    cpptorch::th::Tensor<T,C>::cpow(th_, th_, other);
+    cpptorch::th::Tensor<T, F>::cpow(th_, th_, other);
     return *this;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-template<typename T, bool C>
-T cpptorch::Tensor<T,C>::minall() const
+template<typename T, GPUFlag F>
+T cpptorch::Tensor<T, F>::minall() const
 {
-    return th_ ? cpptorch::th::Tensor<T,C>::minall(th_) : 0;
+    return th_ ? cpptorch::th::Tensor<T, F>::minall(th_) : 0;
 }
 
-template<typename T, bool C>
-T cpptorch::Tensor<T,C>::maxall() const
+template<typename T, GPUFlag F>
+T cpptorch::Tensor<T, F>::maxall() const
 {
-    return th_ ? cpptorch::th::Tensor<T,C>::maxall(th_) : 0;
+    return th_ ? cpptorch::th::Tensor<T, F>::maxall(th_) : 0;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::max(int dimension) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::Tensor<T, F>::max(int dimension) const
 {
-    cpptorch::Tensor<T,C> out(true);
-    cpptorch::th::Tensor<T,C>::max(out.th_, th_, dimension);
+    cpptorch::Tensor<T, F> out(true);
+    cpptorch::th::Tensor<T, F>::max(out.th_, th_, dimension);
     return out;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::sum(int dimension) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::Tensor<T, F>::sum(int dimension) const
 {
-    cpptorch::Tensor<T,C> out(true);
-    cpptorch::th::Tensor<T,C>::sum(out.th_, th_, dimension);
+    cpptorch::Tensor<T, F> out(true);
+    cpptorch::th::Tensor<T, F>::sum(out.th_, th_, dimension);
     return out;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::operator +(T val) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::Tensor<T, F>::operator +(T val) const
 {
-    cpptorch::Tensor<T,C> out(true);
-    cpptorch::th::Tensor<T,C>::add(out.th_, th_, val);
+    cpptorch::Tensor<T, F> out(true);
+    cpptorch::th::Tensor<T, F>::add(out.th_, th_, val);
     return out;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::operator +(const Tensor<T,C> &other) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::Tensor<T, F>::operator +(const Tensor<T, F> &other) const
 {
-    cpptorch::Tensor<T,C> out(true);
-    cpptorch::th::Tensor<T,C>::cadd(out, th_, 1, other);
+    cpptorch::Tensor<T, F> out(true);
+    cpptorch::th::Tensor<T, F>::cadd(out, th_, 1, other);
     return out;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::operator -(T val) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::Tensor<T, F>::operator -(T val) const
 {
-    cpptorch::Tensor<T,C> out(true);
-    cpptorch::th::Tensor<T,C>::add(out, th_, -val);
+    cpptorch::Tensor<T, F> out(true);
+    cpptorch::th::Tensor<T, F>::add(out, th_, -val);
     return out;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::operator -(const Tensor<T,C> &other) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::Tensor<T, F>::operator -(const Tensor<T, F> &other) const
 {
-    cpptorch::Tensor<T,C> out(true);
-    cpptorch::th::Tensor<T,C>::cadd(out, th_, (T)-1.0, other);
+    cpptorch::Tensor<T, F> out(true);
+    cpptorch::th::Tensor<T, F>::cadd(out, th_, (T)-1.0, other);
     return out;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::operator /(const Tensor<T,C> &other) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::Tensor<T, F>::operator /(const Tensor<T, F> &other) const
 {
-    cpptorch::Tensor<T,C> out(true);
-    cpptorch::th::Tensor<T,C>::cdiv(out, th_, other);
+    cpptorch::Tensor<T, F> out(true);
+    cpptorch::th::Tensor<T, F>::cdiv(out, th_, other);
     return out;
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::Tensor<T,C>::operator ^(T val) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::Tensor<T, F>::operator ^(T val) const
 {
-    cpptorch::Tensor<T,C> out(true);
-    cpptorch::th::Tensor<T,C>::pow(out, th_, val);
+    cpptorch::Tensor<T, F> out(true);
+    cpptorch::th::Tensor<T, F>::pow(out, th_, val);
     return out;
 }
 
@@ -510,10 +513,10 @@ void specifyFully(std::vector<long> &sz, int nElements)
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::abs(const cpptorch::Tensor<T,C> &t)
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::abs(const cpptorch::Tensor<T, F> &t)
 {
-    cpptorch::Tensor<T,C> out(true);
-    cpptorch::th::Tensor<T,C>::abs(out, t);
+    cpptorch::Tensor<T, F> out(true);
+    cpptorch::th::Tensor<T, F>::abs(out, t);
     return out;
 }

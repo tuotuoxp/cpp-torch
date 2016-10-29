@@ -6,11 +6,11 @@ namespace cpptorch
 {
     namespace serializer
     {
-        template<typename T, bool C>
-        class SpatialConvolution : public nn::SpatialConvolution<T,C>
+        template<typename T, GPUFlag F>
+        class SpatialConvolution : public nn::SpatialConvolution<T, F>
         {
         public:
-            void unserialize(const object_torch *obj, object_reader<T,C> *mb)
+            void unserialize(const object_torch *obj, object_reader<T, F> *mb)
             {
                 const object_table *obj_tbl = obj->data_->to_table();
 

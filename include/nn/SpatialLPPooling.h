@@ -6,8 +6,8 @@ namespace cpptorch
 {
     namespace nn
     {
-        template<typename T, bool C>
-        class SpatialLPPooling : public Sequential<T,C>
+        template<typename T, GPUFlag F>
+        class SpatialLPPooling : public Sequential<T, F>
         {
         public:
             virtual const std::string name() const override { return "nn.SpatialLPPooling"; }

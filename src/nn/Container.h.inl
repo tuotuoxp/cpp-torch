@@ -4,8 +4,8 @@
 #include <ostream>
 
 
-template<typename T, bool C>
-void cpptorch::nn::Container<T,C>::print(std::ostream &o, int level) const
+template<typename T, GPUFlag F>
+void cpptorch::nn::Container<T, F>::print(std::ostream &o, int level) const
 {
     o << name() << " {" << std::endl;
     int counter = 1;

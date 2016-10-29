@@ -2,10 +2,10 @@
 #include "../../include/nn/Linear.h"
 
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::nn::Linear<T,C>::forward(const cpptorch::Tensor<T,C> &input) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::nn::Linear<T, F>::forward(const cpptorch::Tensor<T, F> &input) const
 {
-    cpptorch::Tensor<T,C> output(true);
+    cpptorch::Tensor<T, F> output(true);
     int idim = input.dim();
     if (idim == 1)
     {
@@ -30,7 +30,7 @@ cpptorch::Tensor<T,C> cpptorch::nn::Linear<T,C>::forward(const cpptorch::Tensor<
             output.fill(0);
         }
 
-        cpptorch::Tensor<T,C> addBuffer(true);
+        cpptorch::Tensor<T, F> addBuffer(true);
         addBuffer.resize({ nframe });
         addBuffer.fill(1);
         output.addmm(0, output, 1, input, weight_.t());

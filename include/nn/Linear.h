@@ -6,15 +6,15 @@ namespace cpptorch
 {
     namespace nn
     {
-        template<typename T, bool C>
-        class Linear : public Layer<T,C>
+        template<typename T, GPUFlag F>
+        class Linear : public Layer<T, F>
         {
         public:
             virtual const std::string name() const override { return "nn.Linear"; }
-            virtual Tensor<T,C> forward(const Tensor<T,C> &input) const override;
+            virtual Tensor<T, F> forward(const Tensor<T, F> &input) const override;
 
         protected:
-            Tensor<T,C> weight_, bias_;
+            Tensor<T, F> weight_, bias_;
         };
     }
 }

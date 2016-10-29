@@ -7,10 +7,10 @@ struct THCState;
 
 namespace cpptorch
 {
-    typedef Tensor<float, true> CudaTensor;
+    typedef Tensor<float, GPU_Cuda> CudaTensor;
     namespace nn
     {
-        typedef Layer<float, true> CudaLayer;
+        typedef Layer<float, GPU_Cuda> CudaLayer;
     }
 
     API CudaTensor read_cuda_tensor(const object *obj);

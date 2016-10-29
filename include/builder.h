@@ -152,9 +152,9 @@ namespace cpptorch
     API std::shared_ptr<object> load(std::istream &is);
 
     template<typename T>
-    API Tensor<T, false> read_tensor(const object *obj);
+    API Tensor<T, GPU_None> read_tensor(const object *obj);
     template<typename T>
-    API std::shared_ptr<nn::Layer<T, false>> read_net(const object *obj);
+    API std::shared_ptr<nn::Layer<T, GPU_None>> read_net(const object *obj);
 }
 
 

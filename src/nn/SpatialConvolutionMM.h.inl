@@ -2,11 +2,11 @@
 #include "../../include/nn/SpatialConvolutionMM.h"
 
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::nn::SpatialConvolutionMM<T,C>::forward(const cpptorch::Tensor<T,C> &input) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::nn::SpatialConvolutionMM<T, F>::forward(const cpptorch::Tensor<T, F> &input) const
 {
-    cpptorch::Tensor<T,C> finput(true), fgradinput(true);
-    cpptorch::Tensor<T,C> input_new;
+    cpptorch::Tensor<T, F> finput(true), fgradinput(true);
+    cpptorch::Tensor<T, F> input_new;
     if (!input.isContiguous())
     {
         input_new.create();
@@ -14,8 +14,8 @@ cpptorch::Tensor<T,C> cpptorch::nn::SpatialConvolutionMM<T,C>::forward(const cpp
         input_new.copy(input);
     }
 
-    cpptorch::Tensor<T,C> out(true);
-    cpptorch::th::NN<T,C>::SpatialConvolutionMM_updateOutput(input_new.valid() ? input_new : input, 
+    cpptorch::Tensor<T, F> out(true);
+    cpptorch::th::NN<T, F>::SpatialConvolutionMM_updateOutput(input_new.valid() ? input_new : input, 
         out, weight_, bias_, finput, fgradinput, kW_, kH_, dW_, dH_, padW_, padH_);
     return out;
 }

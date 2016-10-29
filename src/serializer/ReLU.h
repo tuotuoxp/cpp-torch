@@ -7,11 +7,11 @@ namespace cpptorch
 {
     namespace serializer
     {
-        template<typename T, bool C>
-        class ReLU : public nn::ReLU<T,C>
+        template<typename T, GPUFlag F>
+        class ReLU : public nn::ReLU<T, F>
         {
         public:
-            void unserialize(const object_torch *obj, object_reader<T,C> *mb)
+            void unserialize(const object_torch *obj, object_reader<T, F> *mb)
             {
                 CHECK_AND_CAST(ReLU, Threshold, T)->unserialize(obj, mb);
             }

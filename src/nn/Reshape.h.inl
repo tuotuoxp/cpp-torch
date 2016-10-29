@@ -2,10 +2,10 @@
 #include "../../include/nn/Reshape.h"
 
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::nn::Reshape<T,C>::forward(const cpptorch::Tensor<T,C> &input) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::nn::Reshape<T, F>::forward(const cpptorch::Tensor<T, F> &input) const
 {
-    cpptorch::Tensor<T,C> input_new;
+    cpptorch::Tensor<T, F> input_new;
     if (!input.isContiguous())
     {
         input_new.create();
@@ -16,7 +16,7 @@ cpptorch::Tensor<T,C> cpptorch::nn::Reshape<T,C>::forward(const cpptorch::Tensor
     {
         input_new = input;
     }
-    cpptorch::Tensor<T,C> output;
+    cpptorch::Tensor<T, F> output;
     if (!batch_mode_ && input_new.nElement() == nelement_ && input_new.size(0) != 1)
     {
         output = input_new.view(size_);

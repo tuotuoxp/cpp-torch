@@ -4,20 +4,20 @@
 #include "../src/torch/TensorPrint.h.inl"
 
 
-template API class cpptorch::Storage<long, true>;
-template API class cpptorch::Storage<float, true>;
-template API class cpptorch::Storage<double, true>;
-template API class cpptorch::Tensor<long, true>;
-template API class cpptorch::Tensor<float, true>;
-template API class cpptorch::Tensor<double, true>;
+template API class cpptorch::Storage<long, GPU_Cuda>;
+template API class cpptorch::Storage<float, GPU_Cuda>;
+template API class cpptorch::Storage<double, GPU_Cuda>;
+template API class cpptorch::Tensor<long, GPU_Cuda>;
+template API class cpptorch::Tensor<float, GPU_Cuda>;
+template API class cpptorch::Tensor<double, GPU_Cuda>;
 
-template API cpptorch::Tensor<long, true> cpptorch::abs(const cpptorch::Tensor<long, true> &t);
-template API cpptorch::Tensor<float, true> cpptorch::abs(const cpptorch::Tensor<float, true> &t);
-template API cpptorch::Tensor<double, true> cpptorch::abs(const cpptorch::Tensor<double, true> &t);
+template API cpptorch::Tensor<long, GPU_Cuda> cpptorch::abs(const cpptorch::Tensor<long, GPU_Cuda> &t);
+template API cpptorch::Tensor<float, GPU_Cuda> cpptorch::abs(const cpptorch::Tensor<float, GPU_Cuda> &t);
+template API cpptorch::Tensor<double, GPU_Cuda> cpptorch::abs(const cpptorch::Tensor<double, GPU_Cuda> &t);
 
-template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<long, true> &m);
-template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<float, true> &m);
-template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<double, true> &m);
+template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<long, GPU_Cuda> &m);
+template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<float, GPU_Cuda> &m);
+template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<double, GPU_Cuda> &m);
 
 
 #include "../src/nn/BatchNormalization.h.inl"
@@ -49,12 +49,12 @@ template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<
 
 cpptorch::CudaTensor cpptorch::read_cuda_tensor(const cpptorch::object *obj)
 {
-    object_reader<float, true> mb;
+    object_reader<float, GPU_Cuda> mb;
     return mb.build_tensor(obj);
 }
 
 std::shared_ptr<cpptorch::nn::CudaLayer> cpptorch::read_cuda_net(const cpptorch::object *obj)
 {
-    object_reader<float, true> mb;
-    return std::static_pointer_cast<cpptorch::nn::Layer<float, true>>(mb.build_layer(obj));
+    object_reader<float, GPU_Cuda> mb;
+    return std::static_pointer_cast<cpptorch::nn::Layer<float, GPU_Cuda>>(mb.build_layer(obj));
 }

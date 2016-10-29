@@ -6,11 +6,11 @@ namespace cpptorch
 {
     namespace serializer
     {
-        template<typename T, bool C>
-        class SpatialAveragePooling : public nn::SpatialAveragePooling<T,C>
+        template<typename T, GPUFlag F>
+        class SpatialAveragePooling : public nn::SpatialAveragePooling<T, F>
         {
         public:
-            void unserialize(const object_torch *obj, object_reader<T,C> *mb)
+            void unserialize(const object_torch *obj, object_reader<T, F> *mb)
             {
                 const object_table *obj_tbl = obj->data_->to_table();
                 this->kW_ = *obj_tbl->get("kW");

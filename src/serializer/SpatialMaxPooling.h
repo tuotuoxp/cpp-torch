@@ -6,11 +6,11 @@ namespace cpptorch
 {
     namespace serializer
     {
-        template<typename T, bool C>
-        class SpatialMaxPooling : public nn::SpatialMaxPooling<T,C>
+        template<typename T, GPUFlag F>
+        class SpatialMaxPooling : public nn::SpatialMaxPooling<T, F>
         {
         public:
-            void unserialize(const object_torch *obj, object_reader<T,C> *mb)
+            void unserialize(const object_torch *obj, object_reader<T, F> *mb)
             {
                 const object_table *obj_tbl = obj->data_->to_table();
                 this->kW_ = *obj_tbl->get("kW");

@@ -6,12 +6,12 @@ namespace cpptorch
 {
     namespace nn
     {
-        template<typename T, bool C>
-        class Square : public Layer<T,C>
+        template<typename T, GPUFlag F>
+        class Square : public Layer<T, F>
         {
         public:
             virtual const std::string name() const override { return "nn.Square"; }
-            virtual Tensor<T,C> forward(const Tensor<T,C> &input) const override;
+            virtual Tensor<T, F> forward(const Tensor<T, F> &input) const override;
         };
     }
 }

@@ -2,15 +2,15 @@
 #include "../../include/nn/Decorator.h"
 
 
-template<typename T, bool C>
-void cpptorch::nn::Decorator<T,C>::print(std::ostream &o, int level) const
+template<typename T, GPUFlag F>
+void cpptorch::nn::Decorator<T, F>::print(std::ostream &o, int level) const
 {
     o << name() << " @ ";
     this->modules_[0]->print(o, level);
 }
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::nn::Decorator<T,C>::forward(const cpptorch::Tensor<T,C> &input) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::nn::Decorator<T, F>::forward(const cpptorch::Tensor<T, F> &input) const
 {
     return this->modules_[0]->forward(input);
 }

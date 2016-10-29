@@ -16,9 +16,15 @@ struct THCudaLongTensor;
 struct THCudaDoubleTensor;
 
 
+enum GPUFlag
+{
+    GPU_None = 0,
+    GPU_Cuda = 1,
+};
+
 namespace cpptorch
 {
-    template<typename T, bool C = false>
+    template<typename T, GPUFlag F = GPU_None>
     class THTrait
     {
     public:
@@ -26,42 +32,42 @@ namespace cpptorch
         struct Storage {};
     };
 
-    template<> class THTrait<long, false>
+    template<> class THTrait<long, GPU_None>
     {
     public:
         using Tensor = THLongTensor;
         using Storage = THLongStorage;
     };
 
-    template<> class THTrait<float, false>
+    template<> class THTrait<float, GPU_None>
     {
     public:
         using Tensor = THFloatTensor;
         using Storage = THFloatStorage;
     };
 
-    template<> class THTrait<double, false>
+    template<> class THTrait<double, GPU_None>
     {
     public:
         using Tensor = THDoubleTensor;
         using Storage = THDoubleStorage;
     };
 
-    template<> class THTrait<long, true>
+    template<> class THTrait<long, GPU_Cuda>
     {
     public:
         using Tensor = THCudaLongTensor;
         using Storage = THCudaLongStorage;
     };
 
-    template<> class THTrait<float, true>
+    template<> class THTrait<float, GPU_Cuda>
     {
     public:
         using Tensor = THCudaTensor;
         using Storage = THCudaStorage;
     };
 
-    template<> class THTrait<double, true>
+    template<> class THTrait<double, GPU_Cuda>
     {
     public:
         using Tensor = THCudaDoubleTensor;

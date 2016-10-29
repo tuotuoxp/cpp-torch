@@ -2,10 +2,10 @@
 #include "../../include/nn/Sqrt.h"
 
 
-template<typename T, bool C>
-cpptorch::Tensor<T,C> cpptorch::nn::Sqrt<T,C>::forward(const cpptorch::Tensor<T,C> &input) const
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::nn::Sqrt<T, F>::forward(const cpptorch::Tensor<T, F> &input) const
 {
-    cpptorch::Tensor<T,C> output(true);
-    cpptorch::th::NN<T,C>::Sqrt_updateOutput(input, output, eps_);
+    cpptorch::Tensor<T, F> output(true);
+    cpptorch::th::NN<T, F>::Sqrt_updateOutput(input, output, eps_);
     return output;
 }

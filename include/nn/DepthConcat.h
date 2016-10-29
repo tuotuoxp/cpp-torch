@@ -6,15 +6,15 @@ namespace cpptorch
 {
     namespace nn
     {
-        template<typename T, bool C>
-        class DepthConcat : public Concat<T,C>
+        template<typename T, GPUFlag F>
+        class DepthConcat : public Concat<T, F>
         {
         public:
             virtual const std::string name() const override { return "nn.DepthConcat"; }
-            virtual Tensor<T,C> forward(const Tensor<T,C> &input) const override;
+            virtual Tensor<T, F> forward(const Tensor<T, F> &input) const override;
 
         protected:
-            Tensor<T,C> windowNarrow(Tensor<T,C> &output, Tensor<T,C> &currentOutput, std::vector<long> &outputSize, int offset) const;
+            Tensor<T, F> windowNarrow(Tensor<T, F> &output, Tensor<T, F> &currentOutput, std::vector<long> &outputSize, int offset) const;
         };
     }
 }

@@ -81,7 +81,7 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 
-#define CREATE_BUILDER(name, T)     this->factory_.insert(std::make_pair(name, std::shared_ptr<class_factory_base>(new class_factory_impl<T,C>())))
+#define CREATE_BUILDER(name, T)     this->factory_.insert(std::make_pair(name, std::shared_ptr<class_factory_base>(new class_factory_impl<T, F>())))
 
 
 object_loader::object_loader()

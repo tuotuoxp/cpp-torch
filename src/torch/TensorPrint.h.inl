@@ -7,11 +7,11 @@
 #include <limits>
 
 
-template<typename T, bool C>
+template<typename T, GPUFlag F>
 class TensorPrint
 {
 public:
-    TensorPrint(std::ostream &o, const cpptorch::Tensor<T,C> &t);
+    TensorPrint(std::ostream &o, const cpptorch::Tensor<T, F> &t);
     
     void printTensor();
 
@@ -22,8 +22,8 @@ protected:
     
     
     std::ostream &out_;
-    const cpptorch::Tensor<T,C> &tensor_;
-    const cpptorch::Storage<T,C> storage_cache_;
+    const cpptorch::Tensor<T, F> &tensor_;
+    const cpptorch::Storage<T, F> storage_cache_;
     const std::vector<long> stride_cache_;
     const std::vector<long> size_cache_;
     const T * const data_;
@@ -31,8 +31,8 @@ protected:
 };
 
 
-template<typename T, bool C>
-TensorPrint<T,C>::TensorPrint(std::ostream &o, const cpptorch::Tensor<T,C> &t) : out_(o), tensor_(t),
+template<typename T, GPUFlag F>
+TensorPrint<T, F>::TensorPrint(std::ostream &o, const cpptorch::Tensor<T, F> &t) : out_(o), tensor_(t),
     storage_cache_(tensor_.storage()),
     stride_cache_(tensor_.stride()),
     size_cache_(tensor_.size()),
@@ -40,8 +40,8 @@ TensorPrint<T,C>::TensorPrint(std::ostream &o, const cpptorch::Tensor<T,C> &t) :
     offset_(tensor_.storageOffset()) {}
 
 
-template<typename T, bool C>
-void TensorPrint<T,C>::getPrintFormat(int offset, double &scale, int &len)
+template<typename T, GPUFlag F>
+void TensorPrint<T, F>::getPrintFormat(int offset, double &scale, int &len)
 {
     scale = 1.0f;
     bool is_int = true;
@@ -121,8 +121,8 @@ void TensorPrint<T,C>::getPrintFormat(int offset, double &scale, int &len)
 }
 
 
-template<typename T, bool C>
-void TensorPrint<T,C>::printMatrix(int offset, const std::string &indent)
+template<typename T, GPUFlag F>
+void TensorPrint<T, F>::printMatrix(int offset, const std::string &indent)
 {
     double scale;
     int len;
@@ -178,8 +178,8 @@ void TensorPrint<T,C>::printMatrix(int offset, const std::string &indent)
 }
 
 
-template<typename T, bool C>
-void TensorPrint<T,C>::printSubTensor(int offset, std::vector<int> &dims)
+template<typename T, GPUFlag F>
+void TensorPrint<T, F>::printSubTensor(int offset, std::vector<int> &dims)
 {
     if (dims.size() == size_cache_.size() - 2)
     {
@@ -206,8 +206,8 @@ void TensorPrint<T,C>::printSubTensor(int offset, std::vector<int> &dims)
 }
 
 
-template<typename T, bool C>
-void TensorPrint<T,C>::printTensor()
+template<typename T, GPUFlag F>
+void TensorPrint<T, F>::printTensor()
 {
     std::ios state_init(nullptr);
     state_init.copyfmt(out_);
@@ -245,10 +245,10 @@ void TensorPrint<T,C>::printTensor()
 
 //////////////////////////////////////////////////////////////////////////
 
-template<typename T, bool C>
-std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<T,C> &m)
+template<typename T, GPUFlag F>
+std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<T, F> &m)
 {
-	TensorPrint<T,C>(o, m).printTensor();
+	TensorPrint<T, F>(o, m).printTensor();
 	o << std::endl;
 	return o;
 }

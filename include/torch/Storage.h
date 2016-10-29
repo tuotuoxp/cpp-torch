@@ -7,24 +7,24 @@
 
 namespace cpptorch
 {
-    template<typename T, bool C = false>
+    template<typename T, GPUFlag F = GPU_None>
     class API Storage
     {
     public:
-        explicit Storage(typename THTrait<T,C>::Storage *th = nullptr);
+        explicit Storage(typename THTrait<T, F>::Storage *th = nullptr);
         template<class TIterator>
         Storage(TIterator begin, TIterator end) : th_(nullptr) { unserialze(begin, end); }
         template<class TContainer>
         Storage(const TContainer &c) : th_(nullptr) { unserialze(c); }
         Storage(const std::initializer_list<T> &inputs) : th_(nullptr) { unserialze(inputs); }
         Storage(const T *ptr_src, long size, bool take_ownership_of_data = true) : th_(nullptr) { unserialze(ptr_src, size, take_ownership_of_data); }
-        Storage(const Storage<T,C> &other) : th_(nullptr) { *this = other; }
-        Storage(Storage<T,C> &&other) : th_(nullptr) { *this = std::move(other); }
+        Storage(const Storage<T, F> &other) : th_(nullptr) { *this = other; }
+        Storage(Storage<T, F> &&other) : th_(nullptr) { *this = std::move(other); }
         ~Storage();
 
-        Storage<T,C>& operator = (const Storage<T,C> &src);
-        Storage<T,C>& operator = (Storage<T,C> &&src);
-        operator typename THTrait<T,C>::Storage* () const { return th_; }
+        Storage<T, F>& operator = (const Storage<T, F> &src);
+        Storage<T, F>& operator = (Storage<T, F> &&src);
+        operator typename THTrait<T, F>::Storage* () const { return th_; }
 
         // getter
         bool valid() const { return th_ != nullptr; }
@@ -56,6 +56,6 @@ namespace cpptorch
         void unserialze(const std::initializer_list<T> &i) { return unserialze(i.begin(), i.end()); }
 
     protected:
-        typename THTrait<T,C>::Storage *th_;
+        typename THTrait<T, F>::Storage *th_;
    };
 }
