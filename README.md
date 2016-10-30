@@ -16,27 +16,40 @@ Pretty handy when you want to deploy an off-the-shelf torch model.
 Check our [install script](install.md) in Linux, Windows and MacOS.
 
 # Get started
-A simple load-and-fire routine looks like this in C++:
-
+The following code loads a float tensor and a float network from file, and forwards the tensor into the network:
 ```c++
 // read input tensor
 std::ifstream fs_input("input_tensor.t7", std::ios::binary);
 auto obj_input = cpptorch::load(fs_input);
-auto input = cpptorch::read_tensor<float>(obj_input.get());
-std::cout << input << std::endl;
+auto input = cpptorch::read_tensor<float>(obj_input.get());     // load float tensor
 
 // read network
 std::ifstream fs_net("net.t7", std::ios::binary);
 auto obj_net = cpptorch::load(fs_net);
-auto net = cpptorch::read_net<float>(obj_net.get());
-std::cout << *net << std::endl;
+auto net = cpptorch::read_net<float>(obj_net.get());          // load float network
 
 // forward
 auto output = net->forward(input);
+
+// display
+std::cout << input << std::endl;
+std::cout << *net << std::endl;
 std::cout << output << std::endl;
 ```
 
-We also provides an [example script]() to test the famous [CMU OpenFace](https://github.com/cmusatyalab/openface) model. This network transfers a 3 * 96 * 96 face image into a 128 * 1 feature vector, representing the identity of the person.
+If tensor and network type is double, change the template type accordingly:
+```c++
+auto input = cpptorch::read_tensor<double>(obj_input.get());     // load double tensor
+auto net = cpptorch::read_tensor<double>(obj_net.get());     // load double network
+```
+
+To use GPU, use read_cuda_tensor() function:
+```c++
+auto input = cpptorch::read_cuda_tensor(obj_input.get());     // load cuda tensor
+auto net = cpptorch::read_cuda_net(obj_net.get());          // load cuda network
+```
+
+We also provides an [example script TODO]() to test the famous [CMU OpenFace](https://github.com/cmusatyalab/openface) model. This network transfers a 3 * 96 * 96 face image into a 128 * 1 feature vector, representing the identity of the person.
 
 
 # Progress
