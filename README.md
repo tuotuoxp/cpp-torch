@@ -39,18 +39,14 @@ std::cout << output << std::endl;
 
 If tensor and network type is double, change the template type accordingly:
 ```c++
-//...
 auto input = cpptorch::read_tensor<double>(obj_input.get());     // load double tensor
-//...
-auto input = cpptorch::read_tensor<double>(obj_input.get());     // load double network
+auto net = cpptorch::read_tensor<double>(obj_net.get());     // load double network
 ```
 
-To use GPU:
+To use GPU, use read_cuda_tensor() function:
 ```c++
-//...
-auto input = cpptorch::read_cuda_tensor<double>(obj_input.get());     // load cuda tensor
-//...
-auto input = cpptorch::read_cuda_tensor<double>(obj_input.get());     // load cuda network
+auto input = cpptorch::read_cuda_tensor(obj_input.get());     // load cuda tensor
+auto net = cpptorch::read_cuda_net(obj_net.get());          // load cuda network
 ```
 
 We also provides an [example script TODO]() to test the famous [CMU OpenFace](https://github.com/cmusatyalab/openface) model. This network transfers a 3 * 96 * 96 face image into a 128 * 1 feature vector, representing the identity of the person.
