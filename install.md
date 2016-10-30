@@ -17,7 +17,7 @@ For GPU version, also install
 CUDA 7.5 is testied. Try the latest version on your own risk.
 
 ## Install torch core
-Next we are going to install torch's kernel libraries. Make sure all the repos are under the same folder:
+Next we are going to install torch's kernel libraries: TH, THNN, THC, THCUNN. Make sure all the kernel libraries are under the same folder:
 ```
 /usr/local/cpp-torch/ (you can change it to your own location)
 ├─ torch7 (TH)
@@ -56,6 +56,7 @@ Same as previous, we only modify the dependency of the library.
 
 ### Install THC
 > If only CPU version is required, ignore this step.
+
 The following commands install a modified version of torch's THC library.
 ```
 git clone https://github.com/tuotuoxp/cutorch.git
