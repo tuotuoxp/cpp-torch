@@ -17,7 +17,7 @@ For GPU version, also install
 CUDA 7.5 is testied. Try the latest version on your own risk.
 
 ## Install torch core
-Next we are going to install torch's kernel library. Make sure all the repos are under the same folder:
+Next we are going to install torch's kernel libraries. Make sure all the repos are under the same folder:
 ```
 /usr/local/cpp-torch/ (you can change it to your own location)
 ├─ torch7 (TH)
@@ -33,7 +33,7 @@ git clone https://github.com/tuotuoxp/torch7.git
 cd torch7
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local/cpp-torch ../lib/TH
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local/cpp-torch ../lib/TH
 make
 make install
 cd ../../
@@ -47,7 +47,7 @@ git clone https://github.com/tuotuoxp/nn.git
 cd nn
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local/cpp-torch -DCMAKE_PREFIX_PATH=/usr/local/cpp-torch ../lib/THNN
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local/cpp-torch -DCMAKE_PREFIX_PATH=/usr/local/cpp-torch ../lib/THNN
 make
 make install
 cd ../../
@@ -72,6 +72,7 @@ It takes about half an hour the finish the compilpation. Please kindly ignore th
 
 ### Install THCUNN
 > If only CPU version is required, ignore this step.
+
 The following commands install a modified version of torch's THCUNN library.
 ```
 git clone https://github.com/tuotuoxp/cunn.git
@@ -88,6 +89,17 @@ Please kindly ignore the warnings.
 
 ##Install torch wrapper
 The following commands install our C++ wrapper: cpp-torch to replace the lua wrapper in original torch.
+
+Wrapper is under the same directory as core libraries.
+```
+/usr/local/cpp-torch/ (you can change it to your own location)
+├─ torch7 (TH)
+├─ nn (THNN)
+├─ cutorch (THC, for GPU version)
+├─ cunn (THCUNN, for GPU version)
+└─ cpp-torch (C++ wrapper)
+```
+
 For CPU version:
 ```
 git clone https://github.com/tuotuoxp/cpp-torch
@@ -100,7 +112,7 @@ make install
 cd ../../
 ```
 
-For GPU version:
+For GPU version, set -DWITH_CUDA=1:
 ```
 git clone https://github.com/tuotuoxp/cpp-torch
 cd cpp-torch
