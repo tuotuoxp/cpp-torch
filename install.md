@@ -3,9 +3,9 @@ We support the following platforms:
 - [Windows](#Windows)
 - [MacOS](#MacOS)
 
-#Linux
+# Linux
 
-##Prerequisite
+## Prerequisite
 - [OpenBLAS](http://www.openblas.net/)
 - or [MKL](https://software.intel.com/en-us/intel-mkl)
 
@@ -26,7 +26,7 @@ Next we are going to install torch's kernel libraries: TH, THNN, THC, THCUNN. Ma
 └─ cunn (THCUNN, for GPU version)
 ```
 
-### Install TH
+### TH
 The following commands install a modified version of torch's TH library.
 ```
 git clone https://github.com/tuotuoxp/torch7.git
@@ -40,7 +40,7 @@ cd ../../
 ```
 Code and logic of the original library is intact. We only strip its dependency on torch.
 
-### Install THNN
+### THNN
 The following commands install a modified version of torch's THNN library.
 ```
 git clone https://github.com/tuotuoxp/nn.git
@@ -54,7 +54,7 @@ cd ../../
 ```
 Same as previous, we only modify the dependency of the library.
 
-### Install THC
+### THC
 > If only CPU version is required, ignore this step.
 
 The following commands install a modified version of torch's THC library.
@@ -71,7 +71,7 @@ cd ..\..\
 Same as previous, we only modify the dependency of the library.
 It takes about half an hour the finish the compilpation. Please kindly ignore the warnings.
 
-### Install THCUNN
+### THCUNN
 > If only CPU version is required, ignore this step.
 
 The following commands install a modified version of torch's THCUNN library.
@@ -88,7 +88,7 @@ cd ..\..\
 Same as previous, we only modify the dependency of the library.
 Please kindly ignore the warnings.
 
-##Install torch wrapper
+## Install torch wrapper
 The following commands install our C++ wrapper: cpp-torch to replace the lua wrapper in original torch.
 
 Wrapper is under the same directory as core libraries.
@@ -125,7 +125,7 @@ make install
 cd ../../
 ```
 
-##Test it!
+## Test it!
 Use the following commands to create a simple example to test your installation.
 ```
 cd cpp-torch/example/basic
@@ -150,7 +150,7 @@ nn.Linear
 [torch.FloatTensor of size 2]
 ```
 # Windows
-##Prerequisite
+## Prerequisite
 - [CMake](https://cmake.org/), remember to add CMake to PATH
 - [Visual Studio 2015](https://www.visualstudio.com/downloads/)
 
@@ -170,7 +170,7 @@ D:\cpp-torch\ (you can change it to your own place)
 ```
 All the following commands are run using `VS2015 x64 Native Tools Command Prompt`.
 
-### Install TH
+### TH
 The following commands install a modified version of torch's TH library.
 ```
 git clone https://github.com/tuotuoxp/torch7.git
@@ -184,7 +184,7 @@ cd ..\..\
 ```
 Code and logic of the original library is intact. We only strip its dependency on torch.
 
-### Install THNN
+### THNN
 The following commands install a modified version of torch's THNN library.
 ```
 git clone https://github.com/tuotuoxp/nn.git
@@ -198,7 +198,7 @@ cd ..\..\
 ```
 Same as previous, we only modify the dependency of the library.
 
-### Install THC
+### THC
 > If only CPU version is required, ignore this step.
 
 ```
@@ -212,7 +212,7 @@ cd ..\..\
 ```
 Same as previous, we only modify the dependency of the library. It takes about half an hour the finish the compilpation. Please kindly ignore the warnings.
 
-### Install THCUNN
+### THCUNN
 > If only CPU version is required, ignore this step.
 
 ```
@@ -226,7 +226,7 @@ cd ..\..\
 ```
 Same as previous, we only modify the dependency of the library. Please kindly ignore the warnings.
 
-##Install torch wrapper
+## Install torch wrapper
 The following commands install our C++ wrapper: cpp-torch to replace the lua wrapper in original torch.
 
 Wrapper is under the same directory as core libraries.
@@ -262,7 +262,7 @@ make install
 cd ../../
 ```
 
-##Test it!
+## Test it!
 Use the following commands to create a simple VS 2015 solution to test your installation.
 ```
 cd cpp-torch/example/basic
@@ -285,15 +285,15 @@ nn.Linear
 [torch.FloatTensor of size 2]
 ```
 
-#MacOS
+# MacOS
 
-##Prerequisite
+## Prerequisite
 - [XCode](http://developer.apple.com/xcode/)
 
-##Install
+## Install
 Same as Linux CPU version.
 
-##Test it!
+## Test it!
 Use the following commands to create a simple XCode solution to test your installation.
 ```
 cd cpp-torch/example/basic
