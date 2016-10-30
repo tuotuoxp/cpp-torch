@@ -11,19 +11,25 @@ We support the following platforms:
 
 Our wrapper is able to run without these prerequisites, but may be very slow.
 
-## Install
-Next we are going to install TH, THNN and cpp-torch. Make sure the 3 repos are under the same folder:
+For GPU version, also install
+- [CUDA SDK](https://developer.nvidia.com/cuda-75-downloads-archive)
+
+CUDA 7.5 is testied. Try the latest version on your own risk.
+
+## Install torch core
+Next we are going to install torch's kernel library. Make sure all the repos are under the same folder:
 ```
-/usr/local/cpp-torch/ (you can change it to your own place)
-├─ torch7
-├─ nn
-└─ cpp-torch
+/usr/local/cpp-torch/ (you can change it to your own location)
+├─ torch7 (TH)
+├─ nn (THNN)
+├─ cutorch (THC, for GPU version)
+└─ cunn (THCUNN, for GPU version)
 ```
 
 ### Install TH
 The following commands install a modified version of torch's TH library.
 ```
-git clone https://github.com/tuotuoxp/torch7
+git clone https://github.com/tuotuoxp/torch7.git
 cd torch7
 mkdir build
 cd build
@@ -37,7 +43,7 @@ Code and logic of the original library is intact. We only strip its dependency o
 ### Install THNN
 The following commands install a modified version of torch's THNN library.
 ```
-git clone https://github.com/tuotuoxp/nn
+git clone https://github.com/tuotuoxp/nn.git
 cd nn
 mkdir build
 cd build
@@ -48,14 +54,59 @@ cd ../../
 ```
 Same as previous, we only modify the dependency of the library.
 
-###Install cpp-torch
-The following commands install our wrapper.
+### Install THC
+> If only CPU version is required, ignore this step.
+The following commands install a modified version of torch's THC library.
+```
+git clone https://github.com/tuotuoxp/cutorch.git
+cd cutorch
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local/cpp-torch -DCMAKE_PREFIX_PATH=/usr/local/cpp-torch ../lib/THC
+make
+make install
+cd ..\..\
+```
+Same as previous, we only modify the dependency of the library.
+It takes about half an hour the finish the compilpation. Please kindly ignore the warnings.
+
+### Install THCUNN
+> If only CPU version is required, ignore this step.
+The following commands install a modified version of torch's THCUNN library.
+```
+git clone https://github.com/tuotuoxp/cunn.git
+cd cunn
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local/cpp-torch -DCMAKE_PREFIX_PATH=/usr/local/cpp-torch ../lib/THCUNN
+make
+make install
+cd ..\..\
+```
+Same as previous, we only modify the dependency of the library.
+Please kindly ignore the warnings.
+
+##Install torch wrapper
+The following commands install our C++ wrapper: cpp-torch to replace the lua wrapper in original torch.
+For CPU version:
 ```
 git clone https://github.com/tuotuoxp/cpp-torch
 cd cpp-torch
 mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cpp-torch -DCMAKE_PREFIX_PATH=/usr/local/cpp-torch ..
+make
+make install
+cd ../../
+```
+
+For GPU version:
+```
+git clone https://github.com/tuotuoxp/cpp-torch
+cd cpp-torch
+mkdir build
+cd build
+cmake -DWITH_CUDA=1 -DCMAKE_INSTALL_PREFIX=/usr/local/cpp-torch -DCMAKE_PREFIX_PATH=/usr/local/cpp-torch ..
 make
 make install
 cd ../../
