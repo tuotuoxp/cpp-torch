@@ -61,10 +61,7 @@ Currently, this library supports forward pass in CPU mode of
 Check [this list](progress.md) to see supported modules.
 
 
-# Next step work
-- Foward pass of other modules in nn package
-- Wrapper for GPU mode
-
 # FAQ
 -- How can I train my own model with this wrapper?
+
 -- We don't support backward functions, so training is impossible. Use the original torch.
