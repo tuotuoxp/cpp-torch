@@ -13,7 +13,7 @@ Using this library, you can:
 Pretty handy when you want to deploy an off-the-shelf torch model.
 
 # Install
-Check our install script for [Linux](install_linux.md), [Windows](install_windows.md) and [MacOS](install_max.os).
+Check our install script for [Linux](install_linux.md), [Windows](install_windows.md) and [MacOS](install_max.md).
 
 # Get started
 The following code loads a float tensor and a float network from file, and forwards the tensor into the network:
