@@ -1,4 +1,4 @@
-# Linux
+# Linux Install
 
 ## Prerequisite
 - [OpenBLAS](http://www.openblas.net/)
