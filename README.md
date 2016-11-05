@@ -13,7 +13,7 @@ Using this library, you can:
 Pretty handy when you want to deploy an off-the-shelf torch model.
 
 # Install
-Check our [install script](install.md) in Linux, Windows and MacOS.
+Check our install script for [Linux](install_linux.md), [Windows](install_windows.md) and [MacOS](install_mac.md).
 
 # Get started
 The following code loads a float tensor and a float network from file, and forwards the tensor into the network:
@@ -53,13 +53,14 @@ We also provides an [example script TODO]() to test the famous [CMU OpenFace](ht
 
 
 # Progress
-Currently, this library supports forward pass in CPU mode of
+Currently, this library supports forward pass of
 - some modules in [nn package](https://github.com/torch/nn)
 - related functions in [torch7 package](https://github.com/torch/torch7)
 - a few modules in [dpnn package](https://github.com/Element-Research/dpnn).
 
 Check [this list](progress.md) to see supported modules.
 
+You are more than welcome to add new modules to cpp-torch. Please check our [developer guide]().
 
 # FAQ
 -- How can I train my own model with this wrapper?
