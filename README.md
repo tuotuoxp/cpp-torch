@@ -49,8 +49,7 @@ auto input = cpptorch::read_cuda_tensor(obj_input.get());     // load cuda tenso
 auto net = cpptorch::read_cuda_net(obj_net.get());          // load cuda network
 ```
 
-We also provides an [example script TODO]() to test the famous [CMU OpenFace](https://github.com/cmusatyalab/openface) model. This network transfers a 3 * 96 * 96 face image into a 128 * 1 feature vector, representing the identity of the person.
-
+We also provides an [example script](example/openface/main.cpp) to test the famous [CMU OpenFace](https://github.com/cmusatyalab/openface) model. This example transfers a 3 * 96 * 96 face image(OpenCV Mat) into cpp-torch tensor, forwards it through the network, receives a 128 * 1 identity feature tensor, and print the result.
 
 # Progress
 Currently, this library supports forward pass of
