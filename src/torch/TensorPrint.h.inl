@@ -13,7 +13,7 @@ class TensorPrint
 public:
     TensorPrint(std::ostream &o, const cpptorch::Tensor<T> &t);
     
-    void printTensor();
+    void printTensor(const std::string &name);
 
 protected:
     void getPrintFormat(int offset, double &scale, int &len);
@@ -207,7 +207,7 @@ void TensorPrint<T>::printSubTensor(int offset, std::vector<int> &dims)
 
 
 template<typename T>
-void TensorPrint<T>::printTensor()
+void TensorPrint<T>::printTensor(const std::string &name)
 {
     std::ios state_init(nullptr);
     state_init.copyfmt(out_);
@@ -240,7 +240,7 @@ void TensorPrint<T>::printTensor()
     }
     out_.copyfmt(state_init);
     // get tensor name
-    out_ << "[" << tensor_.name() << " of size " << join(size_cache_, "x") << "]" << std::endl;
+    out_ << "[" << name << " of size " << join(size_cache_, "x") << "]" << std::endl;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -248,7 +248,7 @@ void TensorPrint<T>::printTensor()
 template<typename T>
 std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<T, GPU_None> &m)
 {
-	TensorPrint<T>(o, m).printTensor();
-	o << std::endl;
-	return o;
+    TensorPrint<T>(o, m).printTensor(m.name());
+    o << std::endl;
+    return o;
 }
