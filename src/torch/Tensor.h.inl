@@ -64,7 +64,11 @@ cpptorch::Tensor<T, F>::~Tensor()
 template<typename T, GPUFlag F>
 const std::string cpptorch::Tensor<T, F>::name() const
 {
-    if (std::is_same<T, long>::value)
+    if (F == GPU_Cuda)
+    {
+        return "torch.CudaTensor";
+    }
+    else if (std::is_same<T, long>::value)
     {
         return "torch.LongTensor";
     }
