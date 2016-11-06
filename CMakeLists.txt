@@ -113,5 +113,5 @@ generate_test_project(cpptorch_test "test/simple_test.cpp")
 
 if(WITH_CUDA)
   generate_test_project(cpptorch_test_cuda "test/simple_test_cuda.cpp")
-  target_link_libraries(cpptorch_test_cuda cpptorch_cuda)
+  target_link_libraries(cpptorch_test_cuda cpptorch cpptorch_cuda)
 endif()
