@@ -15,9 +15,19 @@ template API cpptorch::Tensor<long, GPU_None> cpptorch::abs(const cpptorch::Tens
 template API cpptorch::Tensor<float, GPU_None> cpptorch::abs(const cpptorch::Tensor<float, GPU_None> &t);
 template API cpptorch::Tensor<double, GPU_None> cpptorch::abs(const cpptorch::Tensor<double, GPU_None> &t);
 
-template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<long, GPU_None> &m);
-template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<float, GPU_None> &m);
-template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<double, GPU_None> &m);
+
+template<> API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<long, GPU_None> &m)
+{
+    return TensorPrint<long>(o, m).printTensor(m.name()) << std::endl;
+}
+template<> API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<float, GPU_None> &m)
+{
+    return TensorPrint<float>(o, m).printTensor(m.name()) << std::endl;
+}
+template<> API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<double, GPU_None> &m)
+{
+    return TensorPrint<double>(o, m).printTensor(m.name()) << std::endl;
+}
 
 
 #include "nn/BatchNormalization.h.inl"
@@ -49,5 +59,6 @@ template API std::ostream& operator << (std::ostream &o, const cpptorch::Tensor<
 
 template API cpptorch::Tensor<float, GPU_None> cpptorch::read_tensor(const object *obj);
 template API cpptorch::Tensor<double, GPU_None> cpptorch::read_tensor(const object *obj);
+
 template API std::shared_ptr<cpptorch::nn::Layer<float, GPU_None>> cpptorch::read_net(const object *obj);
 template API std::shared_ptr<cpptorch::nn::Layer<double, GPU_None>> cpptorch::read_net(const object *obj);
