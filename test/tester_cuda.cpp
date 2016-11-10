@@ -4,12 +4,12 @@
 
 template <> cpptorch::Tensor<float, GPU_Cuda> read_tensor_template(const cpptorch::object *obj)
 {
-    return cpptorch::read_cuda_tensor<float>(obj);
+    return cpptorch::read_cuda_tensor(obj);
 }
 
 template <> std::shared_ptr<cpptorch::nn::Layer<float, GPU_Cuda>> read_net_template(const cpptorch::object *obj)
 {
-    return cpptorch::read_cuda_net<float>(obj);
+    return cpptorch::read_cuda_net(obj);
 }
 
 

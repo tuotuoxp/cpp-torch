@@ -17,7 +17,7 @@ static char *network = nullptr;
 static bool use_allocator = false;
 
 
-int my_getopt(int argc, char *argv[], char *optstring)
+int my_getopt(int argc, char *argv[], const char *optstring)
 {
 	static char *next = nullptr;
 	if (optind == 0)
@@ -53,7 +53,7 @@ int my_getopt(int argc, char *argv[], char *optstring)
 	}
 
 	char c = *next++;
-	char *cp = strchr(optstring, c);
+	char *cp = strchr((char*)optstring, c);
 
 	if (cp == nullptr || c == ':')
 		return '?';
