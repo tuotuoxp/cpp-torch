@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 2.8)
 
 
+option(BUILD_CUDA  "Enable cuda"         OFF)
+option(BUILD_TESTS "Build test programs" OFF)
+
+
 if(UNIX)
   # add support for c++11
   add_definitions("-std=c++11")
@@ -64,7 +68,7 @@ generate_project(cpptorch "${cpptorch_src}")
 
 
 # cpptorch_cuda
-if(WITH_CUDA)
+if(BUILD_CUDA)
   if(NOT CUDA_FOUND)
     find_package(CUDA 5.5 REQUIRED)
   endif()
@@ -97,21 +101,7 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/cmake-exports/cpptorch-config.cmake"
 #############################################################
 
 
-macro(generate_test_project name src)
-  add_executable(${name} ${src})
-
-  target_include_directories(${name} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
-  target_link_libraries(${name} cpptorch)
-
-  set_target_properties(${name} PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
-  set_target_properties(${name} PROPERTIES MACOSX_RPATH TRUE)
-
-  install(TARGETS ${name} RUNTIME DESTINATION "bin")
-endmacro()
-
-generate_test_project(cpptorch_test "test/simple_test.cpp")
-
-if(WITH_CUDA)
-  generate_test_project(cpptorch_test_cuda "test/simple_test_cuda.cpp")
-  target_link_libraries(cpptorch_test_cuda cpptorch cpptorch_cuda)
+if(BUILD_TESTS)
+  add_subdirectory(test)
 endif()
+

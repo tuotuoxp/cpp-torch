@@ -99,13 +99,13 @@ nmake install
 cd ..\..\
 ```
 
-For GPU version, set -DWITH_CUDA=1:
+For GPU version, set -DBUILD_CUDA=ON:
 ```
 git clone https://github.com/tuotuoxp/cpp-torch
 cd cpp-torch
 mkdir build
 cd build
-cmake -DWITH_CUDA=1 -DCMAKE_INSTALL_PREFIX=..\..\install -DCMAKE_PREFIX_PATH=..\..\install ..
+cmake -DBUILD_CUDA=ON -DCMAKE_INSTALL_PREFIX=..\..\install -DCMAKE_PREFIX_PATH=..\..\install ..
 make
 make install
 cd ..\..\
