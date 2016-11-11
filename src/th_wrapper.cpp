@@ -118,17 +118,33 @@ double* Storage<double, GPU_None>::data(THDoubleStorage *storage)
 }
 
 template<>
-long Storage<long, GPU_None>::size(THLongStorage *storage)
+long Storage<long, GPU_None>::data_by_index(const THLongStorage *storage, long index)
+{
+    return THLongStorage_get(storage, index);
+}
+template<>
+float Storage<float, GPU_None>::data_by_index(const THFloatStorage *storage, long index)
+{
+    return THFloatStorage_get(storage, index);
+}
+template<>
+double Storage<double, GPU_None>::data_by_index(const THDoubleStorage *storage, long index)
+{
+    return THDoubleStorage_get(storage, index);
+}
+
+template<>
+long Storage<long, GPU_None>::size(const THLongStorage *storage)
 {
     return (long)THLongStorage_size(storage);
 }
 template<>
-long Storage<float, GPU_None>::size(THFloatStorage *storage)
+long Storage<float, GPU_None>::size(const THFloatStorage *storage)
 {
     return (long)THFloatStorage_size(storage);
 }
 template<>
-long Storage<double, GPU_None>::size(THDoubleStorage *storage)
+long Storage<double, GPU_None>::size(const THDoubleStorage *storage)
 {
     return (long)THDoubleStorage_size(storage);
 }

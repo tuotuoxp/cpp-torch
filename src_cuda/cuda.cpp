@@ -6,7 +6,7 @@
 static THCState *global_thc = nullptr;
 
 
-THCState* GetCudaState()
+THCState* getCudaState()
 {
     return global_thc;
 }

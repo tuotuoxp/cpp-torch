@@ -23,6 +23,14 @@ cpptorch::CudaTensor read_cuda_tensor(const std::string &path)
     return cpptorch::read_cuda_tensor(obj.get());
 }
 
+cpptorch::Tensor<float> read_tensor(const std::string &path)
+{
+    std::ifstream fs(path, std::ios::binary);
+    assert(fs.good());
+    auto obj = cpptorch::load(fs);
+    return cpptorch::read_tensor<float>(obj.get());
+}
+
 
 void test_cuda_layer(const char *data_path, const char *subdir, int count = 1)
 {
@@ -45,6 +53,17 @@ void test_cuda_layer(const char *data_path, const char *subdir, int count = 1)
     }
     std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << std::endl;
     std::cout << "================================================" << std::endl;
+}
+
+void test_data(const char *data_path)
+{
+    cpptorch::Tensor<float> x = read_tensor(std::string(data_path) + "/_index/x.t7");
+    cpptorch::CudaTensor xc = read_cuda_tensor(std::string(data_path) + "/_index/x.t7");
+    std::cout << x;
+    std::cout << xc;
+
+    std::cout << (float)x[{1, 0, 4, 1}] << std::endl;
+    std::cout << (float)xc[{1, 0, 4, 1}] << std::endl;
 }
 
 
@@ -71,7 +90,8 @@ int main(int argc, char *argv[])
     //    test_cuda_layer(argv[1], "Sqrt");
     //    test_cuda_layer(argv[1], "Square");
     //    test_cuda_layer(argv[1], "View");
-    test_cuda_layer(argv[1], "_face", 10);
+    //test_cuda_layer(argv[1], "_face", 10);
+    test_data(argv[1]);
 
     //test_fast_neural_style(argv[1], "candy");
     cpptorch::cuda::free();

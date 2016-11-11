@@ -197,7 +197,7 @@ template<typename T, GPUFlag F>
 cpptorch::Tensor<T, F>::operator T() const
 {
     asserter(nElement() == 1) << "only an 1-D tensor with ONE element can be cast to number";
-    return data()[0];
+    return cpptorch::th::Storage<T, F>::data_by_index(cpptorch::th::Tensor<T, F>::storage(th_), storageOffset());
 }
 
 //////////////////////////////////////////////////////////////////////////

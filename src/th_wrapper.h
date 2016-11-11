@@ -21,7 +21,8 @@ namespace cpptorch
 
             // getter
             static T* data(typename THTrait<T, F>::Storage *storage);
-            static long size(typename THTrait<T, F>::Storage *storage);
+            static T data_by_index(const typename THTrait<T, F>::Storage *storage, long index);
+            static long size(const typename THTrait<T, F>::Storage *storage);
         };
 
 
