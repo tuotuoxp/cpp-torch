@@ -42,7 +42,7 @@ int main(int argc, char** argv)
     
     // 5. print 1*128 output
     ten = output.data();
-    for (int i=0; i<128; i++)
+    for (int i = 0; i < 128; i++)
     {
         std::cout << ten[i] << " ";
     }
