@@ -3,13 +3,14 @@ require 'nn'
 
 torch.setdefaulttensortype('torch.FloatTensor')
 
-input = torch.Tensor(10, 64, 128, 128)
+input = torch.Tensor(512)
 
-net = nn.SpatialConvolution(64, 128, 5,5, 1,1,1,1)
+net = nn.Normalize(math.huge)
 net:evaluate()
 
 output = net:forward(input)
-print(output:size())
+
+--print(output:size())
 
 torch.save(arg[1], input)
 torch.save(arg[2], output)
