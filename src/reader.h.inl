@@ -41,8 +41,16 @@ TSerializerBase* Cast(TSerializer *c)
 
 
 template<typename T, GPUFlag F>
-object_reader<T, F>::object_reader()
+object_reader<T, F>::object_reader(cpptorch::layer_creator<T, F> *creator) : creator_(creator)
 {
+    if (creator_)
+    {
+        creator_->context_ = this;
+        for (const std::string &layer : creator_->register_layers())
+        {
+            this->factory_.insert(std::make_pair(layer, nullptr));
+        }
+    }
     addClass<cpptorch::serializer::BatchNormalization<T, F>>("nn.BatchNormalization");
     addClass<cpptorch::serializer::Concat<T, F>>("nn.Concat");
     addClass<cpptorch::serializer::Decorator<T, F>>("nn.Decorator");
@@ -118,9 +126,19 @@ std::shared_ptr<cpptorch::nn::Layer<T, F>> object_reader<T, F>::build_layer(cons
         auto factory = factory_.find(obj_torch->class_name_);
         if (factory != factory_.end())
         {
-            std::shared_ptr<cpptorch::nn::Layer<T, F>> l((*factory->second)(obj_torch, this));
-            layer_map_.insert(std::make_pair(obj_torch->index_, l));
-            return l;
+            std::shared_ptr<cpptorch::nn::Layer<T, F>> layer;
+            if (factory->second == nullptr && creator_)
+            {
+                // build layer from user-defined creator
+                layer = creator_->create_layer(obj_torch->class_name_, obj_torch);
+            }
+            else
+            {
+                layer = std::shared_ptr<cpptorch::nn::Layer<T, F>>((*factory->second)(obj_torch, this));
+            }
+            assert(layer.get());
+            layer_map_.insert(std::make_pair(obj_torch->index_, layer));
+            return layer;
         }
         assert(0);
         return nullptr;

@@ -60,5 +60,5 @@ template<> API std::ostream& operator << (std::ostream &o, const cpptorch::Tenso
 template API cpptorch::Tensor<float, GPU_None> cpptorch::read_tensor(const object *obj);
 template API cpptorch::Tensor<double, GPU_None> cpptorch::read_tensor(const object *obj);
 
-template API std::shared_ptr<cpptorch::nn::Layer<float, GPU_None>> cpptorch::read_net(const object *obj);
-template API std::shared_ptr<cpptorch::nn::Layer<double, GPU_None>> cpptorch::read_net(const object *obj);
+template API std::shared_ptr<cpptorch::nn::Layer<float, GPU_None>> cpptorch::read_net(const object*, cpptorch::layer_creator<float, GPU_None>*);
+template API std::shared_ptr<cpptorch::nn::Layer<double, GPU_None>> cpptorch::read_net(const object*, cpptorch::layer_creator<double, GPU_None>*);

@@ -13,7 +13,7 @@ template<typename T, GPUFlag F>
 class object_reader
 {
 public:
-    object_reader();
+    object_reader(cpptorch::layer_creator<T, F> *creator = nullptr);
 
 
     void build_storage(const cpptorch::object *obj, cpptorch::Storage<T, F> &storage);
@@ -27,7 +27,10 @@ protected:
     template<class TF>
     inline void addClass(const std::string &name)
     {
-        this->factory_.insert(std::make_pair(name, std::shared_ptr<class_factory_base>(new class_factory_impl<TF>())));
+        if (this->factory_.find(name) == this->factory_.end())
+        {
+            this->factory_.insert(std::make_pair(name, std::shared_ptr<class_factory_base>(new class_factory_impl<TF>())));
+        }
     }
 
 
@@ -60,4 +63,8 @@ protected:
 
     // Storage can be copied, because TH is self-counted
     std::map<int, cpptorch::Storage<T, F>> storage_map_;
+
+
+    // user-defined net layer creator
+    cpptorch::layer_creator<T, F> *creator_;
 };

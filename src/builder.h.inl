@@ -11,8 +11,9 @@ cpptorch::Tensor<T, GPU_None> cpptorch::read_tensor(const cpptorch::object *obj)
 }
 
 template<typename T>
-std::shared_ptr<cpptorch::nn::Layer<T, GPU_None>> cpptorch::read_net(const cpptorch::object *obj)
+std::shared_ptr<cpptorch::nn::Layer<T, GPU_None>> cpptorch::read_net(const cpptorch::object *obj,
+    cpptorch::layer_creator<T, GPU_None> *creator)
 {
-    object_reader<T, GPU_None> mb;
+    object_reader<T, GPU_None> mb(creator);
     return std::static_pointer_cast<cpptorch::nn::Layer<T, GPU_None>>(mb.build_layer(obj));
 }
