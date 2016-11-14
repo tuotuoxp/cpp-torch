@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     if (image.channels() != 3 || image.rows != img_dim || image.cols != img_dim)
     {
         std::cerr << "invalid size" << image.channels() << " " << image.rows << " " << image.cols << " " << std::endl;
-        return 0;
+        return 1;
     }
 
     // 2. create input tensor from CV Mat
@@ -33,7 +33,12 @@ int main(int argc, char** argv)
 
     // 3. load openface network
     std::ifstream fs_net(std::string("nn4.small2.v1.t7"), std::ios::binary);
-    assert(fs_net.good());   // http://openface-models.storage.cmusatyalab.org/nn4.small2.v1.t7
+    if (!fs_net.good())
+    {
+        std::cerr << "Cannot find torch module: nn4.small2.v1.t7" << std::endl
+                  << "Please download from http://openface-models.storage.cmusatyalab.org/nn4.small2.v1.t7" << std::endl;
+        return 2;
+    }
     auto obj_t = cpptorch::load(fs_net);
     std::shared_ptr<cpptorch::nn::Layer<float>> net = cpptorch::read_net<float>(obj_t.get());
 
@@ -41,10 +46,10 @@ int main(int argc, char** argv)
     cpptorch::Tensor<float> output = net->forward(input);
     
     // 5. print 1*128 output
-    ten = output.data();
+    const float *output_ptr = output.data();
     for (int i = 0; i < 128; i++)
     {
-        std::cout << ten[i] << " ";
+        std::cout << output_ptr[i] << " ";
     }
     std::cout << std::endl;
     return 0;

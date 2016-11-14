@@ -795,14 +795,14 @@ void NN<double, GPU_None>::SpatialConvolutionMM_updateOutput(THDoubleTensor *inp
 
 template<>
 void NN<float, GPU_None>::SpatialMaxPooling_updateOutput(
-    THFloatTensor *input, THFloatTensor *output, THFloatTensor *indices,
+    THFloatTensor *input, THFloatTensor *output, THLongTensor *indices,
     int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode)
 {
     THNN_FloatSpatialMaxPooling_updateOutput(nullptr, input, output, indices, kW, kH, dW, dH, padW, padH, ceil_mode);
 }
 template<>
 void NN<double, GPU_None>::SpatialMaxPooling_updateOutput(
-    THDoubleTensor *input, THDoubleTensor *output, THDoubleTensor *indices,
+    THDoubleTensor *input, THDoubleTensor *output, THLongTensor *indices,
     int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode)
 {
     THNN_DoubleSpatialMaxPooling_updateOutput(nullptr, input, output, indices, kW, kH, dW, dH, padW, padH, ceil_mode);
