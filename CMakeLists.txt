@@ -112,6 +112,7 @@ if(BUILD_TESTS)
   foreach(each_case ${test_cases})
     string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/test/cases/" "" case_name ${each_case})
     string(REPLACE "/" "_" case_name ${case_name})
+    string(REPLACE ".lua" "" case_name ${case_name})
     add_test(NAME cpptorch_${case_name} COMMAND
       ${CMAKE_CURRENT_SOURCE_DIR}/test/run_test.sh
         "${Torch_INSTALL_PREFIX}/${Torch_INSTALL_BIN_SUBDIR}"
