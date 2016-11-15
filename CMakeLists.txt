@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 2.8)
 
 
+option(BUILD_CUDA  "Enable cuda"         OFF)
+option(BUILD_TESTS "Build test programs" OFF)
+
+
 if(UNIX)
   # add support for c++11
   add_definitions("-std=c++11")
@@ -64,13 +68,13 @@ generate_project(cpptorch "${cpptorch_src}")
 
 
 # cpptorch_cuda
-if(WITH_CUDA)
+if(BUILD_CUDA)
   if(NOT CUDA_FOUND)
     find_package(CUDA 5.5 REQUIRED)
   endif()
   file(GLOB_RECURSE cpptorch_cuda_src "src_cuda/*.cpp" "src_cuda/*.cc")
   generate_project(cpptorch_cuda "${cpptorch_cuda_src}")
-  target_include_directories(cpptorch_cuda PRIVATE ${CUDA_INCLUDE_DIRS})
+  target_include_directories(cpptorch_cuda PRIVATE ${CUDA_INCLUDE_DIRS} ${TH_INCLUDE_DIR}/../THC ${TH_INCLUDE_DIR}/../THCUNN)
   find_library(THC_LIBRARY NAMES THC PATHS ${TH_LIB_DIR})
   find_library(THCUNN_LIBRARY NAMES THCUNN PATHS ${TH_LIB_DIR})
   target_link_libraries(cpptorch_cuda cpptorch ${THC_LIBRARY} ${THCUNN_LIBRARY})
@@ -97,21 +101,24 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/cmake-exports/cpptorch-config.cmake"
 #############################################################
 
 
-macro(generate_test_project name src)
-  add_executable(${name} ${src})
+if(BUILD_TESTS)
+  add_subdirectory(test)
 
-  target_include_directories(${name} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
-  target_link_libraries(${name} cpptorch)
+  find_package(Torch REQUIRED)
 
-  set_target_properties(${name} PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
-  set_target_properties(${name} PROPERTIES MACOSX_RPATH TRUE)
+  enable_testing()
 
-  install(TARGETS ${name} RUNTIME DESTINATION "bin")
-endmacro()
-
-generate_test_project(cpptorch_test "test/simple_test.cpp")
-
-if(WITH_CUDA)
-  generate_test_project(cpptorch_test_cuda "test/simple_test_cuda.cpp")
-  target_link_libraries(cpptorch_test_cuda cpptorch cpptorch_cuda)
+  file(GLOB_RECURSE test_cases "test/cases/*.lua")
+  foreach(each_case ${test_cases})
+    string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/test/cases/" "" case_name ${each_case})
+    string(REPLACE "/" "_" case_name ${case_name})
+    string(REPLACE ".lua" "" case_name ${case_name})
+    add_test(NAME cpptorch_${case_name} COMMAND
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/run_test.sh
+        "${Torch_INSTALL_PREFIX}/${Torch_INSTALL_BIN_SUBDIR}"
+        "${CMAKE_CURRENT_BINARY_DIR}"
+        "${each_case}"
+    )
+  endforeach()
 endif()
+
