@@ -804,7 +804,7 @@ void NN<float, GPU_Cuda>::SpatialConvolutionMM_updateOutput(THCudaTensor *input,
 
 template<>
 void NN<float, GPU_Cuda>::SpatialMaxPooling_updateOutput(
-    THCudaTensor *input, THCudaTensor *output, THCudaTensor *indices,
+    THCudaTensor *input, THCudaTensor *output, THCudaLongTensor *indices,
     int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode)
 {
     THNN_CudaSpatialMaxPooling_updateOutput(getCudaState(), input, output, indices, kW, kH, dW, dH, padW, padH, ceil_mode);
