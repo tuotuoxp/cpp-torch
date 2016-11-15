@@ -5,7 +5,8 @@
 template<typename T, GPUFlag F>
 cpptorch::Tensor<T, F> cpptorch::nn::SpatialMaxPooling<T, F>::forward(const cpptorch::Tensor<T, F> &input) const
 {
-    cpptorch::Tensor<T, F> output(true), indices(true);
+    cpptorch::Tensor<T, F> output(true);
+    cpptorch::Tensor<long, F> indices(true);
     cpptorch::th::NN<T, F>::SpatialMaxPooling_updateOutput(input, output, indices, kW_, kH_, dW_, dH_, padW_, padH_, ceil_mode_);
     return output;
 }

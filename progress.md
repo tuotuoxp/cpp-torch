@@ -1,4 +1,4 @@
-This list shows current supported modules.
+This list shows current supported modules and test status.
 
 Our purpose is to facilitate the **testing procedure**. So backward functions won't be supported in a foresable future.
 
@@ -6,191 +6,191 @@ Our purpose is to facilitate the **testing procedure**. So backward functions wo
 We follow the structure of [nn package document](https://github.com/torch/nn/blob/master/README.md). Blank cell indicates not implemented.
 
 ## Containers
-|module|CPU code/test|GPU code/test|
-|----|----|----|
-|Sequential|+/-||
-|Parallel|||
-|Concat|+/-||
-|DepthConcat|+/-||
-|Bottle|||
+|module|code|CPU test|GPU test|
+|----|----|----|----|
+|Sequential|:heavy_check_mark:|||
+|Parallel||||
+|Concat|:heavy_check_mark:||||
+|DepthConcat|:heavy_check_mark:|||
+|Bottle||||
 
 ## Transfer functions
-|module|CPU code/test|GPU code/test|
-|----|----|----|
-|HardTanh|||
-|HardShrink|||
-|SoftShrink|||
-|SoftMax|||
-|SoftMin|||
-|SoftPlus|||
-|SoftSign|||
-|LogSigmoid|||
-|LogSoftMax|||
-|Sigmoid|||
-|Tanh|||
-|ReLU|+/-||
-|ReLU6|||
-|PReLU|||
-|RReLU|||
-|ELU|||
-|LeakyReLU|||
-|SpatialSoftMax|||
-|AddConstant|||
-|MulConstant|+/-||
+|module|code|CPU test|GPU test|
+|----|----|----|----|
+|HardTanh||||
+|HardShrink||||
+|SoftShrink||||
+|SoftMax||||
+|SoftMin||||
+|SoftPlus||||
+|SoftSign||||
+|LogSigmoid||||
+|LogSoftMax||||
+|Sigmoid||||
+|Tanh||||
+|ReLU|:heavy_check_mark:|||
+|ReLU6||||
+|PReLU||||
+|RReLU||||
+|ELU||||
+|LeakyReLU||||
+|SpatialSoftMax||||
+|AddConstant||||
+|MulConstant|:heavy_check_mark:|||
 
 
 ## Simple layers
 ###Parameterized Modules
-|module|CPU code/test|GPU code/test|
-|----|----|----|
-|Linear|+/-||
-|SparseLinear|||
-|BiLinear|||
-|PartialLinear|||
-|Add|||
-|Mul|||
-|CMul|||
-|Euclidean|||
-|WeightedEuclidean|||
-|Cosine|||
+|module|code|CPU test|GPU test|
+|----|----|----|----|
+|Linear|:heavy_check_mark:|||
+|SparseLinear||||
+|BiLinear||||
+|PartialLinear||||
+|Add||||
+|Mul||||
+|CMul||||
+|Euclidean||||
+|WeightedEuclidean||||
+|Cosine||||
 
 
 ###Modules that adapt basic Tensor methods 
 
-|module|CPU code/test|GPU code/test|
-|----|----|----|
-|Copy|||
+|module|code|CPU test|GPU test|
+|----|----|----|----|
+|Copy||||
 |Narrow|||
-|Replicate|||
-|Reshape|+/-||
-|View|+/-||
-|Contiguous|||
-|Select|||
-|MaskedSelect|||
-|Index|||
-|Squeeze|||
-|Unsqueeze|||
-|Transpose|||
+|Replicate||||
+|Reshape|:heavy_check_mark:|||
+|View|:heavy_check_mark:|||
+|Contiguous||||
+|Select||||
+|MaskedSelect||||
+|Index||||
+|Squeeze||||
+|Unsqueeze||||
+|Transpose||||
 
 ###Modules that adapt mathematical Tensor methods
-|module|CPU code/test|GPU code/test|
-|----|----|----|
-|AddConstant|||
-|MulConstant|+/-||
-|Max|||
-|Min|||
-|Mean|||
-|Sum|||
-|Exp|||
-|Log|||
-|Abs|||
-|Power|||
-|Square|||
-|Sqrt|+/-||
-|Clamp|||
-|Normalize|+/-||
-|MM|||
+|module|code|CPU test|GPU test|
+|----|----|----|----|
+|AddConstant||||
+|MulConstant|:heavy_check_mark:|||
+|Max||||
+|Min||||
+|Mean||||
+|Sum||||
+|Exp||||
+|Log||||
+|Abs||||
+|Power||||
+|Square||||
+|Sqrt|:heavy_check_mark:|||
+|Clamp||||
+|Normalize|:heavy_check_mark:|||
+|MM||||
 
 ###Miscellaneous Modules
-|module|CPU code/test|GPU code/test|
-|----|----|----|
-|BatchNormalization|+/-||
-|Identity|||
-|Dropout|||
-|SpatialDropout|||
-|VolumetricDropout|||
-|Padding|||
-|L1Penalty|||
-|GradientReversal|||
-|GPU|||
-|TemporalDynamicKMaxPooling|||
+|module|code|CPU test|GPU test|
+|----|----|----|----|
+|BatchNormalization|:heavy_check_mark:|||
+|Identity||||
+|Dropout||||
+|SpatialDropout||||
+|VolumetricDropout||||
+|Padding||||
+|L1Penalty||||
+|GradientReversal||||
+|GPU||||
+|TemporalDynamicKMaxPooling||||
 
 ## Table layers
 ### table Container Modules encapsulate sub-Modules
-|module|CPU code/test|GPU code/test|
-|----|----|----|
-|ConcatTable|||
-|ParallelTable|||
-|MapTable|||
+|module|code|CPU test|GPU test|
+|----|----|----|----|
+|ConcatTable||||
+|ParallelTable||||
+|MapTable||||
 
 ### Table Conversion Modules convert between tables and Tensors or tables
-|module|CPU code/test|GPU code/test|
-|----|----|----|
-|SplitTable|||
-|JoinTable|||
-|MixtureTable|||
-|SelectTable|||
-|NarrowTable|||
-|FlattenTable|||
+|module|code|CPU test|GPU test|
+|----|----|----|----|
+|SplitTable||||
+|JoinTable||||
+|MixtureTable||||
+|SelectTable||||
+|NarrowTable||||
+|FlattenTable||||
 
 ### Pair Modules compute a measure like distance or similarity from a pair (table) of input Tensors
-|module|CPU code/test|GPU code/test|
-|----|----|----|
-|PairwiseDistance|||
-|DotProduct|||
-|CosineDistance|||
+|module|code|CPU test|GPU test|
+|----|----|----|----|
+|PairwiseDistance||||
+|DotProduct||||
+|CosineDistance||||
 
 ### CMath Modules perform element-wise operations on a table of Tensors
-|module|CPU code/test|GPU code/test|
-|----|----|----|
-|CAddTable|||
-|CSubTable|||
-|CMulTable|||
-|CDivTable|||
-|CMaxTable|||
-|CMinTable|||
+|module|code|CPU test|GPU test|
+|----|----|----|----|
+|CAddTable||||
+|CSubTable||||
+|CMulTable||||
+|CDivTable||||
+|CMaxTable||||
+|CMinTable||||
 
 ### Table of Criteria
-|module|CPU code/test|GPU code/test|
-|----|----|----|
-|CriterionTable|||
+|module|code|CPU test|GPU test|
+|----|----|----|----|
+|CriterionTable||||
 
 ## Convolution layers
 ### Temporal Modules
-|module|CPU code/test|GPU code/test|
-|----|----|----|
-|TemporalConvolution|||
-|TemporalSubSampling|||
-|TemporalMaxPooling|||
-|LookupTable|||
+|module|code|CPU test|GPU test|
+|----|----|----|----|
+|TemporalConvolution||||
+|TemporalSubSampling||||
+|TemporalMaxPooling||||
+|LookupTable||||
 
 ### Spatial Modules
-|module|CPU code/test|GPU code/test|
-|----|----|----|
-|SpatialConvolution|+/-||
-|SpatialConvolutionMM|+/-||
-|SpatialFullConvolution|||
-|SpatialDilatedConvolution|||
-|SpatialConvolutionLocal|||
-|SpatialSubSampling|||
-|SpatialMaxPooling|+/-||
-|SpatialDilatedMaxPooling|||
-|SpatialFractionalMaxPooling|||
-|SpatialAveragePooling|+/-||
-|SpatialAdaptvieMaxPooling|||
-|SpatialMaxUnpooling|||
-|SpatialLPPooling|+/-||
-|SpatialConvolutionMap|||
-|SpatialZeroPadding|||
-|SpatialReflectionPadding|+/-||
-|SpatialReplicationPadding|||
-|SpatialSubtractiveNormalization|||
-|SpatialCrossMapLRN|+/-||
-|SpatialBatchNormalization|+/-||
-|SpatialUpsamplingNearest|||
-|SpatialUpsamplingBilinear|||
+|module|code|CPU test|GPU test|
+|----|----|----|----|
+|SpatialConvolution|:heavy_check_mark:|||
+|SpatialConvolutionMM|:heavy_check_mark:|||
+|SpatialFullConvolution||||
+|SpatialDilatedConvolution||||
+|SpatialConvolutionLocal||||
+|SpatialSubSampling||||
+|SpatialMaxPooling|:heavy_check_mark:|||
+|SpatialDilatedMaxPooling||||
+|SpatialFractionalMaxPooling||||
+|SpatialAveragePooling|:heavy_check_mark:|||
+|SpatialAdaptvieMaxPooling||||
+|SpatialMaxUnpooling||||
+|SpatialLPPooling|:heavy_check_mark:|||
+|SpatialConvolutionMap||||
+|SpatialZeroPadding||||
+|SpatialReflectionPadding|:heavy_check_mark:|||
+|SpatialReplicationPadding||||
+|SpatialSubtractiveNormalization||||
+|SpatialCrossMapLRN|:heavy_check_mark:|||
+|SpatialBatchNormalization|:heavy_check_mark:|||
+|SpatialUpsamplingNearest||||
+|SpatialUpsamplingBilinear||||
 
 ### Volumetric Modules
-|module|CPU code/test|GPU code/test|
-|----|----|----|
-|VolumetricConvolution|||
-|VolumetricFullConvolution|||
-|VolumetricDilatedConvolution|||
-|VolumetricMaxPooling|||
-|VolumetricDilatedMaxPooling|||
-|VolumetricAveragePooling|||
-|VolumetricMaxUnpooling|||
-|VolumetricReplicationPadding|||
+|module|code|CPU test|GPU test|
+|----|----|----|----|
+|VolumetricConvolution||||
+|VolumetricFullConvolution||||
+|VolumetricDilatedConvolution||||
+|VolumetricMaxPooling||||
+|VolumetricDilatedMaxPooling||||
+|VolumetricAveragePooling||||
+|VolumetricMaxUnpooling||||
+|VolumetricReplicationPadding||||
 
 # dpnn package
 Currently only [Inception](https://github.com/Element-Research/dpnn#nn.Inception) and [Decorator](https://github.com/Element-Research/dpnn#nn.Decorator) module are supported.
