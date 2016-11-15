@@ -1,4 +1,4 @@
-We recommend you read through this document before you develope some thing new.
+We recommend you read through this document before you develope something new.
 - [Use test]( #Use test )
 - [Write new test cases](#Write new test case)
 
@@ -77,12 +77,14 @@ torch.save(arg[3], net)
 ```
 Test case saves input, output and net to destination denoted by the 3 command line args.
 
+Remember to re-build cpp-torch after you add new test cases.
+
 ## So what's happening?
-When run `ctest` under `/build`, it performs the following actions:
+When you run `ctest` under `/build`, it performs the following actions:
 - parse all `.lua` file under `/test/cases` folder.
 - run each `.lua` file in torch, save input tensor, output tensor and net as `.t7` file.
 - feed input tensor into net in cpp-torch, compare output tensor with saved output tensor.
 
-# Write torch layer?
+# Write torch layer(TODO)
 
-# Write self-defined layer?
+# Write self-defined layer(TODO)
