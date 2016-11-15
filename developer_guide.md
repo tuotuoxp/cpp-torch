@@ -16,7 +16,7 @@ cmake -DBUILD_TESTS=ON -DWITH_CUDA=1 -DCMAKE_INSTALL_PREFIX=/usr/local/cpp-torch
 ```
 
 ## Use test
-Go to 'cpp-torch/build/' and run 'ctest' in command.
+Go to `cpp-torch/build/` and run 'ctest' in command.
 You will get something like this:
 ```
 92% tests passed, 2 tests failed out of 24
@@ -29,8 +29,28 @@ The following tests FAILED:
 ```
 
 ## Write new test case
+Each `.lua` file under [test/cases](/test/cases) is a test case.
+Please follow torch's [nn package document](https://github.com/torch/nn/blob/master/README.md) to organize cases as follows:
 
+├─Containers
+├─ConvolutionLayers
+│ ├─Spatial
+│ ├─Temporal
+│ └─Volumetric
+├─dpnn
+├─SimpleLayers
+│ ├─BasicTensor
+│ ├─MathTensor
+│ ├─Miscellaneous
+│ └─Parameterized
+├─TableLayers
+│ ├─CMath
+│ ├─Container
+│ ├─Conversion
+│ ├─Criteria
+│ └─Pair
+└─TransferFunctions
 
-# Write write torch layer?
+# Write torch layer?
 
-# How to write self-defined layer?
+# Write self-defined layer?
