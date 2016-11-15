@@ -59,7 +59,7 @@ Currently, this library supports forward pass of
 
 Check [this list](progress.md) to see supported modules.
 
-You are more than welcome to add new modules to cpp-torch. Please check our [developer guide]().
+You are more than welcome to add new modules to cpp-torch. Please check our [developer guide](developer_guide.md).
 
 # FAQ
 -- How can I train my own model with this wrapper?
