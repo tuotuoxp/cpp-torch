@@ -6,7 +6,7 @@ We recommend you read through this document before you develope something new.
 We provide some [cases](/test/cases) to validate our cpp modules.
 
 ## Build test
-During 'Install torch wrapper' step, add DBUILD_TESTS=ON to cmake setting.
+During 'Install torch wrapper' step, add -DBUILD_TESTS=ON to cmake setting.
 
 For CPU version:
 ```
@@ -15,7 +15,7 @@ cmake -DBUILD_TESTS=ON -DCMAKE_INSTALL_PREFIX=/usr/local/cpp-torch -DCMAKE_PREFI
 
 For GPU version:
 ```
-cmake -DBUILD_TESTS=ON -DWITH_CUDA=1 -DCMAKE_INSTALL_PREFIX=/usr/local/cpp-torch -DCMAKE_PREFIX_PATH=/usr/local/cpp-torch ..
+cmake -DBUILD_TESTS=ON -DBUILD_CUDA=ON -DCMAKE_INSTALL_PREFIX=/usr/local/cpp-torch -DCMAKE_PREFIX_PATH=/usr/local/cpp-torch ..
 ```
 
 ## Run test
@@ -64,7 +64,7 @@ Check out this test cases for `nn.RELU`:
 require 'torch'
 require 'nn'
 torch.setdefaulttensortype('torch.FloatTensor')
--- create input, outpu and net
+-- create input, output and net
 input = torch.Tensor(6,3,128,128)
 net = nn.ReLU()
 net:evaluate()
@@ -81,7 +81,6 @@ Remember to re-build cpp-torch after you add new test cases.
 
 ## So what's happening?
 When you run `ctest` under `/build`, it performs the following actions:
-- parse all `.lua` file under `/test/cases` folder.
 - run each `.lua` file in torch, save input tensor, output tensor and net as `.t7` file.
 - feed input tensor into net in cpp-torch, compare output tensor with saved output tensor.
 
