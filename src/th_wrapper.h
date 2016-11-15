@@ -122,7 +122,7 @@ namespace cpptorch
 
             static void SpatialMaxPooling_updateOutput(
                 typename THTrait<T, F>::Tensor *input, typename THTrait<T, F>::Tensor *output,
-                THLongTensor *indices, int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode);
+                typename THTrait<long, F>::Tensor *indices, int kW, int kH, int dW, int dH, int padW, int padH, bool ceil_mode);
 
             static void SpatialReflectionPadding_updateOutput(
                 typename THTrait<T, F>::Tensor *input, typename THTrait<T, F>::Tensor *output,
