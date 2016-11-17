@@ -53,9 +53,16 @@ template<> API std::ostream& operator << (std::ostream &o, const cpptorch::Tenso
 #include "nn/View.h.inl"
 
 
+template API class cpptorch::nn::BatchNormalization<float, GPU_None>;
+template API class cpptorch::nn::BatchNormalization<double, GPU_None>;
+
+
 #include "builder.h.inl"
 #include "reader.h.inl"
 
+
+template API class cpptorch::layer_creator<float, GPU_None>;
+template API class cpptorch::layer_creator<double, GPU_None>;
 
 template API cpptorch::Tensor<float, GPU_None> cpptorch::read_tensor(const object *obj);
 template API cpptorch::Tensor<double, GPU_None> cpptorch::read_tensor(const object *obj);

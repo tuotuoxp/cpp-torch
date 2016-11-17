@@ -5,12 +5,16 @@
 
 
 template <typename T, GPUFlag F>
-class InstanceNormalization : public cpptorch::nn::Layer<T, F>
+class InstanceNormalization : public cpptorch::nn::SpatialBatchNormalization<T, F>
 {
 public:
-    InstanceNormalization(const cpptorch::object_torch *torch_obj)
+    InstanceNormalization(const cpptorch::object_torch *torch_obj, cpptorch::layer_creator<T, F> *creator)
     {
-
+        const cpptorch::object_table *obj_tbl = torch_obj->data_->to_table();
+        this->eps_ = *obj_tbl->get("eps");
+        this->prev_N_ = -1;
+        this->weight_ = creator->read_tensor(obj_tbl->get("weight"));
+        this->bias_ = creator->read_tensor(obj_tbl->get("bias"));
     }
 
     virtual const std::string name() const {
@@ -22,6 +26,11 @@ public:
         cpptorch::Tensor<T, F> output(true);
         return output;
     }
+
+protected:
+    double eps_;
+    int prev_N_;
+    cpptorch::Tensor<T, F> weight_, bias_;
 };
 
 
@@ -37,7 +46,7 @@ public:
     {
         if (layer_name == "nn.InstanceNormalization")
         {
-            return std::shared_ptr<cpptorch::nn::Layer<T, F>>(new InstanceNormalization<T, F>(torch_obj));
+            return std::shared_ptr<cpptorch::nn::Layer<T, F>>(new InstanceNormalization<T, F>(torch_obj, this));
         }
         return nullptr;
     }
@@ -46,7 +55,7 @@ public:
 void test_fast_neural_style(const char *root)
 {
     my_layer_creator<float, GPU_None> m;
-    std::ifstream fs(std::string(root) + "/_fast_neural_style/candy.t7", std::ios::binary);
+    std::ifstream fs(std::string(root) + "/candy.t7", std::ios::binary);
     assert(fs.good());
     auto obj = cpptorch::load(fs);
     auto net = cpptorch::read_net<float>(obj->to_table()->get("model"), &m);

@@ -14,7 +14,7 @@ namespace cpptorch
             BatchNormalization() : train_(false), ndim(2) {}
 
             virtual const std::string name() const override { return "nn.BatchNormalization"; }
-            virtual Tensor<T, F> forward(const Tensor<T, F> &input) const override;
+            API virtual Tensor<T, F> forward(const Tensor<T, F> &input) const override;
 
         protected:
             Tensor<T, F> weight_, bias_, running_mean_, running_var_;

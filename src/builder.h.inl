@@ -3,6 +3,16 @@
 #include "reader.h"
 
 
+template<typename T, GPUFlag F>
+cpptorch::Tensor<T, F> cpptorch::layer_creator<T, F>::read_tensor(const cpptorch::object *obj)
+{
+    return ((object_reader<T, F>*)context_)->build_tensor(obj);
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+
+
 template<typename T>
 cpptorch::Tensor<T, GPU_None> cpptorch::read_tensor(const cpptorch::object *obj)
 {

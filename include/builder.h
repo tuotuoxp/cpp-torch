@@ -148,12 +148,15 @@ namespace cpptorch
     };
 
 
-    template <typename T, GPUFlag F = GPU_None>
-    class layer_creator
+    template <typename T, GPUFlag F>
+    class API layer_creator
     {
     public:
         virtual std::vector<std::string> register_layers() = 0;
         virtual std::shared_ptr<nn::Layer<T, F>> create_layer(const std::string &layer_name, const cpptorch::object_torch *torch_obj) = 0;
+
+        // utils
+        cpptorch::Tensor<T, F> read_tensor(const cpptorch::object *obj);
 
         void *context_;
     };
