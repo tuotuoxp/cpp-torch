@@ -104,7 +104,10 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/cmake-exports/cpptorch-config.cmake"
 if(BUILD_TESTS)
   add_subdirectory(test)
 
+  # torch does a dirty work: replace the install prefix, we should get rid of it.
+  set(CMAKE_INSTALL_PREFIX_BAKCUP ${CMAKE_INSTALL_PREFIX})
   find_package(Torch REQUIRED)
+  set(CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX_BACKUP})
 
   enable_testing()
 
