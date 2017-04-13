@@ -10,9 +10,9 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 |----|----|----|----|
 |Sequential|:heavy_check_mark:|||
 |Parallel||||
-|Concat|:heavy_check_mark:||||
+|Concat|:heavy_check_mark:|||
 |DepthConcat|:heavy_check_mark:|||
-|Bottle||||
+|Bottle|||||
 
 ## Transfer functions
 |module|code|CPU test|GPU test|
@@ -40,7 +40,7 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 
 
 ## Simple layers
-###Parameterized Modules
+### Parameterized Modules
 |module|code|CPU test|GPU test|
 |----|----|----|----|
 |Linear|:heavy_check_mark:|||
@@ -55,12 +55,12 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 |Cosine||||
 
 
-###Modules that adapt basic Tensor methods 
+### Modules that adapt basic Tensor methods
 
 |module|code|CPU test|GPU test|
 |----|----|----|----|
 |Copy||||
-|Narrow|||
+|Narrow||||
 |Replicate||||
 |Reshape|:heavy_check_mark:|||
 |View|:heavy_check_mark:|||
@@ -72,7 +72,7 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 |Unsqueeze||||
 |Transpose||||
 
-###Modules that adapt mathematical Tensor methods
+### Modules that adapt mathematical Tensor methods
 |module|code|CPU test|GPU test|
 |----|----|----|----|
 |AddConstant||||
@@ -91,7 +91,7 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 |Normalize|:heavy_check_mark:|||
 |MM||||
 
-###Miscellaneous Modules
+### Miscellaneous Modules
 |module|code|CPU test|GPU test|
 |----|----|----|----|
 |BatchNormalization|:heavy_check_mark:|||

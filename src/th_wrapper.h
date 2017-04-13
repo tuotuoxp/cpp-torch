@@ -51,6 +51,7 @@ namespace cpptorch
 
             // calculative access methods
             static int isContiguous(const typename THTrait<T, F>::Tensor *tensor);
+            static int isSameSizeAs(const typename THTrait<T, F>::Tensor *self, const typename THTrait<T, F>::Tensor *src);
             static long nElement(const typename THTrait<T, F>::Tensor *tensor);
 
             // special access methods (shares the same storage)
@@ -139,6 +140,8 @@ namespace cpptorch
                 typename THTrait<T, F>::Tensor *input, typename THTrait<T, F>::Tensor *output,
                 T threshold, T val,
                 bool inplace);
+            static void LogSoftMax_updateOutput(
+                typename THTrait<T, F>::Tensor *input, typename THTrait<T, F>::Tensor *output);
         };
     }
 }
