@@ -25,7 +25,7 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 |SoftPlus||||
 |SoftSign||||
 |LogSigmoid||||
-|LogSoftMax||||
+|LogSoftMax|:heavy_check_mark:|||
 |Sigmoid||||
 |Tanh||||
 |ReLU|:heavy_check_mark:|||
@@ -47,7 +47,7 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 |SparseLinear||||
 |BiLinear||||
 |PartialLinear||||
-|Add||||
+|Add|:heavy_check_mark:|||
 |Mul||||
 |CMul||||
 |Euclidean||||
