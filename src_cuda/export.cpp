@@ -32,8 +32,10 @@ template<> API std::ostream& operator << (std::ostream &o, const cpptorch::Tenso
 #include "../src/nn/DepthConcat.h.inl"
 #include "../src/nn/Inception.h.inl"
 #include "../src/nn/Linear.h.inl"
+#include "../src/nn/Add.h.inl"
 #include "../src/nn/MulConstant.h.inl"
 #include "../src/nn/Normalize.h.inl"
+#include "../src/nn/LogSoftMax.h.inl"
 #include "../src/nn/Reshape.h.inl"
 #include "../src/nn/Sequential.h.inl"
 #include "../src/nn/SpatialAveragePooling.h.inl"
@@ -78,4 +80,3 @@ cpptorch::Tensor<float> cpptorch::cuda2cpu(const cpptorch::Tensor<float, GPU_Cud
     cpptorch::th::copy_cuda2cpu<float>(t_cpu, t);
     return t_cpu;
 }
-

@@ -7,7 +7,7 @@ option(BUILD_TESTS "Build test programs" OFF)
 
 if(UNIX)
   # add support for c++11
-  add_definitions("-std=c++11")
+  add_definitions("-std=c++11 -O2")
 endif()
 
 
@@ -29,7 +29,7 @@ macro(generate_project name src)
 
   # link
   find_library(TH_LIBRARY NAMES TH PATHS ${TH_LIB_DIR})
-  find_library(THNN_LIBRARY NAMES THNN PATHS ${TH_LIB_DIR})
+  find_library(THNN_LIBRARY NAMES THNN PATHS ${TH_LIB_DIR}/lua/5.1)
   target_link_libraries(${name} ${TH_LIBRARY} ${THNN_LIBRARY})
 
   # install target
@@ -76,7 +76,7 @@ if(BUILD_CUDA)
   generate_project(cpptorch_cuda "${cpptorch_cuda_src}")
   target_include_directories(cpptorch_cuda PRIVATE ${CUDA_INCLUDE_DIRS} ${TH_INCLUDE_DIR}/../THC ${TH_INCLUDE_DIR}/../THCUNN)
   find_library(THC_LIBRARY NAMES THC PATHS ${TH_LIB_DIR})
-  find_library(THCUNN_LIBRARY NAMES THCUNN PATHS ${TH_LIB_DIR})
+  find_library(THCUNN_LIBRARY NAMES THCUNN PATHS ${TH_LIB_DIR}/lua/5.1)
   target_link_libraries(cpptorch_cuda cpptorch ${THC_LIBRARY} ${THCUNN_LIBRARY})
 endif()
 
