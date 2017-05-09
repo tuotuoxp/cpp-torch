@@ -16,6 +16,7 @@
 #include "nn/MulConstant.h"
 #include "nn/Normalize.h"
 #include "nn/ReLU.h"
+#include "nn/SoftMax.h"
 #include "nn/LogSoftMax.h"
 #include "nn/Reshape.h"
 #include "nn/Sequential.h"

@@ -35,6 +35,7 @@ template<> API std::ostream& operator << (std::ostream &o, const cpptorch::Tenso
 #include "../src/nn/Add.h.inl"
 #include "../src/nn/MulConstant.h.inl"
 #include "../src/nn/Normalize.h.inl"
+#include "../src/nn/SoftMax.h.inl"
 #include "../src/nn/LogSoftMax.h.inl"
 #include "../src/nn/Reshape.h.inl"
 #include "../src/nn/Sequential.h.inl"

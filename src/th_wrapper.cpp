@@ -875,6 +875,17 @@ void NN<double, GPU_None>::Threshold_updateOutput(THDoubleTensor *input, THDoubl
 }
 
 template<>
+void NN<float, GPU_None>::SoftMax_updateOutput(THFloatTensor *input, THFloatTensor *output)
+{
+    THNN_FloatSoftMax_updateOutput(nullptr, input, output);
+}
+template<>
+void NN<double, GPU_None>::SoftMax_updateOutput(THDoubleTensor *input, THDoubleTensor *output)
+{
+    THNN_DoubleSoftMax_updateOutput(nullptr, input, output);
+}
+
+template<>
 void NN<float, GPU_None>::LogSoftMax_updateOutput(THFloatTensor *input, THFloatTensor *output)
 {
     THNN_FloatLogSoftMax_updateOutput(nullptr, input, output);

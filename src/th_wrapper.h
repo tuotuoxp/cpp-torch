@@ -140,6 +140,8 @@ namespace cpptorch
                 typename THTrait<T, F>::Tensor *input, typename THTrait<T, F>::Tensor *output,
                 T threshold, T val,
                 bool inplace);
+            static void SoftMax_updateOutput(
+                typename THTrait<T, F>::Tensor *input, typename THTrait<T, F>::Tensor *output);
             static void LogSoftMax_updateOutput(
                 typename THTrait<T, F>::Tensor *input, typename THTrait<T, F>::Tensor *output);
         };

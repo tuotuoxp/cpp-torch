@@ -25,6 +25,7 @@ TSerializerBase* Cast(TSerializer *c)
 #include "serializer/MulConstant.h"
 #include "serializer/Normalize.h"
 #include "serializer/ReLU.h"
+#include "serializer/SoftMax.h"
 #include "serializer/LogSoftMax.h"
 #include "serializer/Reshape.h"
 #include "serializer/Sequential.h"
@@ -55,6 +56,7 @@ object_reader<T, F>::object_reader()
     addClass<cpptorch::serializer::MulConstant<T, F>>("nn.MulConstant");
     addClass<cpptorch::serializer::Normalize<T, F>>("nn.Normalize");
     addClass<cpptorch::serializer::ReLU<T, F>>("nn.ReLU");
+    addClass<cpptorch::serializer::SoftMax<T, F>>("nn.SoftMax");
     addClass<cpptorch::serializer::LogSoftMax<T, F>>("nn.LogSoftMax");
     addClass<cpptorch::serializer::Reshape<T, F>>("nn.Reshape");
     addClass<cpptorch::serializer::Sequential<T, F>>("nn.Sequential");

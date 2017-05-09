@@ -855,6 +855,12 @@ void NN<float, GPU_Cuda>::Threshold_updateOutput(THCudaTensor *input, THCudaTens
 }
 
 template<>
+void NN<float, GPU_Cuda>::SoftMax_updateOutput(THCudaTensor *input, THCudaTensor *output)
+{
+    THNN_CudaSoftMax_updateOutput(getCudaState(), input, output);
+}
+
+template<>
 void NN<float, GPU_Cuda>::LogSoftMax_updateOutput(THCudaTensor *input, THCudaTensor *output)
 {
     THNN_CudaLogSoftMax_updateOutput(getCudaState(), input, output);
