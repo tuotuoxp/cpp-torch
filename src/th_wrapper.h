@@ -144,6 +144,8 @@ namespace cpptorch
                 typename THTrait<T, F>::Tensor *input, typename THTrait<T, F>::Tensor *output);
             static void LogSoftMax_updateOutput(
                 typename THTrait<T, F>::Tensor *input, typename THTrait<T, F>::Tensor *output);
+            static void Tanh_updateOutput(
+                typename THTrait<T, F>::Tensor *input, typename THTrait<T, F>::Tensor *output);
         };
     }
 }

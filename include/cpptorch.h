@@ -18,6 +18,7 @@
 #include "nn/ReLU.h"
 #include "nn/SoftMax.h"
 #include "nn/LogSoftMax.h"
+#include "nn/Tanh.h"
 #include "nn/Reshape.h"
 #include "nn/Sequential.h"
 #include "nn/SpatialAveragePooling.h"
