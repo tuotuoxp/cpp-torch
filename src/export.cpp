@@ -42,6 +42,7 @@ template<> API std::ostream& operator << (std::ostream &o, const cpptorch::Tenso
 #include "nn/Normalize.h.inl"
 #include "nn/SoftMax.h.inl"
 #include "nn/LogSoftMax.h.inl"
+#include "nn/Tanh.h.inl"
 #include "nn/Reshape.h.inl"
 #include "nn/Sequential.h.inl"
 #include "nn/SpatialAveragePooling.h.inl"

@@ -896,5 +896,16 @@ void NN<double, GPU_None>::LogSoftMax_updateOutput(THDoubleTensor *input, THDoub
     THNN_DoubleLogSoftMax_updateOutput(nullptr, input, output);
 }
 
+template<>
+void NN<float, GPU_None>::Tanh_updateOutput(THFloatTensor *input, THFloatTensor *output)
+{
+    THNN_FloatTanh_updateOutput(nullptr, input, output);
+}
+template<>
+void NN<double, GPU_None>::Tanh_updateOutput(THDoubleTensor *input, THDoubleTensor *output)
+{
+    THNN_DoubleTanh_updateOutput(nullptr, input, output);
+}
+
 }
 }

@@ -866,5 +866,11 @@ void NN<float, GPU_Cuda>::LogSoftMax_updateOutput(THCudaTensor *input, THCudaTen
     THNN_CudaLogSoftMax_updateOutput(getCudaState(), input, output);
 }
 
+template<>
+void NN<float, GPU_Cuda>::Tanh_updateOutput(THCudaTensor *input, THCudaTensor *output)
+{
+    THNN_CudaTanh_updateOutput(getCudaState(), input, output);
+}
+
 }
 }
