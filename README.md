@@ -13,7 +13,23 @@ Using this library, you can:
 Pretty handy when you want to deploy an off-the-shelf torch model.
 
 # Install
-Check our install script for [Linux](install_linux.md), [Windows](install_windows.md) and [MacOS](install_mac.md).
+Check our install script for ~~[Linux](install_linux.md)~~, [Windows](install_windows.md)(*TODO*) and [MacOS](install_mac.md)(*TODO*).
+
+## Install cpp-torch on Linux
+The following commands install our C++ wrapper: cpp-torch in default torch install dir:
+
+``` bash
+git clone https://github.com/yytdfc/cpp-torch
+cd cpp-torch
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=~/torch/install -DCMAKE_PREFIX_PATH=~/torch/install ..
+# For GPU version, set -DBUILD_CUDA=ON:
+cmake  -DBUILD_CUDA=ON -DCMAKE_INSTALL_PREFIX=~/torch/install -DCMAKE_PREFIX_PATH=~/torch/install ..
+make
+make install
+cd ..
+```
 
 # Get started
 The following code loads a float tensor and a float network from file, and forwards the tensor into the network:

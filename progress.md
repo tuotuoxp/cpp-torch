@@ -7,11 +7,11 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 
 ## Containers
 |module|code|CPU test|GPU test|
-|----|----|----|----|
-|Sequential|:heavy_check_mark:|||
+|----|:--:|----|----|
+|Sequential|√|||
 |Parallel||||
-|Concat|:heavy_check_mark:|||
-|DepthConcat|:heavy_check_mark:|||
+|Concat|√|||
+|DepthConcat|√|||
 |Bottle|||||
 
 ## Transfer functions
@@ -20,15 +20,15 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 |HardTanh||||
 |HardShrink||||
 |SoftShrink||||
-|SoftMax||||
+|SoftMax|√|||
 |SoftMin||||
 |SoftPlus||||
 |SoftSign||||
 |LogSigmoid||||
-|LogSoftMax|:heavy_check_mark:|||
+|LogSoftMax|√|||
 |Sigmoid||||
-|Tanh||||
-|ReLU|:heavy_check_mark:|||
+|Tanh|√|||
+|ReLU|√|||
 |ReLU6||||
 |PReLU||||
 |RReLU||||
@@ -36,18 +36,18 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 |LeakyReLU||||
 |SpatialSoftMax||||
 |AddConstant||||
-|MulConstant|:heavy_check_mark:|||
+|MulConstant|√|||
 
 
 ## Simple layers
 ### Parameterized Modules
 |module|code|CPU test|GPU test|
 |----|----|----|----|
-|Linear|:heavy_check_mark:|||
+|Linear|√|||
 |SparseLinear||||
 |BiLinear||||
 |PartialLinear||||
-|Add|:heavy_check_mark:|||
+|Add|√|||
 |Mul||||
 |CMul||||
 |Euclidean||||
@@ -62,8 +62,8 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 |Copy||||
 |Narrow||||
 |Replicate||||
-|Reshape|:heavy_check_mark:|||
-|View|:heavy_check_mark:|||
+|Reshape|√|||
+|View|√|||
 |Contiguous||||
 |Select||||
 |MaskedSelect||||
@@ -76,7 +76,7 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 |module|code|CPU test|GPU test|
 |----|----|----|----|
 |AddConstant||||
-|MulConstant|:heavy_check_mark:|||
+|MulConstant|√|||
 |Max||||
 |Min||||
 |Mean||||
@@ -86,15 +86,15 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 |Abs||||
 |Power||||
 |Square||||
-|Sqrt|:heavy_check_mark:|||
+|Sqrt|√|||
 |Clamp||||
-|Normalize|:heavy_check_mark:|||
+|Normalize|√|||
 |MM||||
 
 ### Miscellaneous Modules
 |module|code|CPU test|GPU test|
 |----|----|----|----|
-|BatchNormalization|:heavy_check_mark:|||
+|BatchNormalization|√|||
 |Identity||||
 |Dropout||||
 |SpatialDropout||||
@@ -157,26 +157,26 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 ### Spatial Modules
 |module|code|CPU test|GPU test|
 |----|----|----|----|
-|SpatialConvolution|:heavy_check_mark:|||
-|SpatialConvolutionMM|:heavy_check_mark:|||
+|SpatialConvolution|√|||
+|SpatialConvolutionMM|√|||
 |SpatialFullConvolution||||
 |SpatialDilatedConvolution||||
 |SpatialConvolutionLocal||||
 |SpatialSubSampling||||
-|SpatialMaxPooling|:heavy_check_mark:|||
+|SpatialMaxPooling|√|||
 |SpatialDilatedMaxPooling||||
 |SpatialFractionalMaxPooling||||
-|SpatialAveragePooling|:heavy_check_mark:|||
+|SpatialAveragePooling|√|||
 |SpatialAdaptvieMaxPooling||||
 |SpatialMaxUnpooling||||
-|SpatialLPPooling|:heavy_check_mark:|||
+|SpatialLPPooling|√|||
 |SpatialConvolutionMap||||
 |SpatialZeroPadding||||
-|SpatialReflectionPadding|:heavy_check_mark:|||
+|SpatialReflectionPadding|√|||
 |SpatialReplicationPadding||||
 |SpatialSubtractiveNormalization||||
-|SpatialCrossMapLRN|:heavy_check_mark:|||
-|SpatialBatchNormalization|:heavy_check_mark:|||
+|SpatialCrossMapLRN|√|||
+|SpatialBatchNormalization|√|||
 |SpatialUpsamplingNearest||||
 |SpatialUpsamplingBilinear||||
 
