@@ -69,6 +69,10 @@ std::shared_ptr<cpptorch::nn::CudaLayer> cpptorch::read_cuda_net(const cpptorch:
 }
 
 
+template API cpptorch::Tensor<float, GPU_Cuda> cpptorch::read_tensor(const object *obj);
+template API std::shared_ptr<cpptorch::nn::Layer<float, GPU_Cuda>> cpptorch::read_net(const object *obj);
+
+
 cpptorch::Tensor<float, GPU_Cuda> cpptorch::cpu2cuda(const cpptorch::Tensor<float> &t)
 {
     cpptorch::Tensor<float, GPU_Cuda> t_gpu(true);
