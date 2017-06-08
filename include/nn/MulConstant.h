@@ -12,7 +12,7 @@ namespace cpptorch
         public:
             virtual const std::string name() const override { return "nn.MulConstant"; }
             virtual Tensor<T, F> forward(const Tensor<T, F> &input) const override;
-
+            virtual void setConstant(const T val);
         protected:
             bool inplace_;
             T constant_scalar_;
