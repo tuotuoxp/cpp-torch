@@ -20,14 +20,14 @@ We follow the structure of [nn package document](https://github.com/torch/nn/blo
 |HardTanh||||
 |HardShrink||||
 |SoftShrink||||
-|SoftMax||||
+|SoftMax|:heavy_check_mark:|||
 |SoftMin||||
 |SoftPlus||||
 |SoftSign||||
 |LogSigmoid||||
 |LogSoftMax|:heavy_check_mark:|||
 |Sigmoid||||
-|Tanh||||
+|Tanh|:heavy_check_mark:|||
 |ReLU|:heavy_check_mark:|||
 |ReLU6||||
 |PReLU||||
