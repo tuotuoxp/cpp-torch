@@ -10,7 +10,10 @@ cpptorch::Tensor<T, F> cpptorch::nn::Add<T, F>::forward(const cpptorch::Tensor<T
     output.copy(input);
     if(scalar_)
     {
-        output+=bias_[0];
+        cpptorch::Tensor<T, F> bias(true);
+        bias.resizeAs(input);
+        bias.fill(bias_[0]);
+        output+=bias;
     }
     else
     {

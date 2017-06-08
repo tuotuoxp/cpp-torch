@@ -14,7 +14,7 @@ namespace cpptorch
             {
                 const object_table *obj_tbl = obj->data_->to_table();
                 if(obj_tbl->get("scalar"))
-                    this->scalar_ = mb->build_tensor(obj_tbl->get("scalar"));
+                    this->scalar_ = obj_tbl->get("scalar");
                 else
                     this->scalar_ = false;
                 this->bias_ = mb->build_tensor(obj_tbl->get("bias"));
