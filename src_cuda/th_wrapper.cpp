@@ -442,6 +442,23 @@ int Tensor<double, GPU_Cuda>::isContiguous(const THCudaDoubleTensor *tensor)
     return THCudaDoubleTensor_isContiguous(getCudaState(), tensor);
 }
 
+
+template<>
+int Tensor<long, GPU_Cuda>::isSameSizeAs(const THCudaLongTensor *self, const THCudaLongTensor *src)
+{
+    return THCudaLongTensor_isSameSizeAs(getCudaState(), self, src);
+}
+template<>
+int Tensor<float, GPU_Cuda>::isSameSizeAs(const THCudaTensor *self, const THCudaTensor *src)
+{
+    return THCudaTensor_isSameSizeAs(getCudaState(), self, src);
+}
+template<>
+int Tensor<double, GPU_Cuda>::isSameSizeAs(const THCudaDoubleTensor *self, const THCudaDoubleTensor *src)
+{
+    return THCudaDoubleTensor_isSameSizeAs(getCudaState(), self, src);
+}
+
 template<>
 long Tensor<long, GPU_Cuda>::nElement(const THCudaLongTensor *tensor)
 {
@@ -837,6 +854,23 @@ void NN<float, GPU_Cuda>::Threshold_updateOutput(THCudaTensor *input, THCudaTens
     THNN_CudaThreshold_updateOutput(getCudaState(), input, output, threshold, val, inplace);
 }
 
+template<>
+void NN<float, GPU_Cuda>::SoftMax_updateOutput(THCudaTensor *input, THCudaTensor *output)
+{
+    THNN_CudaSoftMax_updateOutput(getCudaState(), input, output);
+}
+
+template<>
+void NN<float, GPU_Cuda>::LogSoftMax_updateOutput(THCudaTensor *input, THCudaTensor *output)
+{
+    THNN_CudaLogSoftMax_updateOutput(getCudaState(), input, output);
+}
+
+template<>
+void NN<float, GPU_Cuda>::Tanh_updateOutput(THCudaTensor *input, THCudaTensor *output)
+{
+    THNN_CudaTanh_updateOutput(getCudaState(), input, output);
+}
 
 }
 }

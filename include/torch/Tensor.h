@@ -44,6 +44,7 @@ namespace cpptorch
 
         // calculative access methods
         bool isContiguous() const;
+        bool isSameSizeAs(const Tensor<T, F> &src) const;
         int nElement() const;
 
         // special access methods

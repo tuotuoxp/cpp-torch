@@ -7,12 +7,12 @@ option(BUILD_TESTS "Build test programs" OFF)
 
 if(UNIX)
   # add support for c++11
-  add_definitions("-std=c++11")
+  add_definitions("-std=c++11 -O2")
 endif()
 
 
-if(NOT TH_FOUND)
-  find_package(TH REQUIRED)
+if(NOT Torch_FOUND)
+  find_package(Torch REQUIRED)
 endif()
 
 
@@ -25,11 +25,11 @@ macro(generate_project name src)
   endif()
 
   # include dirs
-  target_include_directories(${name} PRIVATE "${TH_INCLUDE_DIR}" "${TH_INCLUDE_DIR}/../THNN" "${TH_INCLUDE_DIR}/..")
+  target_include_directories(${name} PRIVATE "${Torch_INSTALL_PREFIX}/${Torch_INSTALL_INCLUDE_SUBDIR}" "${Torch_INSTALL_PREFIX}/${Torch_INSTALL_INCLUDE_SUBDIR}/THNN" "${Torch_INSTALL_PREFIX}/${Torch_INSTALL_INCLUDE_SUBDIR}/TH")
 
-  # link
-  find_library(TH_LIBRARY NAMES TH PATHS ${TH_LIB_DIR})
-  find_library(THNN_LIBRARY NAMES THNN PATHS ${TH_LIB_DIR})
+  # link/usr/share/cmake-3.5/Modules/
+  find_library(TH_LIBRARY NAMES TH PATHS ${Torch_INSTALL_PREFIX}/${Torch_INSTALL_LIB_SUBDIR})
+  find_library(THNN_LIBRARY NAMES THNN PATHS ${Torch_INSTALL_PREFIX}/${Torch_INSTALL_LIB_SUBDIR}/lua/5.1)
   target_link_libraries(${name} ${TH_LIBRARY} ${THNN_LIBRARY})
 
   # install target
@@ -74,9 +74,9 @@ if(BUILD_CUDA)
   endif()
   file(GLOB_RECURSE cpptorch_cuda_src "src_cuda/*.cpp" "src_cuda/*.cc")
   generate_project(cpptorch_cuda "${cpptorch_cuda_src}")
-  target_include_directories(cpptorch_cuda PRIVATE ${CUDA_INCLUDE_DIRS} ${TH_INCLUDE_DIR}/../THC ${TH_INCLUDE_DIR}/../THCUNN)
-  find_library(THC_LIBRARY NAMES THC PATHS ${TH_LIB_DIR})
-  find_library(THCUNN_LIBRARY NAMES THCUNN PATHS ${TH_LIB_DIR})
+  target_include_directories(cpptorch_cuda PRIVATE ${CUDA_INCLUDE_DIRS} "${Torch_INSTALL_PREFIX}/${Torch_INSTALL_INCLUDE_SUBDIR}" "${Torch_INSTALL_PREFIX}/${Torch_INSTALL_INCLUDE_SUBDIR}/THCUNN" "${Torch_INSTALL_PREFIX}/${Torch_INSTALL_INCLUDE_SUBDIR}/THC")
+  find_library(THC_LIBRARY NAMES THC PATHS ${Torch_INSTALL_PREFIX}/${Torch_INSTALL_LIB_SUBDIR})
+  find_library(THCUNN_LIBRARY NAMES THCUNN PATHS ${Torch_INSTALL_PREFIX}/${Torch_INSTALL_LIB_SUBDIR}/lua/5.1)
   target_link_libraries(cpptorch_cuda cpptorch ${THC_LIBRARY} ${THCUNN_LIBRARY})
 endif()
 

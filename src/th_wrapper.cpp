@@ -411,6 +411,22 @@ int Tensor<double, GPU_None>::isContiguous(const THDoubleTensor *tensor)
 }
 
 template<>
+int Tensor<long, GPU_None>::isSameSizeAs(const THLongTensor *self, const THLongTensor *src)
+{
+    return THLongTensor_isSameSizeAs(self, src);
+}
+template<>
+int Tensor<float, GPU_None>::isSameSizeAs(const THFloatTensor *self, const THFloatTensor *src)
+{
+    return THFloatTensor_isSameSizeAs(self, src);
+}
+template<>
+int Tensor<double, GPU_None>::isSameSizeAs(const THDoubleTensor *self, const THDoubleTensor *src)
+{
+    return THDoubleTensor_isSameSizeAs(self, src);
+}
+
+template<>
 long Tensor<long, GPU_None>::nElement(const THLongTensor *tensor)
 {
     return (long)THLongTensor_nElement(tensor);
@@ -858,6 +874,38 @@ void NN<double, GPU_None>::Threshold_updateOutput(THDoubleTensor *input, THDoubl
     THNN_DoubleThreshold_updateOutput(nullptr, input, output, threshold, val, inplace);
 }
 
+template<>
+void NN<float, GPU_None>::SoftMax_updateOutput(THFloatTensor *input, THFloatTensor *output)
+{
+    THNN_FloatSoftMax_updateOutput(nullptr, input, output);
+}
+template<>
+void NN<double, GPU_None>::SoftMax_updateOutput(THDoubleTensor *input, THDoubleTensor *output)
+{
+    THNN_DoubleSoftMax_updateOutput(nullptr, input, output);
+}
+
+template<>
+void NN<float, GPU_None>::LogSoftMax_updateOutput(THFloatTensor *input, THFloatTensor *output)
+{
+    THNN_FloatLogSoftMax_updateOutput(nullptr, input, output);
+}
+template<>
+void NN<double, GPU_None>::LogSoftMax_updateOutput(THDoubleTensor *input, THDoubleTensor *output)
+{
+    THNN_DoubleLogSoftMax_updateOutput(nullptr, input, output);
+}
+
+template<>
+void NN<float, GPU_None>::Tanh_updateOutput(THFloatTensor *input, THFloatTensor *output)
+{
+    THNN_FloatTanh_updateOutput(nullptr, input, output);
+}
+template<>
+void NN<double, GPU_None>::Tanh_updateOutput(THDoubleTensor *input, THDoubleTensor *output)
+{
+    THNN_DoubleTanh_updateOutput(nullptr, input, output);
+}
 
 }
 }

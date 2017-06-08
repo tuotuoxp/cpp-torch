@@ -209,6 +209,12 @@ bool cpptorch::Tensor<T, F>::isContiguous() const
 }
 
 template<typename T, GPUFlag F>
+bool cpptorch::Tensor<T, F>::isSameSizeAs(const Tensor<T, F> &src) const
+{
+    return cpptorch::th::Tensor<T, F>::isSameSizeAs(th_, src.th_) != 0;
+}
+
+template<typename T, GPUFlag F>
 int cpptorch::Tensor<T, F>::nElement() const
 {
     return cpptorch::th::Tensor<T, F>::nElement(th_);
