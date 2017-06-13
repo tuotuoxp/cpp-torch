@@ -151,10 +151,10 @@ namespace cpptorch
     // load module utils
     API std::shared_ptr<object> load(std::istream &is);
 
-    template<typename T>
-    API Tensor<T, GPU_None> read_tensor(const object *obj);
-    template<typename T>
-    API std::shared_ptr<nn::Layer<T, GPU_None>> read_net(const object *obj);
+    template<typename T, GPUFlag F=GPU_None>
+    API Tensor<T, F> read_tensor(const object *obj);
+    template<typename T, GPUFlag F=GPU_None>
+    API std::shared_ptr<nn::Layer<T, F>> read_net(const object *obj);
 }
 
 

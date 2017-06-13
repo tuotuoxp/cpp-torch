@@ -21,9 +21,13 @@ TSerializerBase* Cast(TSerializer *c)
 #include "serializer/DepthConcat.h"
 #include "serializer/Inception.h"
 #include "serializer/Linear.h"
+#include "serializer/Add.h"
 #include "serializer/MulConstant.h"
 #include "serializer/Normalize.h"
 #include "serializer/ReLU.h"
+#include "serializer/SoftMax.h"
+#include "serializer/LogSoftMax.h"
+#include "serializer/Tanh.h"
 #include "serializer/Reshape.h"
 #include "serializer/Sequential.h"
 #include "serializer/SpatialAveragePooling.h"
@@ -49,9 +53,13 @@ object_reader<T, F>::object_reader()
     addClass<cpptorch::serializer::DepthConcat<T, F>>("nn.DepthConcat");
     addClass<cpptorch::serializer::Inception<T, F>>("nn.Inception");
     addClass<cpptorch::serializer::Linear<T, F>>("nn.Linear");
+    addClass<cpptorch::serializer::Add<T, F>>("nn.Add");
     addClass<cpptorch::serializer::MulConstant<T, F>>("nn.MulConstant");
     addClass<cpptorch::serializer::Normalize<T, F>>("nn.Normalize");
     addClass<cpptorch::serializer::ReLU<T, F>>("nn.ReLU");
+    addClass<cpptorch::serializer::SoftMax<T, F>>("nn.SoftMax");
+    addClass<cpptorch::serializer::LogSoftMax<T, F>>("nn.LogSoftMax");
+    addClass<cpptorch::serializer::Tanh<T, F>>("nn.Tanh");
     addClass<cpptorch::serializer::Reshape<T, F>>("nn.Reshape");
     addClass<cpptorch::serializer::Sequential<T, F>>("nn.Sequential");
     addClass<cpptorch::serializer::SpatialAveragePooling<T, F>>("nn.SpatialAveragePooling");
@@ -67,7 +75,7 @@ object_reader<T, F>::object_reader()
     addClass<cpptorch::serializer::Threshold<T, F>>("nn.Threshold");
     addClass<cpptorch::serializer::View<T, F>>("nn.View");
 }
-    
+
 template<typename T, GPUFlag F>
 void object_reader<T, F>::build_storage(const cpptorch::object *obj, cpptorch::Storage<T, F> &storage)
 {
@@ -130,4 +138,3 @@ std::shared_ptr<cpptorch::nn::Layer<T, F>> object_reader<T, F>::build_layer(cons
         return it->second;
     }
 }
-

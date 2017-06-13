@@ -84,6 +84,6 @@ When you run `ctest` under `/build`, it performs the following actions:
 - run each `.lua` file in torch, save input tensor, output tensor and net as `.t7` file.
 - feed input tensor into net in cpp-torch, compare output tensor with saved output tensor.
 
-# Write torch layer(TODO)
+# Write torch layer(*TODO*)
 
-# Write self-defined layer(TODO)
+# Write self-defined layer(*TODO*)

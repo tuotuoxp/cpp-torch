@@ -1,4 +1,4 @@
-# Linux Install
+# Linux Install (legacy)
 
 ## Prerequisite
 - [OpenBLAS](http://www.openblas.net/)

@@ -1,5 +1,5 @@
 #include "loader.h"
-
+#include <iostream>
 #include <string>
 #include <limits>
 
@@ -92,6 +92,8 @@ object_loader::object_loader()
     addClass<object_torch_storage_reader<long>>("torch.LongStorage");
     addClass<object_torch_storage_reader<float>>("torch.FloatStorage");
     addClass<object_torch_storage_reader<double>>("torch.DoubleStorage");
+    addClass<object_torch_tensor_reader>("torch.CudaTensor");
+    addClass<object_torch_storage_reader<float>>("torch.CudaStorage");
 }
 
 std::shared_ptr<cpptorch::object> object_loader::read_object(std::istream &is)

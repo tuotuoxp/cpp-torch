@@ -11,3 +11,8 @@ cpptorch::Tensor<T, F> cpptorch::nn::MulConstant<T, F>::forward(const cpptorch::
     output *= constant_scalar_;
     return output;
 }
+
+template<typename T, GPUFlag F>
+void cpptorch::nn::MulConstant<T, F>::setConstant(const T val) {
+    constant_scalar_ = val;
+}
