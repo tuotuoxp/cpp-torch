@@ -543,38 +543,38 @@ double Tensor<double, GPU_None>::maxall(THDoubleTensor *r)
 }
 
 template<>
-void Tensor<long, GPU_None>::max(THLongTensor *values, THLongTensor *t, int dimension)
+void Tensor<long, GPU_None>::max(THLongTensor *values, THLongTensor *t, int dimension, int keepdim)
 {
     cpptorch::Tensor<long> l(true);
-    THLongTensor_max(values, l, t, dimension);
+    THLongTensor_max(values, l, t, dimension, keepdim);
 }
 template<>
-void Tensor<float, GPU_None>::max(THFloatTensor *values, THFloatTensor *t, int dimension)
+void Tensor<float, GPU_None>::max(THFloatTensor *values, THFloatTensor *t, int dimension, int keepdim)
 {
     cpptorch::Tensor<long> l(true);
-    THFloatTensor_max(values, l, t, dimension);
+    THFloatTensor_max(values, l, t, dimension, keepdim);
 }
 template<>
-void Tensor<double, GPU_None>::max(THDoubleTensor *values, THDoubleTensor *t, int dimension)
+void Tensor<double, GPU_None>::max(THDoubleTensor *values, THDoubleTensor *t, int dimension, int keepdim)
 {
     cpptorch::Tensor<long> l(true);
-    THDoubleTensor_max(values, l, t, dimension);
+    THDoubleTensor_max(values, l, t, dimension, keepdim);
 }
 
 template<>
-void Tensor<long, GPU_None>::sum(THLongTensor *values, THLongTensor *t, int dimension)
+void Tensor<long, GPU_None>::sum(THLongTensor *values, THLongTensor *t, int dimension, int keepdim)
 {
-    return THLongTensor_sum(values, t, dimension);
+    THLongTensor_sum(values, t, dimension, keepdim);
 }
 template<>
-void Tensor<float, GPU_None>::sum(THFloatTensor *values, THFloatTensor *t, int dimension)
+void Tensor<float, GPU_None>::sum(THFloatTensor *values, THFloatTensor *t, int dimension, int keepdim)
 {
-    return THFloatTensor_sum(values, t, dimension);
+    THFloatTensor_sum(values, t, dimension, keepdim);
 }
 template<>
-void Tensor<double, GPU_None>::sum(THDoubleTensor *values, THDoubleTensor *t, int dimension)
+void Tensor<double, GPU_None>::sum(THDoubleTensor *values, THDoubleTensor *t, int dimension, int keepdim)
 {
-    return THDoubleTensor_sum(values, t, dimension);
+    THDoubleTensor_sum(values, t, dimension, keepdim);
 }
 
 template<>
