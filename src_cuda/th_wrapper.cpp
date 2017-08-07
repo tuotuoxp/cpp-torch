@@ -576,38 +576,38 @@ double Tensor<double, GPU_Cuda>::maxall(THCudaDoubleTensor *r)
 }
 
 template<>
-void Tensor<long, GPU_Cuda>::max(THCudaLongTensor *values, THCudaLongTensor *t, int dimension)
+void Tensor<long, GPU_Cuda>::max(THCudaLongTensor *values, THCudaLongTensor *t, int dimension, int keepdim)
 {
     cpptorch::Tensor<long, GPU_Cuda> l(true);
-    THCudaLongTensor_max(getCudaState(), values, l, t, dimension);
+    THCudaLongTensor_max(getCudaState(), values, l, t, dimension, keepdim);
 }
 template<>
-void Tensor<float, GPU_Cuda>::max(THCudaTensor *values, THCudaTensor *t, int dimension)
+void Tensor<float, GPU_Cuda>::max(THCudaTensor *values, THCudaTensor *t, int dimension, int keepdim)
 {
     cpptorch::Tensor<long, GPU_Cuda> l(true);
-    THCudaTensor_max(getCudaState(), values, l, t, dimension);
+    THCudaTensor_max(getCudaState(), values, l, t, dimension, keepdim);
 }
 template<>
-void Tensor<double, GPU_Cuda>::max(THCudaDoubleTensor *values, THCudaDoubleTensor *t, int dimension)
+void Tensor<double, GPU_Cuda>::max(THCudaDoubleTensor *values, THCudaDoubleTensor *t, int dimension, int keepdim)
 {
     cpptorch::Tensor<long, GPU_Cuda> l(true);
-    THCudaDoubleTensor_max(getCudaState(), values, l, t, dimension);
+    THCudaDoubleTensor_max(getCudaState(), values, l, t, dimension, keepdim);
 }
 
 template<>
-void Tensor<long, GPU_Cuda>::sum(THCudaLongTensor *values, THCudaLongTensor *t, int dimension)
+void Tensor<long, GPU_Cuda>::sum(THCudaLongTensor *values, THCudaLongTensor *t, int dimension, int keepdim)
 {
-    return THCudaLongTensor_sum(getCudaState(), values, t, dimension);
+    return THCudaLongTensor_sum(getCudaState(), values, t, dimension, keepdim);
 }
 template<>
-void Tensor<float, GPU_Cuda>::sum(THCudaTensor *values, THCudaTensor *t, int dimension)
+void Tensor<float, GPU_Cuda>::sum(THCudaTensor *values, THCudaTensor *t, int dimension, int keepdim)
 {
-    return THCudaTensor_sum(getCudaState(), values, t, dimension);
+    return THCudaTensor_sum(getCudaState(), values, t, dimension, keepdim);
 }
 template<>
-void Tensor<double, GPU_Cuda>::sum(THCudaDoubleTensor *values, THCudaDoubleTensor *t, int dimension)
+void Tensor<double, GPU_Cuda>::sum(THCudaDoubleTensor *values, THCudaDoubleTensor *t, int dimension, int keepdim)
 {
-    return THCudaDoubleTensor_sum(getCudaState(), values, t, dimension);
+    return THCudaDoubleTensor_sum(getCudaState(), values, t, dimension, keepdim);
 }
 
 template<>
