@@ -1,6 +1,5 @@
 #pragma once
 #include "../../include/nn/Add.h"
-#include <iostream>
 
 template<typename T, GPUFlag F>
 cpptorch::Tensor<T, F> cpptorch::nn::Add<T, F>::forward(const cpptorch::Tensor<T, F> &input) const

@@ -63,8 +63,8 @@ namespace cpptorch
             static void fill(typename THTrait<T, F>::Tensor *self, T val);
             static T minall(typename THTrait<T, F>::Tensor *self);
             static T maxall(typename THTrait<T, F>::Tensor *self);
-            static void max(typename THTrait<T, F>::Tensor *values, typename THTrait<T, F>::Tensor *t, int dimension);
-            static void sum(typename THTrait<T, F>::Tensor *values, typename THTrait<T, F>::Tensor *t, int dimension);
+            static void max(typename THTrait<T, F>::Tensor *values, typename THTrait<T, F>::Tensor *t, int dimension, int keepdim=1);
+            static void sum(typename THTrait<T, F>::Tensor *values, typename THTrait<T, F>::Tensor *t, int dimension, int keepdim=1);
             // r = t + val
             static void add(typename THTrait<T, F>::Tensor *r, typename THTrait<T, F>::Tensor *t,
                 T val);
